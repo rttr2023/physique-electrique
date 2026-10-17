@@ -57,29 +57,65 @@
 
   const AUCUN = '<section class="carte"><p class="note">Aucun chapitre n\'est coché : choisis dans le volet de gauche les chapitres et les parties que tu étudies.</p></section>';
 
-  function voletHTML() {
-    return '<div class="volet-tete"><strong>Chapitres étudiés</strong>' +
-      '<span class="volet-tout"><button class="lien" data-tout="1">Tout cocher</button> · <button class="lien" data-tout="0">Aucun</button></span></div>' +
-      PE.cours.map(function (ch) {
-        const n = partiesChoisies(ch).length;
-        return '<div class="volet-ch"><label class="volet-titre"><input type="checkbox" data-ch="' + ch.id + '"' + (n ? ' checked' : '') + '>' +
-          '<span>Chapitre ' + ch.numero + '</span></label>' +
-          '<a class="volet-ouvrir" href="#cours/' + ch.id + '" title="' + PE.esc(ch.titre) + '">Ouvrir</a>' +
-          '<ul>' + ch.sections.map(function (s, i) {
-            return '<li><label><input type="checkbox" data-ch="' + ch.id + '" data-partie="' + i + '"' + (partieChoisie(ch, i) ? ' checked' : '') + '>' +
-              '<span>' + T(libelleCourt(s)) + '</span></label></li>';
-          }).join('') + '</ul></div>';
-      }).join('');
+  // ---------- Années et noms de chapitres ----------
+  function annees() {
+    return PE.cours.reduce(function (t, c) { if (t.indexOf(PE.annee(c)) < 0) t.push(PE.annee(c)); return t; }, []);
+  }
+  function nomAnnee(a) { return a === 1 ? '1re année' : a + 'e année'; }
+  // « Chapitre 5 », précédé de l'année dès que le site contient plusieurs années.
+  function nomChapitre(ch) { return (annees().length > 1 ? nomAnnee(PE.annee(ch)) + ' · ' : '') + 'Chapitre ' + ch.numero; }
+
+  // ---------- Rendu du volet ----------
+  let ouverts = lireStock('pe-volet-ouverts', {}); // chapitres dépliés dans le volet
+  let recherche = '';
+  function sansAccent(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
+  function correspond(texte) { return !recherche || sansAccent(texte.replace(/<[^>]+>|\$/g, '')).indexOf(recherche) >= 0; }
+
+  function chapitreHTML(ch) {
+    const n = partiesChoisies(ch).length;
+    const titreOk = correspond('Chapitre ' + ch.numero + ' ' + ch.titre);
+    const visibles = ch.sections.map(function (_, i) { return i; }).filter(function (i) {
+      return titreOk || correspond(libelleCourt(ch.sections[i]) + ' ' + ch.sections[i].titre);
+    });
+    if (!visibles.length) return '';
+    const ouvert = recherche ? true : !!ouverts[ch.id];
+    return '<div class="volet-ch">' +
+      '<div class="volet-ligne"><button class="volet-plier" data-plier="' + ch.id + '" aria-expanded="' + ouvert + '" aria-label="' + (ouvert ? 'Replier' : 'Déplier') + ' le chapitre ' + ch.numero + '">' + (ouvert ? '▾' : '▸') + '</button>' +
+      '<label class="volet-titre"><input type="checkbox" data-ch="' + ch.id + '"' + (n ? ' checked' : '') + '><span>Chapitre ' + ch.numero +
+      (n && n < ch.sections.length ? ' <span class="volet-compte">' + n + '/' + ch.sections.length + '</span>' : '') +
+      '<small>' + PE.esc(ch.titre) + '</small></span></label>' +
+      '<a class="volet-ouvrir" href="#cours/' + ch.id + '" title="Ouvrir le cours : ' + PE.esc(ch.titre) + '">Ouvrir</a></div>' +
+      (ouvert ? '<ul>' + visibles.map(function (i) {
+        return '<li><label><input type="checkbox" data-ch="' + ch.id + '" data-partie="' + i + '"' + (partieChoisie(ch, i) ? ' checked' : '') + '>' +
+          '<span>' + T(libelleCourt(ch.sections[i])) + '</span></label></li>';
+      }).join('') + '</ul>' : '') + '</div>';
+  }
+
+  function arbreHTML() {
+    const h = annees().map(function (a) {
+      const chs = PE.cours.filter(function (c) { return PE.annee(c) === a; });
+      const corps = chs.map(chapitreHTML).join('');
+      if (!corps) return '';
+      const n = chs.filter(chapitreChoisi).length;
+      return '<section class="volet-annee"><label class="volet-annee-titre"><input type="checkbox" data-annee="' + a + '"' + (n ? ' checked' : '') + '>' +
+        '<span>' + nomAnnee(a) + '</span></label>' + corps + '</section>';
+    }).join('');
+    return h || '<p class="discret">Aucune partie ne correspond à « ' + PE.esc(recherche) + ' ».</p>';
   }
 
   function majVolet() {
-    const v = document.getElementById('volet-liste');
-    v.innerHTML = voletHTML();
-    // Case du chapitre à moitié cochée quand seule une partie des sections est retenue.
+    const v = document.getElementById('volet-arbre');
+    v.innerHTML = arbreHTML();
+    // Cases à moitié cochées quand seule une partie du chapitre (ou de l'année) est retenue.
     PE.cours.forEach(function (ch) {
-      const n = partiesChoisies(ch).length;
       const c = v.querySelector('input[data-ch="' + ch.id + '"]:not([data-partie])');
-      c.indeterminate = n > 0 && n < ch.sections.length;
+      const n = partiesChoisies(ch).length;
+      if (c) c.indeterminate = n > 0 && n < ch.sections.length;
+    });
+    annees().forEach(function (a) {
+      const c = v.querySelector('input[data-annee="' + a + '"]');
+      const chs = PE.cours.filter(function (x) { return PE.annee(x) === a; });
+      if (c) c.indeterminate = c.checked && chs.some(function (x) { return partiesChoisies(x).length < x.sections.length; });
     });
   }
 
@@ -165,15 +201,19 @@
       const choisis = coursChoisis();
       return '<h1>Cours</h1><p class="intro">Les chapitres ci-dessous sont la transcription de tes polycopiés (dossier <code>Cours</code>). ' +
         'Quand tu ajoutes de nouveaux scans, lance la commande <code>/maj-cours</code> dans Claude Code pour les intégrer.</p>' +
-        (choisis.length ? '<div class="cartes">' + choisis.map(function (c) {
-          const n = partiesChoisies(c).length;
-          return '<a class="carte lien-carte" href="#cours/' + c.id + '"><span class="tag">Chapitre ' + c.numero + '</span><h2>' + c.titre + '</h2><p>' + c.resume + '</p>' +
-            '<p class="discret">' + (n < c.sections.length ? n + ' parties cochées sur ' + c.sections.length : c.sections.length + ' parties') + ' · ' + (c.formules || []).length + ' formules</p></a>';
-        }).join('') + '</div>' : AUCUN);
+        (choisis.length ? annees().map(function (a) {
+          const chs = choisis.filter(function (c) { return PE.annee(c) === a; });
+          if (!chs.length) return '';
+          return (annees().length > 1 ? '<h2 class="titre-annee">' + nomAnnee(a) + '</h2>' : '') + '<div class="cartes">' + chs.map(function (c) {
+            const n = partiesChoisies(c).length;
+            return '<a class="carte lien-carte" href="#cours/' + c.id + '"><span class="tag">' + nomChapitre(c) + '</span><h2>' + c.titre + '</h2><p>' + c.resume + '</p>' +
+              '<p class="discret">' + (n < c.sections.length ? n + ' parties cochées sur ' + c.sections.length : c.sections.length + ' parties') + ' · ' + (c.formules || []).length + ' formules</p></a>';
+          }).join('') + '</div>';
+        }).join('') : AUCUN);
     }
     const parties = partiesChoisies(ch);
     const masquees = ch.sections.length - parties.length;
-    return '<p><a href="#cours">← Tous les chapitres</a></p><span class="tag">Chapitre ' + ch.numero + ' · ' + (ch.programme || '') + '</span><h1>' + ch.titre + '</h1>' +
+    return '<p><a href="#cours">← Tous les chapitres</a></p><span class="tag">' + nomChapitre(ch) + ' · ' + (ch.programme || '') + '</span><h1>' + ch.titre + '</h1>' +
       '<p class="intro">' + ch.resume + '</p>' +
       (masquees ? '<p class="note">' + (parties.length ? masquees + ' partie' + (masquees > 1 ? 's' : '') + ' du chapitre ' + (masquees > 1 ? 'sont masquées' : 'est masquée') : 'Toutes les parties de ce chapitre sont masquées') +
         (masquees > 1 ? ' : coche-les' : ' : coche-la') + ' dans le volet de gauche pour l' + (masquees > 1 ? 'es' : 'a') + ' afficher.</p>' : '') +
@@ -194,7 +234,7 @@
     const choisis = coursChoisis();
     return '<h1>Formulaire</h1><p class="intro">Les formules des chapitres cochés dans le volet de gauche, regroupées par thème.</p>' +
       (choisis.length ? choisis.map(function (c) {
-        return '<section class="carte"><span class="tag">Chapitre ' + c.numero + '</span><h2>' + c.titre + '</h2>' + tableFormules(c.formules || []) + '</section>';
+        return '<section class="carte"><span class="tag">' + nomChapitre(c) + '</span><h2>' + c.titre + '</h2>' + tableFormules(c.formules || []) + '</section>';
       }).join('') : AUCUN);
   }
 
@@ -236,7 +276,7 @@
     return liste.map(function (sec, i) {
       const ch = PE.cours.find(function (c) { return c.id === sec.chapitre; });
       return '<details class="carte calc" id="calc-' + sec.id + '" data-id="' + sec.id + '"' + (labo.fermes[sec.id] ? '' : ' open') + '><summary><span class="numero">' + (i + 1) + '</span> ' + sec.titre +
-        (ch ? ' <a class="tag" href="#cours/' + ch.id + '" title="' + PE.esc(ch.titre) + '">CH' + ch.numero + '</a>' : '') + '</summary><div class="corps">' + sec.rendu(ctx) + '</div></details>';
+        (ch ? ' <a class="tag" href="#cours/' + ch.id + '" title="' + PE.esc(nomChapitre(ch) + ' : ' + ch.titre) + '">CH' + ch.numero + '</a>' : '') + '</summary><div class="corps">' + sec.rendu(ctx) + '</div></details>';
     }).join('');
   }
 
@@ -363,7 +403,7 @@
       return;
     }
     const ch = PE.cours.find(function (c) { return c.id === exercice.chapitre; });
-    zone.innerHTML = '<section class="carte exercice"><span class="tag">' + NIVEAUX[exo.niveau] + (ch ? ' · Chapitre ' + ch.numero : '') + '</span><h2>' + exercice.titre + '</h2>' +
+    zone.innerHTML = '<section class="carte exercice"><span class="tag">' + NIVEAUX[exo.niveau] + (ch ? ' · ' + nomChapitre(ch) : '') + '</span><h2>' + exercice.titre + '</h2>' +
       exercice.enonce + (exercice.circuit ? '<div class="schema-wrap">' + PE.dessin.circuit(exercice.circuit, exercice.dessin) + '</div>' : '') +
       (exo.aide === 2 ? '<details class="formulaire-exo"><summary>Formulaire</summary>' + coursChoisis().map(function (c) { return tableFormules(c.formules || []); }).join('') + '</details>' : '') +
       '<ol class="questions">' + exercice.questions.map(function (_, i) { return '<li id="q-' + i + '">' + questionHTML(i) + '</li>'; }).join('') + '</ol>' +
@@ -488,16 +528,40 @@
   document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && page.classList.contains('volet-mobile')) fermerVoletMobile(); });
 
   const liste = document.getElementById('volet-liste');
+  liste.innerHTML = '<div class="volet-tete"><strong>Chapitres étudiés</strong>' +
+    '<span class="volet-tout"><button class="lien" data-tout="1">Tout cocher</button> · <button class="lien" data-tout="0">Aucun</button></span></div>' +
+    '<input type="search" id="volet-recherche" placeholder="Rechercher une partie…" aria-label="Rechercher un chapitre ou une partie" autocomplete="off">' +
+    '<div id="volet-arbre"></div>';
+  document.getElementById('volet-recherche').addEventListener('input', function (ev) {
+    recherche = sansAccent(ev.target.value.trim());
+    majVolet();
+  });
   liste.addEventListener('change', function (ev) {
     const c = ev.target;
+    // Case d'une année, d'un chapitre (à moitié cochée ou vide → tout cocher ; pleine → tout décocher) ou d'une partie.
+    if (c.dataset.annee) {
+      const chs = PE.cours.filter(function (x) { return String(PE.annee(x)) === c.dataset.annee; });
+      const pleine = chs.every(function (x) { return partiesChoisies(x).length === x.sections.length; });
+      chs.forEach(function (x) { cocherChapitre(x, !pleine); });
+      changerSelection();
+      return;
+    }
     const ch = PE.cours.find(function (x) { return x.id === c.dataset.ch; });
     if (!ch) return;
     if (c.dataset.partie !== undefined) cocherPartie(ch, Number(c.dataset.partie), c.checked);
-    // Case du chapitre : à moitié cochée ou vide → tout cocher ; entièrement cochée → tout décocher.
     else cocherChapitre(ch, partiesChoisies(ch).length < ch.sections.length);
     changerSelection();
   });
   liste.addEventListener('click', function (ev) {
+    const p = ev.target.closest('[data-plier]');
+    if (p) {
+      if (recherche) return; // pendant une recherche, tout ce qui correspond reste déplié
+      ouverts[p.dataset.plier] = !ouverts[p.dataset.plier];
+      if (!ouverts[p.dataset.plier]) delete ouverts[p.dataset.plier];
+      ecrireStock('pe-volet-ouverts', ouverts);
+      majVolet();
+      return;
+    }
     const b = ev.target.closest('[data-tout]');
     if (!b) return;
     PE.cours.forEach(function (ch) { cocherChapitre(ch, b.dataset.tout === '1'); });

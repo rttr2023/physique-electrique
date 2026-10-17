@@ -5,6 +5,7 @@
 
   PE.ajouterCours({
     id: 'ch05',
+    annee: 1,
     numero: 5,
     titre: 'Modélisation des systèmes électriques',
     programme: 'A.1.2 Circuit en régime sinusoïdal',

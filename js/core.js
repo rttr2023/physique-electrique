@@ -168,9 +168,11 @@
   // ---------- Registres alimentés par les chapitres ----------
   PE.cours = [];
   PE.formules = {};
+  // Année du chapitre (1 par défaut). Ids : 'ch07' en 1re année, 'a2-ch07' en 2e année, etc.
+  PE.annee = function (ch) { return ch.annee || 1; };
   PE.ajouterCours = function (ch) {
     PE.cours.push(ch);
-    PE.cours.sort(function (a, b) { return a.numero - b.numero; });
+    PE.cours.sort(function (a, b) { return PE.annee(a) - PE.annee(b) || a.numero - b.numero; });
     (ch.formules || []).forEach(function (f) {
       f.chapitre = ch.id;
       PE.formules[f.id] = f;

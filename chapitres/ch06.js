@@ -5,6 +5,7 @@
 
   PE.ajouterCours({
     id: 'ch06',
+    annee: 1,
     numero: 6,
     titre: 'Les puissances en régime sinusoïdal',
     programme: 'A.1.2 Circuits en régime sinusoïdal (permanent, monophasé)',

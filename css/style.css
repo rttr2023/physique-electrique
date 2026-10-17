@@ -65,13 +65,24 @@ main { width: 100%; min-width: 0; }
 #volet-fond { display: none; }
 .volet-tete { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px; margin: 0 0 10px; }
 .volet-tout { font-size: .82rem; color: var(--discret); }
-.volet-ch { background: var(--surface); border: 1px solid var(--bord); border-radius: 10px; padding: 8px 10px; margin: 0 0 10px; }
+#volet-recherche { width: 100%; margin: 0 0 12px; }
+.volet-annee { margin: 0 0 14px; }
+.volet-annee-titre { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: .78rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--discret); margin: 0 0 6px; padding: 0 4px; }
+.volet-annee-titre input { accent-color: var(--accent); margin: 0; }
+.volet-ch { background: var(--surface); border: 1px solid var(--bord); border-radius: 10px; padding: 6px 8px; margin: 0 0 8px; }
+.volet-ligne { display: flex; align-items: flex-start; gap: 2px; }
+.volet-ligne .volet-titre { flex: 1 1 auto; min-width: 0; }
+button.volet-plier { flex: none; background: none; border: none; padding: 3px 4px; width: 1.6em; color: var(--discret); line-height: 1.3; }
+button.volet-plier:hover { color: var(--accent); }
+.volet-titre small { display: block; font-weight: 400; color: var(--discret); font-size: .8rem; line-height: 1.3; }
+.volet-compte { font-weight: 600; font-size: .75rem; color: var(--accent); background: var(--note-fond); border-radius: 99px; padding: 0 6px; margin-left: 4px; }
+.titre-annee { margin: 18px 0 10px; }
 .volet-ch label { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; padding: 3px 4px; border-radius: 6px; }
 .volet-ch label:hover { background: var(--surface-2); }
 .volet-ch input { margin: .22em 0 0; accent-color: var(--accent); flex: none; }
-.volet-titre { font-weight: 700; display: inline-flex !important; }
-.volet-ouvrir { float: right; font-size: .8rem; margin-top: 4px; }
-.volet-ch ul { list-style: none; margin: 4px 0 0; padding: 0 0 0 18px; border-left: 2px solid var(--bord); margin-left: 10px; }
+.volet-titre { font-weight: 700; }
+.volet-ouvrir { flex: none; font-size: .8rem; margin-top: 4px; }
+.volet-ch ul { list-style: none; margin: 4px 0 2px; padding: 0 0 0 14px; border-left: 2px solid var(--bord); margin-left: 12px; }
 .volet-ch li { margin: 1px 0; }
 @media (max-width: 899px) {
   .page, .page.volet-replie { display: block; }
