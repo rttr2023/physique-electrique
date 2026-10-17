@@ -1,68 +1,76 @@
 ---
 description: Intègre au site les nouveaux cours (PDF scannés) déposés dans le dossier Cours
-argument-hint: "[fichiers ou consigne facultative, ex. « seulement scan0140 à scan0146 »]"
+argument-hint: "[consigne facultative, ex. « 2e année » ou « seulement scan0140 à scan0146 »]"
 ---
 
-Mets à jour le site de physique électrique avec les nouveaux polycopiés du dossier `Cours/`.
+Intègre au site de physique électrique les nouveaux polycopiés scannés du dossier `Cours/`.
 
 Consigne éventuelle de l'utilisateur : $ARGUMENTS
 
-## 1. Trouver ce qui est nouveau
+**L'utilisateur ne veut rien vérifier lui-même.** Tu travailles du début à la fin sans lui poser de question ni lui demander de valider : les doutes se tranchent avec les règles ci-dessous, les contrôles sont automatiques (scripts) ou faits par une relecture indépendante, et ce qui reste incertain est seulement listé dans le compte rendu final. Le volume peut être important (toute une année de cours) : avance chapitre par chapitre, enregistre chaque étape dans Git, et sache que la commande peut être relancée pour reprendre là où elle s'est arrêtée.
 
-Lance `node outils/nouveaux-cours.js`. Il liste les PDF de `Cours/` qui ne figurent dans le tableau `sources` d'aucun chapitre (`chapitres/*.js`). S'il n'y a rien de nouveau, dis-le et arrête-toi.
+Référence du format : `outils/FORMAT-CHAPITRE.md` (lis-la avant d'écrire). Outils : `node outils/inventaire.js`, `node outils/verifier-chapitre.js <fichier>`, `node outils/test.js`.
 
-## 2. Lire les scans
+## 0. Sauvegarde
 
-Lis **chaque** nouveau PDF avec l'outil Read (ce sont des images scannées, souvent une page par fichier, dans l'ordre des numéros). Repère pour chacun : le chapitre (numéro et titre dans l'en-tête), le type de page (problématique, annexe / cours, TD, exercices supplémentaires) et les annotations manuscrites utiles. Des pages sans en-tête sont la suite du fichier précédent.
+`git status`. S'il y a des modifications non enregistrées, enregistre-les d'abord (`git add -A` puis `git commit -m "Sauvegarde avant intégration des cours"`). Lance `node outils/test.js` : s'il échoue avant même de commencer, répare d'abord (c'est souvent un chapitre resté à moitié branché lors d'une séance interrompue : voir étape 5).
 
-Si un passage est illisible ou ambigu, ne l'invente pas : transcris ce qui est sûr et signale le doute à la fin.
+## 1. Inventaire des scans
 
-## 3. Écrire ou compléter le chapitre
+Lance `node outils/inventaire.js`. Il liste les PDF « à inventorier » (jamais lus) et les chapitres « à intégrer » (déjà inventoriés). S'il n'y a rien de nouveau, dis-le et arrête-toi.
 
-Un chapitre = un fichier `chapitres/chNN.js` qui appelle `PE.ajouterCours({...})`. Prends `chapitres/ch06.js` comme modèle.
+Pour chaque PDF à inventorier, ajoute une entrée dans `Cours/inventaire.json` (garde l'ordre alphabétique des fichiers, JSON valide) :
 
-- Nouveau chapitre : crée `chapitres/chNN.js` et ajoute `<script src="chapitres/chNN.js"></script>` dans `index.html`, entre les repères `COURS:DEBUT` et `COURS:FIN`.
-- Suite d'un chapitre existant : complète son fichier (sections, formules) et ajoute les PDF à `sources`.
-- Chaque PDF intégré doit apparaître dans `sources`, sinon il sera redétecté la prochaine fois.
+```json
+"scan0140.pdf": { "annee": 1, "chapitre": 7, "titre": "Théorème de Thévenin", "type": "cours", "note": "" }
+```
 
-Champs : `id` ('ch07'), `numero`, `titre`, `programme`, `resume` (une phrase), `sources`, `objectifs` (ceux du tableau « À l'issue de la leçon »), `sections`, `formules`.
+- `type` : `problematique`, `cours`, `annexe`, `td`, `exercices`, `corrige` ou `autre`.
+- `annee` : celle de la consigne si elle en donne une (« 2e année »), sinon celle de l'en-tête du scan, sinon **1**.
+- `chapitre` / `titre` : ceux de l'en-tête. **Une page sans en-tête est la suite du PDF précédent** (même année, même chapitre). Si un scan n'appartient à aucun chapitre (page de garde, sommaire, page blanche, document hors sujet), mets `{ "ignore": true, "note": "page de garde" }`.
+- Dans `note`, ce qui servira à la rédaction : « annotations manuscrites », « schéma de pont non dessinable », « suite du TD », « partiellement illisible »…
 
-Chaque section a un `id` (court, en minuscules, unique dans le chapitre, ex. 'capacitif', 'relevement' ; ne le change plus ensuite, la sélection du volet et le tri des exercices s'appuient dessus), un `titre` (fidèle au polycopié), un `court` (libellé de 2 à 5 mots affiché dans le volet de gauche, ex. 'Effet capacitif', 'Puissance active P') et ses `blocs`.
+Lecture : chaque PDF se lit avec l'outil Read (scans, souvent une page par fichier, dans l'ordre des numéros).
+- Jusqu'à 15 PDF : lis-les toi-même.
+- Au-delà : confie la lecture à des sous-agents (outil Agent, jusqu'à 4 en parallèle), par lots de **12 PDF consécutifs**. Consigne à leur donner : « Lis chacun de ces scans avec l'outil Read : <liste>. Pour chacun, renvoie uniquement une ligne JSON { fichier, annee, chapitre, titre, type, note, suite } en suivant ces règles : <recopie les règles ci-dessus>. Mets "suite": true (et chapitre null) pour une page sans en-tête. Ne modifie aucun fichier. » Puis fusionne : une entrée `suite` prend l'année et le chapitre du PDF qui la précède (éventuellement le dernier du lot précédent).
 
-Blocs possibles dans `sections[].blocs` (le texte reste fidèle au polycopié) :
+Relance `node outils/inventaire.js` : plus rien à inventorier, aucune incohérence. Enregistre : `git add Cours/inventaire.json && git commit -m "Inventaire des scans"`.
 
-| Bloc | Rôle |
-|---|---|
-| `{ p: '...' }` | paragraphe ; formules entre `$...$` |
-| `{ h: '...' }` | sous-titre |
-| `{ f: 'V = Z I', cadre: true, unites: '...' }` | formule centrée ; `cadre` pour les relations encadrées du cours |
-| `{ liste: [...], ordonnee: true }` | liste (questions d'un exercice, étapes) |
-| `{ table: { tetes: [...], lignes: [[...]] } }` | tableau |
-| `{ note: '...' }` / `{ alerte: '...' }` | remarque / mise en garde |
-| `{ schema: circuit, legende, valeurs: false, source: false, nomSource }` | schéma dessiné automatiquement, avec bouton « Ouvrir dans le laboratoire » |
-| `{ fresnel: circuit, legende }` | diagramme de Fresnel d'un circuit |
-| `{ reponses: '...' }` | éléments de réponse d'un TD (repliés) |
-| `{ html: '...' }` | HTML libre, en dernier recours |
+## 2. Plan
 
-Mini-langage des formules : `frac(a;b)`, `sqrt(a)`, `cx(V)` (grandeur complexe soulignée), `vec(V)`, indices `V_L` ou `R_{eq}`, exposants `I^2`. Écris `&lt;` et `&gt;` pour < et >.
+`node outils/inventaire.js --json` donne, pour chaque chapitre à intégrer : son `id`, son fichier, `nouveau` ou `suite` (chapitre existant à compléter), et ses scans dans l'ordre. Traite-les dans cet ordre (année puis numéro). Si la consigne restreint les fichiers, ne traite que ceux-là.
 
-Un circuit s'écrit `{ regime: 'AC' | 'DC', V, f, charge }` avec `K.R(val, 'nom')`, `K.L(...)`, `K.Cap(...)`, `K.serie(...)`, `K.par(...)` (valeurs en Ω, H, F). Un schéma qui ne se réduit pas à des associations série / dérivation d'une source et de dipôles R, L, C (transformateur, triphasé, pont…) ne peut pas être dessiné ainsi : décris-le dans le texte.
+## 3. Rédaction
 
-`formules` : `{ id, groupe, nom, expr, quand }`. Les `id` sont uniques sur tout le site (ils servent d'aide dans les exercices). N'y mets que des relations présentes dans le cours ; si tu ajoutes un rappel qui n'y figure pas, dis-le à l'utilisateur.
+Pour un chapitre, la rédaction consiste à :
+1. lire `outils/FORMAT-CHAPITRE.md`, le modèle `chapitres/ch06.js`, et le fichier du chapitre s'il existe déjà (`suite`) ;
+2. lire chacun de ses scans avec Read ;
+3. écrire `chapitres/<id>.js` (nouveau) ou le compléter (`suite` : nouvelles sections à la fin avec de nouveaux id, nouvelles formules, PDF ajoutés à `sources` ; ne change ni ne supprime les `id` existants) ;
+4. écrire `outils/controles/<id>.js` avec un contrôle par résultat numérique recalculable du polycopié ;
+5. lancer `node outils/verifier-chapitre.js chapitres/<id>.js` et corriger jusqu'à « OK ».
 
-## 4. Étendre le laboratoire et les exercices si le chapitre s'y prête
+Ne modifie **pas** `index.html`, `js/` ni `outils/test.js` à cette étape.
 
-- **Nouveau calcul sur un schéma** (une grandeur calculable pour un circuit R, L, C) : ajoute une section avec `PE.calculs.ajouter({ id, titre, chapitre, parties, regime, applicable(ctx), rendu(ctx) })` (`parties` : sections du cours dont relève le calcul, sous la forme `'ch07/<id de section>'` ; la section s'affiche dès qu'une est cochée dans le volet) dans `js/calculs.js`, sur le modèle des sections existantes (`ctx.s` est la solution de `PE.circuit.resoudre`).
-- **Nouveau type de problème** : ajoute un générateur à `PE.exercices.problemes` dans `js/exercices.js` (`{ id, titre, chapitre, parties, niveau: 1 | 2 | 3, generer() }`), avec des valeurs tirées au hasard et, pour chaque question, `q(texte, valeurSI, unité, [ids de formules], correction)`. Inspire-toi des exercices du TD et vérifie ton générateur avec les éléments de réponse du polycopié.
-- **Tri par partie** : `parties` liste les sections du cours que le problème fait travailler, sous la forme `'ch07/<id de section>'`, toujours avec la section du TD. Le problème est proposé dès qu'une de ces parties est cochée dans le volet. Si tu ajoutes des questions aux exercices sur circuit (`questionsAC` / `questionsDC`), passe-leur `{ parties: [...] }` en dernier argument de `q()`. `node outils/test.js` vérifie que chaque partie citée existe.
-- Si le chapitre sort du cadre des circuits R, L, C monophasés (triphasé, machines, transformateur…), le moteur `js/circuit.js` ne suffit pas : intègre le cours et les problèmes type TD, et propose à l'utilisateur l'extension du laboratoire au lieu de la bricoler.
+- 1 ou 2 chapitres : fais-le toi-même.
+- 3 chapitres ou plus : un sous-agent par chapitre (outil Agent), **4 au plus en même temps**. Consigne : « Tu intègres au site le chapitre <id> (<année>, chapitre <n>, « <titre> », <nouveau|suite>) à partir des scans <liste>. Suis exactement les étapes 1 à 5 suivantes : <recopie-les>. Tu ne modifies que chapitres/<id>.js et outils/controles/<id>.js. Tu ne poses aucune question : en cas de doute, transcris ce qui est sûr et note le doute. Termine par un compte rendu : sections créées (id et titre), formules, schémas non dessinables décrits en texte, passages illisibles ou douteux, écarts entre les réponses du polycopié et tes contrôles, et idées d'exercices ou de calculs de laboratoire tirées du TD. »
 
-## 5. Vérifier
+## 4. Relecture indépendante (remplace la vérification par l'utilisateur)
 
-1. Ajoute dans `outils/test.js` une vérification par résultat numérique repris du polycopié (application numérique du cours, éléments de réponse du TD).
-2. Lance `node outils/test.js` : tout doit passer.
-3. Relance `node outils/nouveaux-cours.js` : il ne doit plus rester de PDF à intégrer (sauf ceux exclus par la consigne).
+Pour chaque chapitre rédigé, un **nouveau** sous-agent (pas celui qui a écrit, jusqu'à 4 en parallèle) relit : « Compare les scans <liste> au fichier chapitres/<id>.js. Vérifie un par un : toutes les parties du polycopié sont présentes et dans l'ordre ; chaque formule encadrée du cours apparaît en `cadre: true` ; chaque valeur numérique, unité et signe est identique au scan ; les questions des TD sont toutes là, avec leurs éléments de réponse ; rien n'a été inventé. Corrige directement chapitres/<id>.js (sans changer les id de section déjà présents), ajoute à outils/controles/<id>.js les contrôles manquants, puis relance node outils/verifier-chapitre.js chapitres/<id>.js jusqu'à OK. Renvoie la liste de tes corrections et des doutes qui restent. » Avec 1 ou 2 chapitres traités par toi-même, fais quand même cette relecture via un sous-agent.
 
-## 6. Compte rendu
+## 5. Branchement et enregistrement, chapitre par chapitre
 
-Résume en quelques lignes : chapitres créés ou complétés, formules ajoutées, nouveaux calculs et problèmes, et tout passage illisible ou toute incohérence relevée dans les scans (par exemple un élément de réponse que le calcul ne retrouve pas).
+Pour chaque chapitre relu :
+1. nouveau chapitre : ajoute `<script src="chapitres/<id>.js"></script>` dans `index.html`, entre `COURS:DEBUT` et `COURS:FIN`, dans l'ordre (année puis numéro) ;
+2. `node outils/test.js` : tout doit passer (corrige sinon) ;
+3. `git add -A && git commit -m "Cours : <1re année|2e année>, chapitre <n> — <titre>"`.
+
+## 6. Laboratoire et exercices
+
+Une fois tous les chapitres branchés, reprends un par un ceux qui s'y prêtent (idées remontées aux étapes 3 et 4) et suis la partie « Laboratoire et exercices » de `outils/FORMAT-CHAPITRE.md`. Fais-le toi-même, séquentiellement (ces fichiers sont partagés). Après chaque chapitre : `node outils/test.js`, puis commit « Exercices : chapitre <n> ». Priorité : les problèmes type TD (un par exercice de TD bien posé), puis les calculs de laboratoire.
+
+## 7. Contrôle final et compte rendu
+
+1. `node outils/inventaire.js` : plus rien à inventorier ni à intégrer, aucune incohérence. `node outils/test.js` : tout passe.
+2. Ajoute en tête de `Cours/journal.md` (crée-le s'il n'existe pas) une entrée datée : chapitres créés ou complétés, nombre de scans, scans ignorés et pourquoi, exercices et calculs ajoutés, et la liste des doutes (passages illisibles, écarts de valeurs, schémas décrits en texte, rappels ajoutés hors cours). Commit « Journal d'intégration ».
+3. Compte rendu à l'utilisateur, court : ce qui a été intégré, ce qui est désormais disponible sur le site, et les doutes à garder en tête en révisant (sans lui demander de les vérifier).

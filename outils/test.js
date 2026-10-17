@@ -5,10 +5,9 @@ const path = require('path');
 const racine = path.join(__dirname, '..');
 
 // Charge les scripts dans l'ordre de index.html (sauf app.js, qui a besoin du navigateur).
-const html = fs.readFileSync(path.join(racine, 'index.html'), 'utf8');
-const scripts = Array.from(html.matchAll(/<script src="([^"]+)"/g)).map(function (m) { return m[1]; }).filter(function (s) { return s !== 'js/app.js'; });
-scripts.forEach(function (s) { require(path.join(racine, s)); });
-const PE = globalThis.PE, K = PE.circuit;
+const charge = require('./charger').charger('index');
+const V = require('./verifs');
+const PE = charge.PE, K = PE.circuit;
 
 let echecs = 0, total = 0;
 function proche(nom, obtenu, attendu, tol) {
@@ -18,33 +17,23 @@ function proche(nom, obtenu, attendu, tol) {
 }
 function vrai(nom, cond) { total++; if (!cond) { echecs++; console.log('ÉCHEC ' + nom); } }
 
-// --- CH05 : cours et TD ---
-let s = K.resoudreAC({ regime: 'AC', V: 230, f: 50, charge: K.serie(K.R(12, 'r'), K.L(1.1, 'L')) });
-proche('cours bobine Z', s.Zmod, 346); proche('cours bobine phi', s.phiDeg, 88); proche('cours bobine I', s.Ieff, 0.667);
-s = K.resoudreAC({ regime: 'AC', V: 24, f: 50, charge: K.L(12e-3, 'L') });
-proche('TD5 ex1.1 Z', s.Zmod, 3.77); proche('TD5 ex1.1 I', s.Ieff, 6.37);
-s = K.resoudreAC({ regime: 'AC', V: 24, f: 1000, charge: K.Cap(100e-9, 'C') });
-proche('TD5 ex2.2 Z', s.Zmod, 1590); proche('TD5 ex2.2 I', s.Ieff, 15.1e-3);
-s = K.resoudreAC({ regime: 'AC', V: 24, f: 50, charge: K.serie(K.R(11, 'r'), K.L(0.1, 'L')) });
-proche('TD5 ex3 Z', s.Zmod, 33.3); proche('TD5 ex3 I', s.Ieff, 0.720); proche('TD5 ex3 phi', s.phiDeg, 70.7);
-const ex4 = { regime: 'AC', V: 12, f: 200e3, charge: K.serie(K.L(6.8e-3, 'L'), K.Cap(142e-12, 'C'), K.R(1000, 'R')) };
-s = K.resoudreAC(ex4);
-proche('TD5 ex4 I', s.Ieff, 3.86e-3, 0.03); proche('TD5 ex4 phi', s.phiDeg, 71, 0.02);
-proche('TD5 ex4 VL', s.info.get(ex4.charge.children[0]).Veff, 33, 0.03);
+// --- Contrôles numériques propres à chaque chapitre : outils/controles/<id>.js ---
+// Chaque fichier exporte function (PE, proche, vrai) { ... } (voir outils/FORMAT-CHAPITRE.md).
+const dossierControles = path.join(racine, 'outils', 'controles');
+if (fs.existsSync(dossierControles)) {
+  fs.readdirSync(dossierControles).filter(function (f) { return /\.js$/.test(f); }).sort().forEach(function (f) {
+    const id = f.replace(/\.js$/, '');
+    vrai('contrôles ' + f + ' : le chapitre ' + id + ' existe', PE.cours.some(function (c) { return c.id === id; }));
+    try { require(path.join(dossierControles, f))(PE, function (nom, o, a, t) { proche(id + ' ' + nom, o, a, t); }, function (nom, c) { vrai(id + ' ' + nom, c); }); }
+    catch (e) { vrai('contrôles ' + f + ' : ' + e.message, false); }
+  });
+}
 
-// --- CH06 : TD ---
-const ex2 = { regime: 'AC', V: 230, f: 50, charge: K.par(K.Cap(470e-6, 'C'), K.serie(K.R(3.33, 'R'), K.L(13.3e-3, 'L'))) };
-s = K.resoudreAC(ex2);
-proche('TD6 ex2 I1', s.info.get(ex2.charge.children[1]).Ieff, 43.1); proche('TD6 ex2 I', s.Ieff, 26.9);
-proche('Boucherot S = VI', s.S, s.V * s.Ieff, 1e-9);
-proche('P = VI cos phi', s.P, s.V * s.Ieff * Math.cos(s.phi), 1e-9);
-
-// --- Régime continu : exercices A et B ---
-s = K.resoudreDC({ regime: 'DC', V: 24, charge: K.serie(K.R(10, 'R1'), K.par(K.R(20, 'R2'), K.Cap(1e-3, 'C'))) });
-proche('ExA Req0', s.t0.Req, 10); proche('ExA Reqinf', s.tinf.Req, 30); proche('ExA I0', s.t0.I, 2.4); proche('ExA Iinf', s.tinf.I, 0.8);
-proche('ExA Vc inf', s.tinf.info.get(s.reactifs[0]).V, 16); proche('ExA tau', s.tau, 6.667e-3);
-s = K.resoudreDC({ regime: 'DC', V: 24, charge: K.serie(K.R(10, 'R1'), K.par(K.R(20, 'R2'), K.L(0.1, 'L'))) });
-proche('ExB Req0', s.t0.Req, 30); proche('ExB Iinf', s.tinf.I, 2.4); proche('ExB IL inf', s.tinf.info.get(s.reactifs[0]).I, 2.4); proche('ExB tau', s.tau, 0.015);
+// --- Structure des chapitres, cohérence entre chapitres, index.html et inventaire des scans ---
+charge.erreurs.forEach(function (e) { vrai('chargement ' + e, false); });
+PE.cours.forEach(function (ch) { V.verifierChapitre(PE, ch).forEach(function (m) { vrai(m, false); }); total++; });
+V.verifierSite(PE).forEach(function (m) { vrai(m, false); });
+total++;
 
 // --- Dessin libre : l'exemple doit donner R1 + L1 + (R2 // C1) ---
 const a = PE.libre.analyser(PE.libre.exemple());
@@ -88,7 +77,6 @@ PE.exercices.problemes.forEach(function (p) {
 // --- Chapitres : structure et formules référencées ---
 PE.cours.forEach(function (ch) {
   vrai(ch.id + ' a des sections', ch.sections.length > 0 && ch.sources.length > 0);
-  ch.sections.forEach(function (sec) { vrai(ch.id + ' libellé court pour « ' + sec.titre + ' »', typeof sec.court === 'string' && sec.court.length > 0 && sec.court.length <= 40); });
   ch.sources.forEach(function (f) { vrai(ch.id + ' source présente : ' + f, fs.existsSync(path.join(racine, 'Cours', f))); });
   ch.sections.forEach(function (sec) {
     sec.blocs.forEach(function (b) {
