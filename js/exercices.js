@@ -366,4 +366,92 @@
       };
     }
   });
+
+  X.problemes.push({
+    id: 'superposition', titre: 'Principe de superposition : source de tension et source de courant', chapitre: 'ch01', parties: ['ch01/superposition', 'ch01/diviseur', 'ch01/associations'], niveau: 2,
+    generer: function () {
+      const E = choix([6, 10, 12, 24]), I = choix([0.2, 0.5, 1]);
+      const R1 = choix([10, 22, 30, 47, 68, 100]), R2 = choix([10, 22, 30, 47]), R = choix([22, 33, 50, 68, 100]);
+      const U1 = R / (R + R1) * E, Req = R * R1 / (R + R1), U2 = Req * I;
+      return {
+        circuit: null,
+        enonce: '<p>Trois branches sont associées en dérivation : une source de tension ' + M('E') + ' = ' + fmt(E, 'V') + ' en série avec ' + M('R_1') + ' = ' + fmt(R1, 'Ω') +
+          ' ; une source de courant ' + M('I') + ' = ' + fmt(I, 'A') + ' en série avec ' + M('R_2') + ' = ' + fmt(R2, 'Ω') + ' ; une résistance ' + M('R') + ' = ' + fmt(R, 'Ω') +
+          '. Les deux sources sont orientées de façon à faire circuler leur courant vers la borne haute de ' + M('R') + '. On cherche la tension ' + M('U') +
+          ' aux bornes de ' + M('R') + ' (fléchée vers la borne haute) par le principe de superposition.</p>',
+        questions: [
+          q('Étape 1 : la source de courant est éteinte (remplacée par un circuit ouvert). Calculer la tension $U′$ aux bornes de $R$.', U1, 'V', ['ch01Diviseur', 'ch01Superposition'],
+            '<p>Aucun courant ne circule dans la branche de ' + M('R_2') + ' : ' + M('R_1') + ' et ' + M('R') + ' sont en série et forment un diviseur de tension.</p>' +
+            eq('U′', 'frac(R;R + R_1) × E', 'frac(' + num(R) + ';' + num(R) + ' + ' + num(R1) + ') × ' + num(E), fmt(U1, 'V'))),
+          q('Étape 2 : la source de tension est éteinte (remplacée par un fil). Calculer la résistance $R_{eq}$ équivalente à $R_1$ et $R$.', Req, 'Ω', ['ch01Deux'],
+            '<p>' + M('R_1') + ' et ' + M('R') + ' sont alors en dérivation.</p>' +
+            eq('R_{eq}', 'frac(R × R_1;R + R_1)', 'frac(' + num(R) + ' × ' + num(R1) + ';' + num(R) + ' + ' + num(R1) + ')', fmt(Req, 'Ω'))),
+          q('Calculer la tension $U″$ aux bornes de $R$ à l\'étape 2.', U2, 'V', ['ch01Ohm', 'ch01Superposition'],
+            '<p>Tout le courant ' + M('I') + ' de la source traverse ' + M('R_{eq}') + ' (' + M('R_2') + ', en série avec la source de courant, n\'intervient pas).</p>' +
+            eq('U″', 'R_{eq} × I', num(Req) + ' × ' + num(I), fmt(U2, 'V'))),
+          q('Étape 3 : en déduire la tension $U$.', U1 + U2, 'V', ['ch01Superposition'], eq('U', 'U′ + U″', num(U1) + ' + ' + num(U2), fmt(U1 + U2, 'V')))
+        ]
+      };
+    }
+  });
+
+  // Oscillogramme 10 × 8 divisions : v (voie 1) et i (voie 2), centrés sur l'axe.
+  // nT : divisions par période ; nV, nI : amplitudes en divisions ; nDt : retard de i sur v en divisions (négatif : avance).
+  function oscillogramme(nT, nV, nI, nDt) {
+    const d = 40, W = 10 * d, H = 8 * d, N = 240;
+    let grille = '';
+    for (let k = 0; k <= 10; k++) grille += '<line class="axe" opacity="' + (k % 10 ? 0.25 : 1) + '" x1="' + k * d + '" y1="0" x2="' + k * d + '" y2="' + H + '"/>';
+    for (let k = 0; k <= 8; k++) grille += '<line class="axe" opacity="' + (k % 4 ? 0.25 : 1) + '" x1="0" y1="' + k * d + '" x2="' + W + '" y2="' + k * d + '"/>';
+    const courbe = function (amp, decal, cls) {
+      const pts = [];
+      for (let i = 0; i <= N; i++) {
+        const x = 10 * i / N;
+        pts.push((x * d).toFixed(1) + ',' + (H / 2 - amp * d * Math.sin(2 * Math.PI * (x - decal) / nT)).toFixed(1));
+      }
+      return '<polyline class="courbe ' + cls + '" points="' + pts.join(' ') + '"/>';
+    };
+    return '<div class="schema-wrap"><svg class="courbes" viewBox="-1 -1 ' + (W + 2) + ' ' + (H + 2) + '" width="' + W + '" height="' + H +
+      '" role="img" aria-label="Oscillogramme de la tension et du courant">' + grille + courbe(nV, 0, 'c-v') + courbe(nI, nDt, 'c-i') +
+      '</svg><p class="legende"><span class="pastille c-v"></span> voie 1 : ' + M('v') + ' &nbsp; <span class="pastille c-i"></span> voie 2 : ' + M('i') +
+      ' (image par la sonde) — 10 × 8 divisions</p></div>';
+  }
+
+  X.problemes.push({
+    id: 'oscillogramme', titre: 'Lecture d\'un oscillogramme : déphasage courant/tension', chapitre: 'ch04', parties: ['ch04/definition', 'ch04/mesure', 'ch04/td'], niveau: 2,
+    generer: function () {
+      const ct = choix([5e-3, 2e-3, 1e-3, 0.5e-3, 0.2e-3, 0.1e-3, 50e-6, 20e-6]), nT = choix([4, 5, 8]);
+      const decalages = [];
+      for (let k = 2; k <= Math.floor(nT * 2.2); k++) decalages.push(k / 10);
+      const nDt = choix(decalages), retard = Math.random() < 0.5;
+      const sonde = choix([1, 20]), cv = choix([0.5, 1, 2, 5]), nV = choix([1.5, 1.8, 2, 2.3, 2.5, 2.8, 3, 3.2]);
+      const ci = choix([5e-3, 10e-3, 20e-3, 50e-3, 0.1]), nI = choix([1.2, 1.4, 1.5, 1.7, 2, 2.5]);
+      const T = nT * ct, f = 1 / T, w = 2 * Math.PI * f, dt = nDt * ct;
+      const phi = (retard ? 1 : -1) * 360 * dt / T;
+      const Vmax = nV * cv * sonde, Imax = nI * ci / 0.1;
+      return {
+        circuit: null,
+        enonce: '<p>On relève à l\'oscilloscope la tension ' + M('v') + ' aux bornes d\'un dipôle (voie 1) et le courant ' + M('i') + ' qui le traverse (voie 2). Réglages :</p><ul>' +
+          '<li>calibre des temps : ' + fmt(ct, 's') + '/div ;</li>' +
+          '<li>voie 1 : ' + (sonde === 1 ? 'mesure directe' : 'sonde 1/20<sup>e</sup>') + ', calibre ' + fmt(cv, 'V') + '/div ;</li>' +
+          '<li>voie 2 : sonde de courant 100 mV/A, calibre ' + fmt(ci, 'V') + '/div.</li></ul>' + oscillogramme(nT, nV, nI, retard ? nDt : -nDt) +
+          '<p>Lectures : une période occupe ' + num(nT) + ' div ; le maximum de ' + M('v') + ' est à ' + num(nV) + ' div, celui de ' + M('i') + ' à ' + num(nI) +
+          ' div ; ' + M('i') + ' passe par son maximum ' + num(nDt) + ' div ' + (retard ? 'après' : 'avant') + ' ' + M('v') + '.</p>',
+        questions: [
+          q('Déterminer la période $T$.', T, 's', ['ch04Oscillo'], eq('T', num(nT) + ' div × ' + fmt(ct, 's') + '/div', fmt(T, 's'))),
+          q('En déduire la fréquence $f$.', f, 'Hz', ['ch04Freq'], eq('f', 'frac(1;T)', 'frac(1;' + num(T) + ')', fmt(f, 'Hz'))),
+          q('Calculer la pulsation $ω$.', w, 'rad/s', ['ch04Freq'], eq('ω', '2πf', '2π × ' + num(f), fmt(w, 'rad/s'))),
+          q('Déterminer le déphasage $φ$ de $i$ par rapport à $v$, en degrés et avec son signe.', phi, '°', ['ch04PhiDeg', 'ch04Def'],
+            eq('Δt', num(nDt) + ' div × ' + fmt(ct, 's') + '/div', fmt(dt, 's')) + eq('|φ|', 'frac(360 × Δt;T)', 'frac(360 × ' + num(dt) + ';' + num(T) + ')', PE.fmtDeg(Math.abs(phi))) +
+            '<p>' + M('i') + ' est en ' + (retard ? 'retard' : 'avance') + ' sur ' + M('v') + ' : ' + M('φ') + ' est ' + (retard ? 'positif (dipôle inductif)' : 'négatif (dipôle capacitif)') +
+            ', ' + M('φ') + ' = ' + PE.fmtDeg(phi) + '.</p>', { tolAbs: 1 }),
+          q('Déterminer la valeur maximale $V_{max}$ de la tension.', Vmax, 'V', ['ch04Oscillo'],
+            eq('V_{max}', num(nV) + ' div × ' + fmt(cv, 'V') + '/div' + (sonde === 1 ? '' : ' × 20'), fmt(Vmax, 'V'))),
+          q('En déduire sa valeur efficace $V$.', Vmax / Math.SQRT2, 'V', ['ch04Eff'], eq('V', 'frac(V_{max};sqrt(2))', fmt(Vmax / Math.SQRT2, 'V'))),
+          q('Déterminer la valeur maximale $I_{max}$ du courant.', Imax, 'A', ['ch04Oscillo'],
+            eq('I_{max}', 'frac(' + num(nI) + ' div × ' + fmt(ci, 'V') + '/div;0,1 V/A)', fmt(Imax, 'A'))),
+          q('En déduire sa valeur efficace $I$.', Imax / Math.SQRT2, 'A', ['ch04Eff'], eq('I', 'frac(I_{max};sqrt(2))', fmt(Imax / Math.SQRT2, 'A')))
+        ]
+      };
+    }
+  });
 })(typeof window !== 'undefined' ? window : globalThis);
