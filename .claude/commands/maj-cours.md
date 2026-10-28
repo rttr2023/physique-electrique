@@ -1,6 +1,6 @@
 ---
 description: Intègre au site les nouveaux cours (PDF scannés) déposés dans le dossier Cours
-argument-hint: "[consigne facultative, ex. « 2e année » ou « seulement scan0140 à scan0146 »]"
+argument-hint: "[consigne facultative, ex. « 2e année » ou « seulement le chapitre 7 »]"
 ---
 
 Intègre au site de physique électrique les nouveaux polycopiés scannés du dossier `Cours/`.
@@ -9,7 +9,7 @@ Consigne éventuelle de l'utilisateur : $ARGUMENTS
 
 **L'utilisateur ne veut rien vérifier lui-même.** Tu travailles du début à la fin sans lui poser de question ni lui demander de valider : les doutes se tranchent avec les règles ci-dessous, les contrôles sont automatiques (scripts) ou faits par une relecture indépendante, et ce qui reste incertain est seulement listé dans le compte rendu final. Le volume peut être important (toute une année de cours) : avance chapitre par chapitre, enregistre chaque étape dans Git, et sache que la commande peut être relancée pour reprendre là où elle s'est arrêtée.
 
-Référence du format : `outils/FORMAT-CHAPITRE.md` (lis-la avant d'écrire). Outils : `node outils/inventaire.js`, `node outils/verifier-chapitre.js <fichier>`, `node outils/test.js`.
+Référence du format : `outils/FORMAT-CHAPITRE.md` (lis-la avant d'écrire). Outils : `node outils/inventaire.js`, `node outils/renommer.js`, `node outils/verifier-chapitre.js <fichier>`, `node outils/test.js`.
 
 ## 0. Sauvegarde
 
@@ -34,7 +34,9 @@ Lecture : chaque PDF se lit avec l'outil Read (scans, souvent une page par fichi
 - Jusqu'à 15 PDF : lis-les toi-même.
 - Au-delà : confie la lecture à des sous-agents (outil Agent, jusqu'à 4 en parallèle), par lots de **12 PDF consécutifs**. Consigne à leur donner : « Lis chacun de ces scans avec l'outil Read : <liste>. Pour chacun, renvoie uniquement une ligne JSON { fichier, annee, chapitre, titre, type, note, suite } en suivant ces règles : <recopie les règles ci-dessus>. Mets "suite": true (et chapitre null) pour une page sans en-tête. Ne modifie aucun fichier. » Puis fusionne : une entrée `suite` prend l'année et le chapitre du PDF qui la précède (éventuellement le dernier du lot précédent).
 
-Relance `node outils/inventaire.js` : plus rien à inventorier, aucune incohérence. Enregistre : `git add Cours/inventaire.json && git commit -m "Inventaire des scans"`.
+Puis lance `node outils/renommer.js` : il renomme chaque scan inventorié d'après son chapitre (`A<année>-Ch<NN>-p<KK>.pdf`, ex. `A1-Ch07-p03.pdf`, en continuant la numérotation des pages existantes), garde l'ancien nom dans `origine` et met à jour l'inventaire et les `sources`. À partir d'ici, utilise uniquement les nouveaux noms.
+
+Relance `node outils/inventaire.js` : plus rien à inventorier, aucune incohérence. Enregistre : `git add -A Cours && git commit -m "Inventaire des scans"`.
 
 ## 2. Plan
 

@@ -1,82 +1,98 @@
 {
-  "scan0118.pdf": {
+  "A1-Ch05-p01.pdf": {
     "annee": 1,
     "chapitre": 5,
-    "titre": "Modélisation des systèmes électriques"
+    "titre": "Modélisation des systèmes électriques",
+    "origine": "scan0118.pdf"
   },
-  "scan0119.pdf": {
+  "A1-Ch05-p02.pdf": {
     "annee": 1,
     "chapitre": 5,
-    "titre": "Modélisation des systèmes électriques"
+    "titre": "Modélisation des systèmes électriques",
+    "origine": "scan0119.pdf"
   },
-  "scan0120.pdf": {
+  "A1-Ch05-p03.pdf": {
     "annee": 1,
     "chapitre": 5,
-    "titre": "Modélisation des systèmes électriques"
+    "titre": "Modélisation des systèmes électriques",
+    "origine": "scan0120.pdf"
   },
-  "scan0121.pdf": {
+  "A1-Ch05-p04.pdf": {
     "annee": 1,
     "chapitre": 5,
-    "titre": "Modélisation des systèmes électriques"
+    "titre": "Modélisation des systèmes électriques",
+    "origine": "scan0121.pdf"
   },
-  "scan0122.pdf": {
+  "A1-Ch05-p05.pdf": {
     "annee": 1,
     "chapitre": 5,
-    "titre": "Modélisation des systèmes électriques"
+    "titre": "Modélisation des systèmes électriques",
+    "origine": "scan0122.pdf"
   },
-  "scan0123.pdf": {
+  "A1-Ch05-p06.pdf": {
     "annee": 1,
     "chapitre": 5,
-    "titre": "Modélisation des systèmes électriques"
+    "titre": "Modélisation des systèmes électriques",
+    "origine": "scan0123.pdf"
   },
-  "scan0124.pdf": {
+  "A1-Ch05-p07.pdf": {
     "annee": 1,
     "chapitre": 5,
-    "titre": "Modélisation des systèmes électriques"
+    "titre": "Modélisation des systèmes électriques",
+    "origine": "scan0124.pdf"
   },
-  "scan0125.pdf": {
+  "A1-Ch06-p01.pdf": {
     "annee": 1,
     "chapitre": 6,
-    "titre": "Les puissances en régime sinusoïdal"
+    "titre": "Les puissances en régime sinusoïdal",
+    "origine": "scan0125.pdf"
   },
-  "scan0126.pdf": {
+  "A1-Ch06-p02.pdf": {
     "annee": 1,
     "chapitre": 6,
-    "titre": "Les puissances en régime sinusoïdal"
+    "titre": "Les puissances en régime sinusoïdal",
+    "origine": "scan0126.pdf"
   },
-  "scan0127.pdf": {
+  "A1-Ch06-p03.pdf": {
     "annee": 1,
     "chapitre": 6,
-    "titre": "Les puissances en régime sinusoïdal"
+    "titre": "Les puissances en régime sinusoïdal",
+    "origine": "scan0127.pdf"
   },
-  "scan0128.pdf": {
+  "A1-Ch06-p04.pdf": {
     "annee": 1,
     "chapitre": 6,
-    "titre": "Les puissances en régime sinusoïdal"
+    "titre": "Les puissances en régime sinusoïdal",
+    "origine": "scan0128.pdf"
   },
-  "scan0129.pdf": {
+  "A1-Ch06-p05.pdf": {
     "annee": 1,
     "chapitre": 6,
-    "titre": "Les puissances en régime sinusoïdal"
+    "titre": "Les puissances en régime sinusoïdal",
+    "origine": "scan0129.pdf"
   },
-  "scan0130.pdf": {
+  "A1-Ch06-p06.pdf": {
     "annee": 1,
     "chapitre": 6,
-    "titre": "Les puissances en régime sinusoïdal"
+    "titre": "Les puissances en régime sinusoïdal",
+    "origine": "scan0130.pdf"
   },
-  "scan0131.pdf": {
+  "A1-Ch06-p07.pdf": {
     "annee": 1,
     "chapitre": 6,
-    "titre": "Les puissances en régime sinusoïdal"
+    "titre": "Les puissances en régime sinusoïdal",
+    "origine": "scan0131.pdf"
   },
-  "scan0132.pdf": {
+  "A1-Ch06-p08.pdf": {
     "annee": 1,
     "chapitre": 6,
-    "titre": "Les puissances en régime sinusoïdal"
+    "titre": "Les puissances en régime sinusoïdal",
+    "origine": "scan0132.pdf"
   },
-  "scan0133.pdf": {
+  "A1-Ch06-p09.pdf": {
     "annee": 1,
     "chapitre": 6,
-    "titre": "Les puissances en régime sinusoïdal"
+    "titre": "Les puissances en régime sinusoïdal",
+    "origine": "scan0133.pdf"
   }
 }

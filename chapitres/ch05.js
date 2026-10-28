@@ -10,7 +10,7 @@
     titre: 'Modélisation des systèmes électriques',
     programme: 'A.1.2 Circuit en régime sinusoïdal',
     resume: 'Modéliser un système par des résistances, des inductances et des condensateurs pour prévoir le courant absorbé et le déphasage.',
-    sources: ['scan0118.pdf', 'scan0119.pdf', 'scan0120.pdf', 'scan0121.pdf', 'scan0122.pdf', 'scan0123.pdf', 'scan0124.pdf'],
+    sources: ['A1-Ch05-p01.pdf', 'A1-Ch05-p02.pdf', 'A1-Ch05-p03.pdf', 'A1-Ch05-p04.pdf', 'A1-Ch05-p05.pdf', 'A1-Ch05-p06.pdf', 'A1-Ch05-p07.pdf'],
     objectifs: [
       'Savoir ce que modélise une résistance dans un schéma équivalent',
       'Savoir calculer la valeur efficace du courant traversant un dipôle, connaissant son impédance et la valeur efficace de la tension à ses bornes',

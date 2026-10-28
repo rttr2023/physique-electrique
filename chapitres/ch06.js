@@ -10,7 +10,7 @@
     titre: 'Les puissances en régime sinusoïdal',
     programme: 'A.1.2 Circuits en régime sinusoïdal (permanent, monophasé)',
     resume: 'Puissances active, réactive et apparente, facteur de puissance et son relèvement, théorème et méthode de Boucherot.',
-    sources: ['scan0125.pdf', 'scan0126.pdf', 'scan0127.pdf', 'scan0128.pdf', 'scan0129.pdf', 'scan0130.pdf', 'scan0131.pdf', 'scan0132.pdf', 'scan0133.pdf'],
+    sources: ['A1-Ch06-p01.pdf', 'A1-Ch06-p02.pdf', 'A1-Ch06-p03.pdf', 'A1-Ch06-p04.pdf', 'A1-Ch06-p05.pdf', 'A1-Ch06-p06.pdf', 'A1-Ch06-p07.pdf', 'A1-Ch06-p08.pdf', 'A1-Ch06-p09.pdf'],
     objectifs: [
       'Connaître les noms, les expressions et les unités des puissances p, P, Q et S',
       'Connaître la relation entre P, Q et S',

@@ -1,5 +1,5 @@
 // Inventaire des scans du dossier Cours : ce qui reste à lire, à intégrer, et dans quel chapitre.
-// L'inventaire est stocké dans Cours/inventaire.json : { "scan0140.pdf": { annee, chapitre, titre, type, note } }
+// L'inventaire est stocké dans Cours/inventaire.json : { "A1-Ch07-p01.pdf": { annee, chapitre, titre, type, note, origine } }
 // ou { "scan0139.pdf": { ignore: true, note: "page de garde" } }. Les PDF déjà cités dans les sources
 // d'un chapitre y sont ajoutés automatiquement.
 // Usage : node outils/inventaire.js          (rapport lisible)
