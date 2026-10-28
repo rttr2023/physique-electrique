@@ -242,6 +242,31 @@
     return vecteursSVG(vs, 420, 300) + '<p class="legende">' + legende + ' Les tensions et les courants ne sont pas à la même échelle.</p>';
   };
 
+  // Vecteurs libres : [{ de, a (complexes), nom, classe: 'tension' | 'courant' | 'tension2' | 'courant2', cote }].
+  D.vecteurs = function (vs, W, H) { return vecteursSVG(vs, W || 380, H || 260); };
+
+  // ---------- Oscillogramme ----------
+  // Écran 10 × 8 divisions : v (voie 1) et i (voie 2), centrés sur l'axe.
+  // nT : divisions par période ; nV, nI : amplitudes en divisions ; nDt : retard de i sur v en divisions (négatif : avance).
+  D.oscillogramme = function (nT, nV, nI, nDt, legende) {
+    const d = 40, W = 10 * d, H = 8 * d, N = 240;
+    let grille = '';
+    for (let k = 0; k <= 10; k++) grille += '<line class="axe" opacity="' + (k % 10 ? 0.25 : 1) + '" x1="' + k * d + '" y1="0" x2="' + k * d + '" y2="' + H + '"/>';
+    for (let k = 0; k <= 8; k++) grille += '<line class="axe" opacity="' + (k % 4 ? 0.25 : 1) + '" x1="0" y1="' + k * d + '" x2="' + W + '" y2="' + k * d + '"/>';
+    const courbe = function (amp, decal, cls) {
+      const pts = [];
+      for (let i = 0; i <= N; i++) {
+        const x = 10 * i / N;
+        pts.push((x * d).toFixed(1) + ',' + (H / 2 - amp * d * Math.sin(2 * Math.PI * (x - decal) / nT)).toFixed(1));
+      }
+      return '<polyline class="courbe ' + cls + '" points="' + pts.join(' ') + '"/>';
+    };
+    return '<div class="schema-wrap"><svg class="courbes" viewBox="-1 -1 ' + (W + 2) + ' ' + (H + 2) + '" width="' + W + '" height="' + H +
+      '" role="img" aria-label="Oscillogramme de la tension et du courant">' + grille + courbe(nV, 0, 'c-v') + courbe(nI, nDt, 'c-i') +
+      '</svg><p class="legende"><span class="pastille c-v"></span> ' + PE.math('v') + ' &nbsp; <span class="pastille c-i"></span> ' + PE.math('i') +
+      ' — ' + (legende || '10 × 8 divisions') + '</p></div>';
+  };
+
   // ---------- Triangle des puissances ----------
   D.triangle = function (P, Q, Q2) {
     const vs = [

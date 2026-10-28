@@ -277,11 +277,13 @@
     return h + res('$R_{eq}(' + ind + ')$ = ' + fmt(e.Req, 'Ω') + ' et $I(' + ind + ')$ = ' + fmt(e.I, 'A'));
   }
 
-  Q.ajouter({ id: 'dc0', titre: 'État à t = 0⁺ (juste après la fermeture)', chapitre: 'ch05', parties: ['ch05/continu'], regime: 'DC', rendu: function (ctx) { return etat(ctx, '0'); } });
-  Q.ajouter({ id: 'dcinf', titre: 'État en régime permanent (t → ∞)', chapitre: 'ch05', parties: ['ch05/continu'], regime: 'DC', rendu: function (ctx) { return etat(ctx, 'inf'); } });
+  Q.ajouter({ id: 'dc0', titre: 'État à t = 0⁺ (juste après la fermeture)', chapitre: 'ch05', parties: ['ch05/continu', 'ch02/condensateur', 'ch02/bobine'], regime: 'DC',
+    applicable: function (ctx) { return ctx.s.reactifs.length > 0; }, rendu: function (ctx) { return etat(ctx, '0'); } });
+  Q.ajouter({ id: 'dcinf', titre: 'État en régime permanent (t → ∞)', chapitre: 'ch05', parties: ['ch05/continu', 'ch01/dipoles'], regime: 'DC',
+    applicable: function (ctx) { return ctx.s.reactifs.length > 0; }, rendu: function (ctx) { return etat(ctx, 'inf'); } });
 
   Q.ajouter({
-    id: 'dcenergie', titre: 'Charge et énergie stockées', chapitre: 'ch05', parties: ['ch05/continu'], regime: 'DC',
+    id: 'dcenergie', titre: 'Charge et énergie stockées', chapitre: 'ch05', parties: ['ch05/continu', 'ch02/condensateur-duree', 'ch02/bobine-duree'], regime: 'DC',
     applicable: function (ctx) { return ctx.s.reactifs.length > 0; },
     rendu: function (ctx) {
       const s = ctx.s;
@@ -316,6 +318,148 @@
         ? eq('τ', 'R_{th} × ' + nm(f.nom), num(s.Rth) + ' × ' + num(f.val), fmt(s.tau, 's'))
         : eq('τ', 'frac(' + nm(f.nom) + ';R_{th})', 'frac(' + num(f.val) + ';' + num(s.Rth) + ')', fmt(s.tau, 's'));
       return h + res('$τ$ = ' + fmt(s.tau, 's') + '. Le régime permanent est pratiquement atteint au bout de $5τ$ = ' + fmt(5 * s.tau, 's') + '.');
+    }
+  });
+
+  // ---------- Chapitres 1 et 2 : résistance équivalente, loi d'Ohm, Kirchhoff, puissances ----------
+
+  function valR(r) { return r === 0 ? '0' : isFinite(r) ? num(r) : '∞'; }
+
+  // Réduction pas à pas de l'arbre série / dérivation en régime permanent (bobine ≡ fil, condensateur ≡ ouvert).
+  function reduction(charge, info) {
+    const lignes = [];
+    const noms = new Map();
+    let i = 0;
+    (function visite(n) {
+      if (K.estFeuille(n)) { noms.set(n, nm(n.nom)); return; }
+      n.children.forEach(visite);
+      const nom = n === charge ? 'R_{eq}' : 'R_{' + 'ABCDEFGH'[i++ % 8] + '}';
+      noms.set(n, nom);
+      const R = info.get(n).R;
+      const fils = n.children.map(function (c) { return { nom: noms.get(c), R: info.get(c).R }; });
+      let ligne;
+      if (n.type === 'serie') {
+        ligne = eq(nom, fils.map(function (f) { return f.nom; }).join(' + '), fils.map(function (f) { return valR(f.R); }).join(' + '), isFinite(R) ? fmt(R, 'Ω') : '∞');
+        if (!isFinite(R)) ligne += p('Un circuit ouvert en série : aucun courant ne traverse ce groupe.');
+      } else if (R === 0) {
+        ligne = eq(nom, '0') + p('Un fil en dérivation court-circuite le groupe.');
+      } else {
+        const actifs = fils.filter(function (f) { return isFinite(f.R); });
+        if (actifs.length === 1) ligne = eq(nom, actifs[0].nom, fmt(R, 'Ω'));
+        else if (actifs.length === 2) ligne = eq(nom, 'frac(' + actifs[0].nom + ' × ' + actifs[1].nom + ';' + actifs[0].nom + ' + ' + actifs[1].nom + ')',
+          'frac(' + num(actifs[0].R) + ' × ' + num(actifs[1].R) + ';' + num(actifs[0].R) + ' + ' + num(actifs[1].R) + ')', fmt(R, 'Ω'));
+        else ligne = eq('frac(1;' + nom + ')', actifs.map(function (f) { return 'frac(1;' + f.nom + ')'; }).join(' + ')) + eq(nom, fmt(R, 'Ω'));
+        if (actifs.length < fils.length) ligne += p('Les branches ouvertes (condensateurs) ne comptent pas.');
+      }
+      lignes.push(ligne);
+    })(charge);
+    return lignes.join('');
+  }
+
+  Q.ajouter({
+    id: 'dcohm', titre: 'Résistance équivalente et loi d\'Ohm', chapitre: 'ch01', parties: ['ch01/dipoles', 'ch01/associations', 'ch01/diviseur'], regime: 'DC',
+    rendu: function (ctx) {
+      const s = ctx.s, e = s.tinf, reactif = s.reactifs.length > 0;
+      let h = reactif ? p('Régime permanent : chaque bobine est remplacée par un <strong>fil</strong> ($U = 0$), chaque condensateur par un <strong>circuit ouvert</strong> ($I = 0$).') : '';
+      h += p('Réduction du schéma, du groupe le plus intérieur vers la source : en série on additionne, en dérivation on additionne les inverses (produit sur somme pour deux résistances).');
+      h += reduction(ctx.c.charge, e.info);
+      if (!isFinite(e.Req)) return h + res('Le circuit est ouvert : la source ne débite aucun courant.');
+      h += eq('I', 'frac(E;R_{eq})', 'frac(' + num(s.V) + ';' + num(e.Req) + ')', fmt(e.I, 'A'));
+      h += table(['Dipôle', 'Courant', 'Tension', 'Loi d\'Ohm'], s.feuilles.map(function (f) {
+        const o = e.info.get(f);
+        return [PE.nomHTML(f.nom), fmt(o.I, 'A'), fmt(o.V, 'V'),
+          f.type === 'R' ? M('U = R I') + ' = ' + num(f.val) + ' × ' + num(o.I) : f.type === 'L' ? 'fil : ' + M('U = 0') : 'ouvert : ' + M('I = 0')];
+      }));
+      const ch = ctx.c.charge;
+      if (ch.type === 'serie' && isFinite(e.Req) && ch.children.some(function (c) { return c.type === 'R'; })) {
+        h += p('Diviseur de tension (dipôles en série, même courant) :');
+        ch.children.filter(function (c) { return c.type === 'R'; }).forEach(function (c) {
+          h += eq('U_{' + c.nom + '}', 'frac(' + nm(c.nom) + ';R_{eq}) × E', 'frac(' + num(c.val) + ';' + num(e.Req) + ') × ' + num(s.V), fmt(e.info.get(c).V, 'V'));
+        });
+      }
+      return h + res('$R_{eq}$ = ' + fmt(e.Req, 'Ω') + ' et $I$ = ' + fmt(e.I, 'A'));
+    }
+  });
+
+  Q.ajouter({
+    id: 'dckirchhoff', titre: 'Lois de Kirchhoff et bilan des puissances', chapitre: 'ch02', parties: ['ch02/kirchhoff', 'ch02/conventions'], regime: 'DC',
+    applicable: function (ctx) { return ctx.s.tinf.I > 0; },
+    rendu: function (ctx) {
+      const s = ctx.s, e = s.tinf, ch = ctx.c.charge;
+      let h = s.reactifs.length ? p('Valeurs en régime permanent.') : '';
+      h += '<h3>Loi des mailles</h3>';
+      if (ch.type === 'serie') {
+        h += p('Maille formée par la source et les dipôles en série : la tension de la source est égale à la somme des tensions.');
+        h += eq('E', ch.children.map(function (c) { return K.estFeuille(c) ? 'U_{' + c.nom + '}' : 'U_{(' + K.decrire(c) + ')}'; }).join(' + '),
+          ch.children.map(function (c) { return num(e.info.get(c).V); }).join(' + '), fmt(s.V, 'V'));
+      } else if (ch.type === 'par') h += p('Chaque branche en dérivation forme une maille avec la source : chacune est soumise à $E$ = ' + fmt(s.V, 'V') + '.');
+      else h += p('Un seul dipôle : il est soumis à $E$ = ' + fmt(s.V, 'V') + '.');
+      h += '<h3>Loi des nœuds</h3>';
+      let noeuds = 0;
+      (function visite(n) {
+        if (K.estFeuille(n)) return;
+        if (n.type === 'par') {
+          const fils = n.children.filter(function (c) { return e.info.get(c).I > 0; });
+          if (fils.length > 1) {
+            noeuds++;
+            h += '<p>Nœud du groupe ' + PE.esc(K.decrire(n)) + ' : le courant qui arrive est égal à la somme des courants qui repartent.</p>' +
+              eq(fmt(e.info.get(n).I, 'A'), fils.map(function (c) { return num(e.info.get(c).I); }).join(' + '));
+          }
+        }
+        n.children.forEach(visite);
+      })(ch);
+      if (!noeuds) h += p('Pas de dérivation parcourue par plusieurs courants : le même courant $I$ = ' + fmt(e.I, 'A') + ' traverse tout le circuit.');
+      h += '<h3>Bilan des puissances</h3>' + p('Chaque dipôle est fléché en convention récepteur ($P = U I$ reçue) ; la source en convention générateur ($P = E I$ fournie).');
+      const lignes = s.feuilles.map(function (f) {
+        const o = e.info.get(f);
+        return [PE.nomHTML(f.nom), fmt(o.V, 'V'), fmt(o.I, 'A'), fmt(o.V * o.I, 'W')];
+      });
+      const total = s.feuilles.reduce(function (a, f) { const o = e.info.get(f); return a + o.V * o.I; }, 0);
+      lignes.push(['<strong>Source</strong>', fmt(s.V, 'V'), fmt(e.I, 'A'), '<strong>' + fmt(s.V * e.I, 'W') + ' fournis</strong>']);
+      h += table(['Dipôle', 'Tension', 'Courant', 'Puissance reçue'], lignes);
+      return h + res('Puissance fournie par la source = ' + fmt(s.V * e.I, 'W') + ' = somme des puissances reçues (' + fmt(total, 'W') + ').');
+    }
+  });
+
+  // ---------- Chapitres 3 et 4 : mesures, déphasage ----------
+
+  Q.ajouter({
+    id: 'multimetre', titre: 'Valeurs et mesures au multimètre', chapitre: 'ch03', parties: ['ch03/periodique', 'ch03/moyenne-efficace', 'ch03/multimetres-rms', 'ch03/trms', 'ch03/notations'], regime: 'AC',
+    rendu: function (ctx) {
+      const s = ctx.s, T = 1 / s.f;
+      let h = eq('T', 'frac(1;f)', 'frac(1;' + num(s.f) + ')', fmt(T, 's'));
+      h += table(['Grandeur', 'Valeur instantanée', 'Valeur maximale', 'Valeur efficace', 'Valeur moyenne'], [
+        ['Tension de la source', M('v(t)'), M('V̂') + ' = ' + M('V sqrt(2)') + ' = ' + fmt(s.V * Math.SQRT2, 'V'), M('V') + ' = ' + fmt(s.V, 'V'), M('&lt;v&gt;') + ' = 0'],
+        ['Courant absorbé', M('i(t)'), M('Î') + ' = ' + M('I sqrt(2)') + ' = ' + fmt(s.Ieff * Math.SQRT2, 'A'), M('I') + ' = ' + fmt(s.Ieff, 'A'), M('&lt;i&gt;') + ' = 0']
+      ]);
+      h += p('Ce que l\'on lit avec un multimètre selon la position choisie :');
+      h += table(['Position', 'Voltmètre', 'Ampèremètre'], [
+        ['DC (valeur moyenne)', '0 V', '0 A'],
+        ['AC (non RMS, RMS ou TRMS)', fmt(s.V, 'V'), fmt(s.Ieff, 'A')],
+        ['AC+DC (TRMS)', fmt(s.V, 'V'), fmt(s.Ieff, 'A')]
+      ]);
+      return h + p('Les signaux sont sinusoïdaux et sans composante continue : tous les multimètres affichent ici la bonne valeur efficace en position AC. Pour un signal non sinusoïdal, seul un multimètre RMS (ou TRMS) mesure correctement la valeur efficace, et seule la position AC+DC d\'un TRMS tient compte de la composante continue.') +
+        res('$V$ = ' + fmt(s.V, 'V') + ' ; $V̂$ = ' + fmt(s.V * Math.SQRT2, 'V') + ' ; $I$ = ' + fmt(s.Ieff, 'A') + ' ; $Î$ = ' + fmt(s.Ieff * Math.SQRT2, 'A'));
+    }
+  });
+
+  Q.ajouter({
+    id: 'dephasage', titre: 'Déphasage : signe, décalage temporel et écriture', chapitre: 'ch04', parties: ['ch04/definition', 'ch04/industrie', 'ch04/mesure', 'ch04/td'], regime: 'AC',
+    rendu: function (ctx) {
+      const s = ctx.s, T = 1 / s.f, w = s.omega, phi = s.phi, deg = s.phiDeg;
+      const dt = Math.abs(deg) / 360 * T;
+      let h = eq('φ', fmtDeg(deg), num(phi) + ' rad');
+      h += p(Math.abs(deg) < 0.05 ? 'Le courant et la tension sont <strong>en phase</strong> : dipôle résistif.'
+        : 'Le courant est en <strong>' + (deg > 0 ? 'retard' : 'avance') + '</strong> sur la tension : $φ$ est ' + (deg > 0 ? 'positif, dipôle inductif.' : 'négatif, dipôle capacitif.'));
+      h += eq('T', 'frac(1;f)', fmt(T, 's')) + eq('Δt', 'frac(|φ| × T;360)', 'frac(' + num(Math.abs(deg)) + ' × ' + num(T) + ';360)', fmt(dt, 's'));
+      h += PE.dessin.oscillogramme(4, 3, 2, 4 * deg / 360, 'une période occupe 4 divisions ; chaque courbe à sa propre échelle');
+      const Vm = s.V * Math.SQRT2, Im = s.Ieff * Math.SQRT2;
+      h += p('Écriture algébrique, avec la tension pour origine des phases :') + eq('v(t)', num(Vm) + ' sin(' + num(w) + ' t)') +
+        eq('i(t)', num(Im) + ' sin(' + num(w) + ' t ' + (phi >= 0 ? '− ' : '+ ') + num(Math.abs(phi)) + ')');
+      if (deg > 0) h += p(phi < 0.38
+        ? '$φ$ &lt; 0,38 rad : le déphasage reste dans la limite tolérée, pas de surtaxe du fournisseur d\'électricité.'
+        : '$φ$ ≥ 0,38 rad : une installation industrielle avec ce déphasage serait surtaxée ; on le réduit avec une batterie de condensateurs en dérivation (document 3).');
+      return h + res('$φ$ = ' + fmtDeg(deg) + ' ; $Δt$ = ' + fmt(dt, 's'));
     }
   });
 })(typeof window !== 'undefined' ? window : globalThis);

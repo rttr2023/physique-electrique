@@ -17,6 +17,12 @@ function proche(nom, obtenu, attendu, tol) {
 }
 function vrai(nom, cond) { total++; if (!cond) { echecs++; console.log('ÉCHEC ' + nom); } }
 
+// --- Syntaxe de tous les scripts de index.html (app.js compris, qui n'est pas exécuté ici) ---
+require('./charger').scriptsIndex().forEach(function (s) {
+  try { new (require('vm').Script)(fs.readFileSync(path.join(racine, s), 'utf8'), { filename: s }); vrai('syntaxe ' + s, true); }
+  catch (e) { vrai('syntaxe ' + s + ' : ' + e.message, false); }
+});
+
 // --- Contrôles numériques propres à chaque chapitre : outils/controles/<id>.js ---
 // Chaque fichier exporte function (PE, proche, vrai) { ... } (voir outils/FORMAT-CHAPITRE.md).
 const dossierControles = path.join(racine, 'outils', 'controles');

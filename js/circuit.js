@@ -265,17 +265,23 @@
       1: [
         function () { return K.serie(R(), Cp()); },
         function () { return K.serie(R(), L()); },
-        function () { return K.serie(R(), K.par(R(), X())); }
+        function () { return K.serie(R(), K.par(R(), X())); },
+        function () { return K.serie(R(), R()); },
+        function () { return K.par(R(), R()); }
       ],
       2: [
         function () { return K.serie(R(), K.par(R(), X())); },
         function () { return K.par(K.serie(R(), X()), R()); },
-        function () { return K.serie(R(), R(), K.par(R(), X())); }
+        function () { return K.serie(R(), R(), K.par(R(), X())); },
+        function () { return K.serie(R(), K.par(R(), R())); },
+        function () { return K.par(K.serie(R(), R()), R()); }
       ],
       3: [
         function () { return K.serie(R(), K.par(R(), K.serie(R(), X()))); },
         function () { return K.serie(R(), K.par(R(), R(), X())); },
-        function () { return K.serie(R(), K.par(R(), X()), R()); }
+        function () { return K.serie(R(), K.par(R(), X()), R()); },
+        function () { return K.serie(R(), K.par(R(), R(), R())); },
+        function () { return K.par(K.serie(R(), R()), K.serie(R(), R())); }
       ]
     };
     const charge = K.nommer(K.normaliser(choix(modeles[niveau] || modeles[3])()));

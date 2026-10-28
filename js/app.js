@@ -265,14 +265,17 @@
   // Sections de calcul dont au moins une partie est cochée dans le volet.
   function calculsChoisis(ctx) {
     const cles = clesChoisies();
+    const rang = function (sec) { return PE.cours.findIndex(function (c) { return c.id === sec.chapitre; }); };
     return PE.calculs.pour(ctx).filter(function (sec) {
       return sec.parties.some(function (p) { return cles.indexOf(p) >= 0; });
-    });
+    }).map(function (sec, i) { return { sec: sec, i: i }; })
+      .sort(function (a, b) { return rang(a.sec) - rang(b.sec) || a.i - b.i; })
+      .map(function (x) { return x.sec; });
   }
 
   function sectionsHTML(ctx) {
     const liste = calculsChoisis(ctx);
-    if (!liste.length) return '<section class="carte"><p class="note">Aucune section de calcul ne correspond aux parties cochées dans le volet de gauche.</p></section>';
+    if (!liste.length) return '<section class="carte"><p class="note">Aucune section de calcul ne correspond aux parties cochées dans le volet de gauche pour ce régime. Essaie l\'autre régime (continu ou sinusoïdal) : les chapitres 1 et 2 se travaillent en continu, les chapitres 3 et 4 en sinusoïdal.</p></section>';
     return liste.map(function (sec, i) {
       const ch = PE.cours.find(function (c) { return c.id === sec.chapitre; });
       return '<details class="carte calc" id="calc-' + sec.id + '" data-id="' + sec.id + '"' + (labo.fermes[sec.id] ? '' : ' open') + '><summary><span class="numero">' + (i + 1) + '</span> ' + sec.titre +

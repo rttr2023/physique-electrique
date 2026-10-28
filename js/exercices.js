@@ -72,7 +72,18 @@
       simple ? ['tanphi', 'dephasages'] : ['tanphiPQ', 'dephasages'],
       (simple && Math.abs(s.Z.re) > 0
         ? eq('tan φ', 'frac(X;R)', 'frac(' + num(s.Z.im) + ';' + num(s.Z.re) + ')', num(s.Z.im / s.Z.re))
-        : '') + eq('φ', PE.fmtDeg(s.phiDeg)) + '<p>Circuit ' + s.nature + '.</p>', { tolAbs: 0.6, parties: ['ch05/modele'] }));
+        : '') + eq('φ', PE.fmtDeg(s.phiDeg)) + '<p>Circuit ' + s.nature + '.</p>', { tolAbs: 0.6, parties: ['ch05/modele', 'ch04/definition'] }));
+    // Mesure : période, valeurs maximales, décalage temporel (ch03, ch04).
+    const T = 1 / s.f;
+    qs.push(q('Calculer la période $T$ de la tension d\'alimentation.', T, 's', ['ch03Frequence'],
+      eq('T', 'frac(1;f)', 'frac(1;' + num(s.f) + ')', fmt(T, 's')), { parties: ['ch03/periodique', 'ch04/mesure'] }));
+    qs.push(q('Calculer la valeur maximale $V_{max}$ de la tension d\'alimentation.', s.V * Math.SQRT2, 'V', ['ch03Efficace', 'ch04Eff'],
+      eq('V_{max}', 'V sqrt(2)', num(s.V) + ' × sqrt(2)', fmt(s.V * Math.SQRT2, 'V')), { parties: ['ch03/moyenne-efficace', 'ch03/notations', 'ch04/td'] }));
+    if (niveau >= 2) qs.push(q('Calculer la valeur maximale $I_{max}$ du courant absorbé.', s.Ieff * Math.SQRT2, 'A', ['ch03Efficace', 'ch04Eff'],
+      eq('I', fmt(s.Ieff, 'A')) + eq('I_{max}', 'I sqrt(2)', num(s.Ieff) + ' × sqrt(2)', fmt(s.Ieff * Math.SQRT2, 'A')), { parties: ['ch03/moyenne-efficace', 'ch04/td'] }));
+    if (Math.abs(s.phiDeg) > 0.5) qs.push(q('Calculer le décalage temporel $Δt$ entre la tension et le courant (valeur positive).', Math.abs(s.phiDeg) / 360 * T, 's', ['ch04PhiDeg'],
+      eq('|φ|', PE.fmtDeg(Math.abs(s.phiDeg))) + eq('Δt', 'frac(|φ| × T;360)', 'frac(' + num(Math.abs(s.phiDeg)) + ' × ' + num(T) + ';360)', fmt(Math.abs(s.phiDeg) / 360 * T, 's')) +
+      '<p>Le courant est en ' + (s.phiDeg > 0 ? 'retard' : 'avance') + ' sur la tension.</p>', { parties: ['ch04/mesure'] }));
     if (niveau >= 2) {
       const cibles = melange(s.feuilles).slice(0, niveau === 2 ? 1 : 2);
       cibles.forEach(function (f, i) {
@@ -111,35 +122,56 @@
   // ---------- Questions à partir d'un circuit en continu ----------
   function questionsDC(c, s, niveau) {
     const qs = [];
-    const q = function (texte, valeur, unite, formules, correction) { return X.q(texte, valeur, unite, formules, correction, { parties: ['ch05/continu'] }); };
+    const q = function (texte, valeur, unite, formules, correction, parties) { return X.q(texte, valeur, unite, formules, correction, { parties: parties || ['ch05/continu'] }); };
     const fini = function (v) { return isFinite(v); };
-    if (fini(s.t0.Req)) qs.push(q('Calculer la résistance équivalente vue par la source à $t = 0⁺$.', s.t0.Req, 'Ω', ['etat0'],
-      '<p>À t = 0⁺ : condensateur ≡ fil, bobine ≡ interrupteur ouvert.</p>' + eq('R_{eq}(0⁺)', fmt(s.t0.Req, 'Ω'))));
-    qs.push(q('Calculer le courant débité par la source à $t = 0⁺$.', s.t0.I, 'A', ['etat0', 'ohmDC'],
-      eq('I(0⁺)', 'frac(E;R_{eq}(0⁺))', fmt(s.t0.I, 'A'))));
-    if (fini(s.tinf.Req)) qs.push(q('Calculer la résistance équivalente vue par la source en régime permanent ($t → ∞$).', s.tinf.Req, 'Ω', ['etatInf'],
-      '<p>En régime permanent : condensateur ≡ interrupteur ouvert, bobine ≡ fil.</p>' + eq('R_{eq}(∞)', fmt(s.tinf.Req, 'Ω'))));
-    qs.push(q('Calculer le courant débité par la source en régime permanent.', s.tinf.I, 'A', ['etatInf', 'ohmDC'],
-      eq('I(∞)', 'frac(E;R_{eq}(∞))', fmt(s.tinf.I, 'A'))));
+    const reactif = s.reactifs.length > 0;
+    const STOCKAGE = ['ch05/continu', 'ch02/condensateur', 'ch02/bobine'];
+    const PERMANENT = ['ch05/continu', 'ch01/dipoles', 'ch01/associations'];
+    if (reactif) {
+      if (fini(s.t0.Req)) qs.push(q('Calculer la résistance équivalente vue par la source à $t = 0⁺$.', s.t0.Req, 'Ω', ['etat0'],
+        '<p>À t = 0⁺ : condensateur ≡ fil, bobine ≡ interrupteur ouvert.</p>' + eq('R_{eq}(0⁺)', fmt(s.t0.Req, 'Ω')), STOCKAGE));
+      qs.push(q('Calculer le courant débité par la source à $t = 0⁺$.', s.t0.I, 'A', ['etat0', 'ohmDC'],
+        eq('I(0⁺)', 'frac(E;R_{eq}(0⁺))', fmt(s.t0.I, 'A')), STOCKAGE));
+    }
+    if (fini(s.tinf.Req)) qs.push(q(reactif ? 'Calculer la résistance équivalente vue par la source en régime permanent ($t → ∞$).' : 'Calculer la résistance équivalente $R_{eq}$ vue par la source.',
+      s.tinf.Req, 'Ω', reactif ? ['etatInf', 'ch01CondDC', 'ch01BobDC'] : ['ch01Serie', 'ch01Deriv', 'ch01Deux'],
+      (reactif ? '<p>En régime permanent : condensateur ≡ interrupteur ouvert, bobine ≡ fil.</p>' : '<p>Associations série (on additionne) et dérivation (inverses ou produit sur somme).</p>') +
+      eq('R_{eq}' + (reactif ? '(∞)' : ''), fmt(s.tinf.Req, 'Ω')), PERMANENT));
+    qs.push(q(reactif ? 'Calculer le courant débité par la source en régime permanent.' : 'Calculer le courant $I$ débité par la source.', s.tinf.I, 'A', ['ohmDC', 'ch01Ohm'],
+      eq('I' + (reactif ? '(∞)' : ''), 'frac(E;R_{eq})', 'frac(' + num(s.V) + ';' + num(s.tinf.Req) + ')', fmt(s.tinf.I, 'A')), ['ch05/continu', 'ch01/dipoles']));
     s.reactifs.forEach(function (f) {
       const o = s.tinf.info.get(f), n = nm(f.nom);
       if (f.type === 'C') {
-        qs.push(q('Calculer la tension aux bornes de $' + n + '$ en régime permanent.', o.V, 'V', ['etatInf', 'ohmDC'], eq('V_C(∞)', fmt(o.V, 'V'))));
+        qs.push(q('Calculer la tension aux bornes de $' + n + '$ en régime permanent.', o.V, 'V', ['etatInf', 'ohmDC', 'ch01CondDC'], eq('V_C(∞)', fmt(o.V, 'V')), ['ch05/continu', 'ch01/dipoles']));
         if (niveau >= 2) {
           qs.push(q('Calculer la charge $Q(∞)$ portée par $' + n + '$.', f.val * o.V, 'C', ['charge'], eq('Q', n + ' V_C(∞)', fmt(f.val * o.V, 'C'))));
-          qs.push(q('Calculer l\'énergie $W_C$ stockée dans $' + n + '$ à l\'état final.', 0.5 * f.val * o.V * o.V, 'J', ['WC'], eq('W_C', 'frac(1;2) ' + n + ' V_C(∞)^2', fmt(0.5 * f.val * o.V * o.V, 'J'))));
+          qs.push(q('Calculer l\'énergie $W_C$ stockée dans $' + n + '$ à l\'état final.', 0.5 * f.val * o.V * o.V, 'J', ['WC'], eq('W_C', 'frac(1;2) ' + n + ' V_C(∞)^2', fmt(0.5 * f.val * o.V * o.V, 'J')),
+            ['ch05/continu', 'ch02/condensateur-duree']));
         }
       } else {
-        qs.push(q('Calculer le courant traversant $' + n + '$ en régime permanent.', o.I, 'A', ['etatInf', 'ohmDC'], eq('I_L(∞)', fmt(o.I, 'A'))));
-        if (niveau >= 2) qs.push(q('Calculer l\'énergie $W_L$ stockée dans $' + n + '$ à l\'état final.', 0.5 * f.val * o.I * o.I, 'J', ['WL'], eq('W_L', 'frac(1;2) ' + n + ' I_L(∞)^2', fmt(0.5 * f.val * o.I * o.I, 'J'))));
+        qs.push(q('Calculer le courant traversant $' + n + '$ en régime permanent.', o.I, 'A', ['etatInf', 'ohmDC', 'ch01BobDC'], eq('I_L(∞)', fmt(o.I, 'A')), ['ch05/continu', 'ch01/dipoles']));
+        if (niveau >= 2) qs.push(q('Calculer l\'énergie $W_L$ stockée dans $' + n + '$ à l\'état final.', 0.5 * f.val * o.I * o.I, 'J', ['WL'], eq('W_L', 'frac(1;2) ' + n + ' I_L(∞)^2', fmt(0.5 * f.val * o.I * o.I, 'J')),
+          ['ch05/continu', 'ch02/bobine-duree']));
       }
     });
+    // Résistances : loi d'Ohm (ch01) et puissance reçue (ch02), en régime permanent.
+    const resistances = melange(s.feuilles.filter(function (f) { return f.type === 'R' && s.tinf.info.get(f).I > 0; })).slice(0, niveau);
+    resistances.forEach(function (f) {
+      const o = s.tinf.info.get(f), n = nm(f.nom);
+      qs.push(q('Calculer la tension $U_{' + f.nom + '}$ aux bornes de $' + n + '$' + (reactif ? ' en régime permanent.' : '.'), o.V, 'V', ['ch01Ohm', 'ch01Diviseur'],
+        eq('I_{' + f.nom + '}', fmt(o.I, 'A')) + eq('U_{' + f.nom + '}', n + ' × I_{' + f.nom + '}', num(f.val) + ' × ' + num(o.I), fmt(o.V, 'V')), ['ch01/dipoles', 'ch01/diviseur']));
+      if (niveau >= 2) qs.push(q('Calculer la puissance $P_{' + f.nom + '}$ reçue par $' + n + '$' + (reactif ? ' en régime permanent.' : '.'), o.V * o.I, 'W', ['ch02Pinst'],
+        '<p>Convention récepteur : la puissance reçue est positive.</p>' + eq('P_{' + f.nom + '}', 'U_{' + f.nom + '} × I_{' + f.nom + '}', num(o.V) + ' × ' + num(o.I), fmt(o.V * o.I, 'W')), ['ch02/conventions']));
+    });
+    if (s.tinf.I > 0) qs.push(q('Calculer la puissance fournie par la source' + (reactif ? ' en régime permanent.' : '.'), s.V * s.tinf.I, 'W', ['ch02Pinst'],
+      '<p>Convention générateur : la source fournit la puissance ' + M('E × I') + ', égale à la somme des puissances reçues par les résistances.</p>' +
+      eq('P', 'E × I', num(s.V) + ' × ' + num(s.tinf.I), fmt(s.V * s.tinf.I, 'W')), ['ch02/conventions']));
     if (niveau >= 2 && s.tau !== null) {
       const f = s.reactifs[0];
       qs.push(q('Calculer la constante de temps $τ$ du circuit.', s.tau, 's', [f.type === 'C' ? 'tauRC' : 'tauRL'],
         eq('R_{th}', fmt(s.Rth, 'Ω')) + (f.type === 'C' ? eq('τ', 'R_{th} C', fmt(s.tau, 's')) : eq('τ', 'frac(L;R_{th})', fmt(s.tau, 's')))));
     }
-    return qs.filter(function (x) { return isFinite(x.valeur); });
+    return qs.filter(function (x) { return isFinite(x.valeur) && x.valeur !== 0; });
   }
 
   // Parties cochées (tableau de 'ch05/inductif'…) : null = toutes.
@@ -158,10 +190,15 @@
     const questions = (dc ? questionsDC(circuit, s, niveau) : questionsAC(circuit, s, niveau))
       .filter(function (qn) { return retenu(cochees, qn.parties); });
     if (!questions.length) return { erreur: HORS_SELECTION, horsSelection: true };
+    // Chapitre affiché : celui de la première partie cochée travaillée par la première question.
+    const premiere = questions[0].parties.filter(function (p) { return retenu(cochees, [p]); })[0] || questions[0].parties[0] || 'ch05/';
+    const resistif = dc && !s.reactifs.length;
     return {
-      titre: dc ? 'Circuit en régime continu : états à t = 0⁺ et t → ∞' : 'Circuit en régime sinusoïdal',
-      chapitre: 'ch05', circuit: circuit, solution: s,
-      enonce: (dc
+      titre: dc ? (resistif ? 'Circuit résistif en régime continu' : 'Circuit en régime continu : états à t = 0⁺ et t → ∞') : 'Circuit en régime sinusoïdal',
+      chapitre: premiere.split('/')[0], circuit: circuit, solution: s,
+      enonce: (resistif
+        ? '<p>Le générateur de tension continue ' + M('E') + ' = ' + fmt(circuit.V, 'V') + ' alimente le circuit ci-dessous.</p>'
+        : dc
         ? '<p>À l\'instant t = 0, on ferme l\'interrupteur : le générateur de tension continue ' + M('E') + ' = ' + fmt(circuit.V, 'V') +
         ' alimente le circuit ci-dessous. Les condensateurs sont initialement déchargés et aucun courant ne circule dans les bobines.</p>'
         : '<p>Le circuit ci-dessous est alimenté par une tension sinusoïdale de valeur efficace ' + M('V') + ' = ' + fmt(circuit.V, 'V') +
@@ -176,6 +213,18 @@
     for (let i = 0; i < 20; i++) {
       ex = X.depuisCircuit(K.aleatoire(niveau, regime), niveau, cochees);
       if (!ex.erreur) return ex;
+    }
+    // Rien pour ce régime dans les parties cochées (ex. chapitre 1 en sinusoïdal) : on essaie l'autre régime.
+    if (ex.horsSelection) {
+      const autre = regime === 'DC' ? 'AC' : 'DC';
+      for (let i = 0; i < 20; i++) {
+        const ex2 = X.depuisCircuit(K.aleatoire(niveau, autre), niveau, cochees);
+        if (!ex2.erreur) {
+          ex2.enonce = '<p class="note">Les parties cochées ne se travaillent pas en régime ' + (regime === 'DC' ? 'continu' : 'sinusoïdal') +
+            ' : exercice proposé en régime ' + (autre === 'DC' ? 'continu' : 'sinusoïdal') + '.</p>' + ex2.enonce;
+          return ex2;
+        }
+      }
     }
     return ex.horsSelection ? ex : { erreur: 'Impossible de générer un exercice.' };
   };
@@ -395,27 +444,6 @@
     }
   });
 
-  // Oscillogramme 10 × 8 divisions : v (voie 1) et i (voie 2), centrés sur l'axe.
-  // nT : divisions par période ; nV, nI : amplitudes en divisions ; nDt : retard de i sur v en divisions (négatif : avance).
-  function oscillogramme(nT, nV, nI, nDt) {
-    const d = 40, W = 10 * d, H = 8 * d, N = 240;
-    let grille = '';
-    for (let k = 0; k <= 10; k++) grille += '<line class="axe" opacity="' + (k % 10 ? 0.25 : 1) + '" x1="' + k * d + '" y1="0" x2="' + k * d + '" y2="' + H + '"/>';
-    for (let k = 0; k <= 8; k++) grille += '<line class="axe" opacity="' + (k % 4 ? 0.25 : 1) + '" x1="0" y1="' + k * d + '" x2="' + W + '" y2="' + k * d + '"/>';
-    const courbe = function (amp, decal, cls) {
-      const pts = [];
-      for (let i = 0; i <= N; i++) {
-        const x = 10 * i / N;
-        pts.push((x * d).toFixed(1) + ',' + (H / 2 - amp * d * Math.sin(2 * Math.PI * (x - decal) / nT)).toFixed(1));
-      }
-      return '<polyline class="courbe ' + cls + '" points="' + pts.join(' ') + '"/>';
-    };
-    return '<div class="schema-wrap"><svg class="courbes" viewBox="-1 -1 ' + (W + 2) + ' ' + (H + 2) + '" width="' + W + '" height="' + H +
-      '" role="img" aria-label="Oscillogramme de la tension et du courant">' + grille + courbe(nV, 0, 'c-v') + courbe(nI, nDt, 'c-i') +
-      '</svg><p class="legende"><span class="pastille c-v"></span> voie 1 : ' + M('v') + ' &nbsp; <span class="pastille c-i"></span> voie 2 : ' + M('i') +
-      ' (image par la sonde) — 10 × 8 divisions</p></div>';
-  }
-
   X.problemes.push({
     id: 'oscillogramme', titre: 'Lecture d\'un oscillogramme : déphasage courant/tension', chapitre: 'ch04', parties: ['ch04/definition', 'ch04/mesure', 'ch04/td'], niveau: 2,
     generer: function () {
@@ -433,7 +461,7 @@
         enonce: '<p>On relève à l\'oscilloscope la tension ' + M('v') + ' aux bornes d\'un dipôle (voie 1) et le courant ' + M('i') + ' qui le traverse (voie 2). Réglages :</p><ul>' +
           '<li>calibre des temps : ' + fmt(ct, 's') + '/div ;</li>' +
           '<li>voie 1 : ' + (sonde === 1 ? 'mesure directe' : 'sonde 1/20<sup>e</sup>') + ', calibre ' + fmt(cv, 'V') + '/div ;</li>' +
-          '<li>voie 2 : sonde de courant 100 mV/A, calibre ' + fmt(ci, 'V') + '/div.</li></ul>' + oscillogramme(nT, nV, nI, retard ? nDt : -nDt) +
+          '<li>voie 2 : sonde de courant 100 mV/A, calibre ' + fmt(ci, 'V') + '/div.</li></ul>' + PE.dessin.oscillogramme(nT, nV, nI, retard ? nDt : -nDt, 'voie 2 : image du courant par la sonde ; 10 × 8 divisions') +
           '<p>Lectures : une période occupe ' + num(nT) + ' div ; le maximum de ' + M('v') + ' est à ' + num(nV) + ' div, celui de ' + M('i') + ' à ' + num(nI) +
           ' div ; ' + M('i') + ' passe par son maximum ' + num(nDt) + ' div ' + (retard ? 'après' : 'avant') + ' ' + M('v') + '.</p>',
         questions: [
@@ -450,6 +478,268 @@
           q('Déterminer la valeur maximale $I_{max}$ du courant.', Imax, 'A', ['ch04Oscillo'],
             eq('I_{max}', 'frac(' + num(nI) + ' div × ' + fmt(ci, 'V') + '/div;0,1 V/A)', fmt(Imax, 'A'))),
           q('En déduire sa valeur efficace $I$.', Imax / Math.SQRT2, 'A', ['ch04Eff'], eq('I', 'frac(I_{max};sqrt(2))', fmt(Imax / Math.SQRT2, 'A')))
+        ]
+      };
+    }
+  });
+
+  // ---------- Chapitre 1 : régime continu ----------
+  const E_DC = [6, 12, 24, 48];
+  const R_E12 = [10, 12, 15, 18, 22, 27, 33, 39, 47, 56, 68, 82, 100, 120, 150, 220];
+
+  X.problemes.push({
+    id: 'associations-r', titre: 'Associations de résistances et loi d\'Ohm', chapitre: 'ch01', parties: ['ch01/associations', 'ch01/diviseur', 'ch01/dipoles'], niveau: 1,
+    generer: function () {
+      const E = choix(E_DC), R1 = choix(R_E12), R2 = choix(R_E12), R3 = choix(R_E12);
+      const R23 = R2 * R3 / (R2 + R3), Req = R1 + R23, I = E / Req, U23 = R23 * I;
+      return {
+        circuit: { regime: 'DC', V: E, f: 0, charge: K.serie(K.R(R1, 'R1'), K.par(K.R(R2, 'R2'), K.R(R3, 'R3'))) },
+        enonce: '<p>Le générateur de tension continue ' + M('E') + ' = ' + fmt(E, 'V') + ' alimente trois résistances : ' + M('R_1') + ' en série avec l\'association en dérivation de ' +
+          M('R_2') + ' et ' + M('R_3') + '.</p><p class="donnees">Données : ' + M('R_1') + ' = ' + fmt(R1, 'Ω') + ' ; ' + M('R_2') + ' = ' + fmt(R2, 'Ω') + ' ; ' + M('R_3') + ' = ' + fmt(R3, 'Ω') + '</p>',
+        questions: [
+          q('Calculer la résistance $R_{23}$ équivalente à $R_2$ et $R_3$ en dérivation.', R23, 'Ω', ['ch01Deux'],
+            eq('R_{23}', 'frac(R_2 × R_3;R_2 + R_3)', 'frac(' + num(R2) + ' × ' + num(R3) + ';' + num(R2) + ' + ' + num(R3) + ')', fmt(R23, 'Ω'))),
+          q('En déduire la résistance équivalente $R_{eq}$ de l\'ensemble.', Req, 'Ω', ['ch01Serie'], eq('R_{eq}', 'R_1 + R_{23}', num(R1) + ' + ' + num(R23), fmt(Req, 'Ω'))),
+          q('Calculer le courant $I$ débité par le générateur.', I, 'A', ['ch01Ohm'], eq('I', 'frac(E;R_{eq})', 'frac(' + num(E) + ';' + num(Req) + ')', fmt(I, 'A'))),
+          q('Calculer la tension $U_{23}$ aux bornes de l\'association $R_2$ // $R_3$.', U23, 'V', ['ch01Diviseur', 'ch01Ohm'],
+            '<p>' + M('R_1') + ' et ' + M('R_{23}') + ' sont en série : diviseur de tension.</p>' +
+            eq('U_{23}', 'frac(R_{23};R_1 + R_{23}) × E', 'frac(' + num(R23) + ';' + num(Req) + ') × ' + num(E), fmt(U23, 'V'))),
+          q('Calculer le courant $I_2$ qui traverse $R_2$.', U23 / R2, 'A', ['ch01Ohm'], eq('I_2', 'frac(U_{23};R_2)', 'frac(' + num(U23) + ';' + num(R2) + ')', fmt(U23 / R2, 'A')))
+        ]
+      };
+    }
+  });
+
+  X.problemes.push({
+    id: 'dipole-actif', titre: 'Loi d\'Ohm d\'un dipôle actif', chapitre: 'ch01', parties: ['ch01/ohm-actif'], niveau: 2,
+    generer: function () {
+      if (Math.random() < 0.5) {
+        const E = choix([12, 24, 48]), r = choix([0.05, 0.1, 0.2, 0.5]), I1 = choix([2, 4, 5]), I2 = choix([10, 15, 20]), I3 = choix([8, 12, 25]);
+        const U1 = E - r * I1, U2 = E - r * I2;
+        return {
+          circuit: null,
+          enonce: '<p>Une batterie se comporte en générateur (convention générateur). On mesure ' + M('U_1') + ' = ' + fmt(U1, 'V') + ' lorsqu\'elle débite ' + M('I_1') + ' = ' + fmt(I1, 'A') +
+            ', puis ' + M('U_2') + ' = ' + fmt(U2, 'V') + ' lorsqu\'elle débite ' + M('I_2') + ' = ' + fmt(I2, 'A') + '. On la modélise par une fem ' + M('E') + ' en série avec une résistance interne ' + M('r') + '.</p>',
+          questions: [
+            q('Calculer la résistance interne $r$ de la batterie.', r, 'Ω', ['ch01Gene'],
+              '<p>Avec ' + M('U = E − r I') + ' écrit pour les deux mesures, puis soustrait :</p>' + eq('r', 'frac(U_1 − U_2;I_2 − I_1)', 'frac(' + num(U1) + ' − ' + num(U2) + ';' + num(I2) + ' − ' + num(I1) + ')', fmt(r, 'Ω'))),
+            q('En déduire sa fem $E$.', E, 'V', ['ch01Gene'], eq('E', 'U_1 + r I_1', num(U1) + ' + ' + num(r) + ' × ' + num(I1), fmt(E, 'V'))),
+            q('Quelle tension $U_3$ délivre-t-elle lorsqu\'elle débite $I_3$ = ' + fmt(I3, 'A') + ' ?', E - r * I3, 'V', ['ch01Gene'],
+              eq('U_3', 'E − r I_3', num(E) + ' − ' + num(r) + ' × ' + num(I3), fmt(E - r * I3, 'V')))
+          ]
+        };
+      }
+      const E = choix([100, 180, 200, 220]), r = choix([0.5, 1, 2]), I = choix([4, 5, 8, 10]), U2 = E + r * choix([12, 15, 20]);
+      return {
+        circuit: null,
+        enonce: '<p>Un moteur à courant continu se comporte en récepteur (convention récepteur). Il est modélisé par une fem ' + M('E') + ' = ' + fmt(E, 'V') +
+          ' en série avec une résistance interne ' + M('r') + ' = ' + fmt(r, 'Ω') + '.</p>',
+        questions: [
+          q('Quelle tension $U$ faut-il appliquer au moteur pour qu\'il absorbe $I$ = ' + fmt(I, 'A') + ' ?', E + r * I, 'V', ['ch01Recep'],
+            eq('U', 'E + r I', num(E) + ' + ' + num(r) + ' × ' + num(I), fmt(E + r * I, 'V'))),
+          q('Sous $U′$ = ' + fmt(U2, 'V') + ', quel courant $I′$ absorbe-t-il ?', (U2 - E) / r, 'A', ['ch01Recep'],
+            eq('I′', 'frac(U′ − E;r)', 'frac(' + num(U2) + ' − ' + num(E) + ';' + num(r) + ')', fmt((U2 - E) / r, 'A')))
+        ]
+      };
+    }
+  });
+
+  X.problemes.push({
+    id: 'thevenin-diviseur', titre: 'Modèle équivalent de Thévenin d\'un pont diviseur', chapitre: 'ch01', parties: ['ch01/thevenin', 'ch01/diviseur', 'ch01/associations'], niveau: 3,
+    generer: function () {
+      const E = choix([12, 24, 48]), R1 = choix(R_E12), R2 = choix(R_E12), Rc = choix(R_E12);
+      const Eth = R2 / (R1 + R2) * E, Rth = R1 * R2 / (R1 + R2), Ic = Eth / (Rth + Rc);
+      return {
+        circuit: { regime: 'DC', V: E, f: 0, charge: K.serie(K.R(R1, 'R1'), K.par(K.R(R2, 'R2'), K.R(Rc, 'Rc'))) },
+        enonce: '<p>Un générateur ' + M('E') + ' = ' + fmt(E, 'V') + ' alimente ' + M('R_1') + ' = ' + fmt(R1, 'Ω') + ' en série avec ' + M('R_2') + ' = ' + fmt(R2, 'Ω') +
+          '. Les bornes A et B sont celles de ' + M('R_2') + ' ; on y branche une charge ' + M('R_c') + ' = ' + fmt(Rc, 'Ω') + '. On remplace tout ce qui est à gauche de A et B par son modèle équivalent de Thévenin.</p>',
+        questions: [
+          q('Calculer $E_{TH}$, tension entre A et B lorsque la charge est débranchée.', Eth, 'V', ['ch01Thevenin', 'ch01Diviseur'],
+            '<p>À vide, ' + M('R_1') + ' et ' + M('R_2') + ' sont en série : diviseur de tension.</p>' + eq('E_{TH}', 'frac(R_2;R_1 + R_2) × E', 'frac(' + num(R2) + ';' + num(R1 + R2) + ') × ' + num(E), fmt(Eth, 'V'))),
+          q('Calculer $R_{TH}$, résistance vue entre A et B, source éteinte.', Rth, 'Ω', ['ch01Thevenin', 'ch01Deux'],
+            '<p>La source de tension éteinte est remplacée par un fil : ' + M('R_1') + ' et ' + M('R_2') + ' sont alors en dérivation.</p>' +
+            eq('R_{TH}', 'frac(R_1 × R_2;R_1 + R_2)', 'frac(' + num(R1) + ' × ' + num(R2) + ';' + num(R1) + ' + ' + num(R2) + ')', fmt(Rth, 'Ω'))),
+          q('En déduire le courant $I_c$ dans la charge.', Ic, 'A', ['ch01Thevenin', 'ch01Ohm'], eq('I_c', 'frac(E_{TH};R_{TH} + R_c)', 'frac(' + num(Eth) + ';' + num(Rth) + ' + ' + num(Rc) + ')', fmt(Ic, 'A'))),
+          q('Calculer la tension $U_{AB}$ aux bornes de la charge.', Rc * Ic, 'V', ['ch01Ohm'], eq('U_{AB}', 'R_c × I_c', num(Rc) + ' × ' + num(Ic), fmt(Rc * Ic, 'V')))
+        ]
+      };
+    }
+  });
+
+  // ---------- Chapitre 2 : régimes variables quelconques ----------
+
+  X.problemes.push({
+    id: 'kirchhoff', titre: 'Lois des nœuds et des mailles', chapitre: 'ch02', parties: ['ch02/kirchhoff'], niveau: 1,
+    generer: function () {
+      const i1 = choix([1.5, 2, 3.2, 4]), i2 = choix([0.5, 1.2, 2.5]);
+      let i3 = choix([1, 2.8, 3.6, 5]);
+      if (Math.abs(i1 + i2 - i3) < 0.05) i3 += 0.4;
+      const i4 = Math.round((i1 + i2 - i3) * 10) / 10;
+      const e = choix([12, 24, 48]), u1 = Math.round(e * choix([0.2, 0.25, 0.3]) * 10) / 10, u2 = Math.round(e * choix([0.35, 0.4, 0.5]) * 10) / 10;
+      const u3 = Math.round((e - u1 - u2) * 10) / 10;
+      return {
+        circuit: null,
+        enonce: '<p>À un instant donné :</p><ul><li>en un nœud, les courants ' + M('i_1') + ' = ' + fmt(i1, 'A') + ' et ' + M('i_2') + ' = ' + fmt(i2, 'A') + ' arrivent, les courants ' +
+          M('i_3') + ' = ' + fmt(i3, 'A') + ' et ' + M('i_4') + ' (inconnu) repartent ;</li><li>une maille comporte un générateur de tension ' + M('e') + ' = ' + fmt(e, 'V') +
+          ' et trois récepteurs en série de tensions ' + M('u_1') + ' = ' + fmt(u1, 'V') + ', ' + M('u_2') + ' = ' + fmt(u2, 'V') + ' et ' + M('u_3') + ' (inconnue), fléchées dans le sens contraire de ' + M('e') + '.</li></ul>',
+        questions: [
+          q('Calculer le courant $i_4$.', i4, 'A', ['ch02Noeuds'],
+            '<p>Courants arrivant comptés positivement, courants sortants négativement : ' + M('i_1 + i_2 − i_3 − i_4 = 0') + '.</p>' +
+            eq('i_4', 'i_1 + i_2 − i_3', num(i1) + ' + ' + num(i2) + ' − ' + num(i3), fmt(i4, 'A')) +
+            (i4 < 0 ? '<p>Le résultat est négatif : le courant ' + M('i_4') + ' circule en réalité dans l\'autre sens (il arrive au nœud).</p>' : '')),
+          q('Calculer la tension $u_3$.', u3, 'V', ['ch02Mailles'],
+            '<p>En parcourant la maille, ' + M('e − u_1 − u_2 − u_3 = 0') + '.</p>' + eq('u_3', 'e − u_1 − u_2', num(e) + ' − ' + num(u1) + ' − ' + num(u2), fmt(u3, 'V')))
+        ]
+      };
+    }
+  });
+
+  X.problemes.push({
+    id: 'conventions', titre: 'Conventions récepteur / générateur et signe de la puissance', chapitre: 'ch02', parties: ['ch02/conventions'], niveau: 1,
+    generer: function () {
+      const dipoles = [
+        { conv: 'récepteur', u: choix([5, 12, 24]), i: choix([0.5, 1.5, 2]) },
+        { conv: 'générateur', u: choix([12, 24]), i: choix([1, 3, 4]) },
+        { conv: 'récepteur', u: choix([6, 9, 15]), i: -choix([0.2, 0.8, 1.2]) }
+      ];
+      const sens = function (d) {
+        const pp = d.u * d.i;
+        return d.conv === 'récepteur' ? (pp > 0 ? 'reçoit' : 'fournit') : (pp > 0 ? 'fournit' : 'reçoit');
+      };
+      return {
+        circuit: null,
+        enonce: '<p>On relève, à un instant donné, la tension et le courant de trois dipôles :</p>' +
+          '<div class="table-wrap"><table><thead><tr><th>Dipôle</th><th>Convention de fléchage</th><th>' + M('u') + '</th><th>' + M('i') + '</th></tr></thead><tbody>' +
+          dipoles.map(function (d, k) { return '<tr><td>D' + (k + 1) + '</td><td>' + d.conv + '</td><td>' + fmt(d.u, 'V') + '</td><td>' + fmt(d.i, 'A') + '</td></tr>'; }).join('') + '</tbody></table></div>',
+        questions: dipoles.map(function (d, k) {
+          const pp = d.u * d.i;
+          return q('Calculer la puissance instantanée $p$ du dipôle D' + (k + 1) + ' (avec son signe).', pp, 'W', ['ch02Pinst'],
+            eq('p', 'u × i', num(d.u) + ' × ' + (d.i < 0 ? '(' + num(d.i) + ')' : num(d.i)), fmt(pp, 'W')) +
+            '<p>Convention ' + d.conv + ' et ' + M(pp > 0 ? 'p &gt; 0' : 'p &lt; 0') + ' : le dipôle <strong>' + sens(d) + '</strong> de la puissance.</p>');
+        })
+      };
+    }
+  });
+
+  X.problemes.push({
+    id: 'rampes', titre: 'Condensateur et bobine soumis à des variations linéaires', chapitre: 'ch02', parties: ['ch02/dipoles'], niveau: 2,
+    generer: function () {
+      const Cv = choix([10e-6, 47e-6, 100e-6, 220e-6]), U = choix([5, 10, 12]), dtC = choix([1e-3, 2e-3, 5e-3, 10e-3]);
+      const L = choix([10e-3, 50e-3, 0.1]), I1 = choix([0.2, 0.5]), I2 = choix([1, 1.5, 2]), dtL = choix([1e-3, 2e-3, 5e-3]);
+      const iC = Cv * U / dtC, uL = L * (I2 - I1) / dtL;
+      return {
+        circuit: null,
+        enonce: '<p>Un condensateur de capacité ' + M('C') + ' = ' + fmt(Cv, 'F') + ' voit sa tension passer linéairement de 0 à ' + fmt(U, 'V') + ' en ' + fmt(dtC, 's') +
+          '. Une bobine d\'inductance ' + M('L') + ' = ' + fmt(L, 'H') + ' voit son courant passer linéairement de ' + fmt(I1, 'A') + ' à ' + fmt(I2, 'A') + ' en ' + fmt(dtL, 's') +
+          ', puis redescendre linéairement à ' + fmt(I1, 'A') + ' en ' + fmt(dtL, 's') + '. Les deux dipôles sont en convention récepteur.</p>',
+        questions: [
+          q('Calculer le courant $i$ dans le condensateur pendant la charge.', iC, 'A', ['ch02IC'],
+            '<p>Sur une variation linéaire, la dérivée ' + M('frac(du;dt)') + ' est la pente ' + M('frac(Δu;Δt)') + '.</p>' +
+            eq('i', 'C frac(Δu;Δt)', num(Cv) + ' × frac(' + num(U) + ';' + num(dtC) + ')', fmt(iC, 'A'))),
+          q('Calculer la tension $u$ aux bornes de la bobine pendant la montée du courant.', uL, 'V', ['ch02UL'],
+            eq('u', 'L frac(Δi;Δt)', num(L) + ' × frac(' + num(I2) + ' − ' + num(I1) + ';' + num(dtL) + ')', fmt(uL, 'V'))),
+          q('Calculer la tension $u$ aux bornes de la bobine pendant la descente du courant (avec son signe).', -uL, 'V', ['ch02UL'],
+            eq('u', 'L frac(Δi;Δt)', num(L) + ' × frac(' + num(I1) + ' − ' + num(I2) + ';' + num(dtL) + ')', fmt(-uL, 'V')) + '<p>Le courant diminue : la tension est négative.</p>')
+        ]
+      };
+    }
+  });
+
+  // ---------- Chapitre 3 : mesure de tension ----------
+
+  X.problemes.push({
+    id: 'signal-sinusoidal', titre: 'Période, fréquence et valeurs d\'un signal sinusoïdal', chapitre: 'ch03', parties: ['ch03/periodique', 'ch03/moyenne-efficace', 'ch03/notations'], niveau: 1,
+    generer: function () {
+      const ct = choix([5e-3, 2e-3, 1e-3, 0.5e-3, 0.1e-3, 20e-6]), nT = choix([4, 5, 8, 10]);
+      const cv = choix([0.5, 1, 2, 5]), nV = choix([1.5, 2, 2.5, 3, 3.5]);
+      const T = nT * ct, Um = nV * cv;
+      return {
+        circuit: null,
+        enonce: '<p>Un oscilloscope affiche une tension sinusoïdale ' + M('u(t)') + ' centrée sur l\'axe. Calibres : ' + fmt(ct, 's') + '/div et ' + fmt(cv, 'V') +
+          '/div. Une période occupe ' + num(nT) + ' divisions ; le maximum est à ' + num(nV) + ' divisions au-dessus de l\'axe.</p>',
+        questions: [
+          q('Déterminer la période $T$.', T, 's', ['ch03Frequence'], eq('T', num(nT) + ' div × ' + fmt(ct, 's') + '/div', fmt(T, 's'))),
+          q('En déduire la fréquence $f$.', 1 / T, 'Hz', ['ch03Frequence'], eq('f', 'frac(1;T)', 'frac(1;' + num(T) + ')', fmt(1 / T, 'Hz'))),
+          q('Déterminer la valeur maximale $Û$.', Um, 'V', ['ch04Oscillo'], eq('Û', num(nV) + ' div × ' + fmt(cv, 'V') + '/div', fmt(Um, 'V'))),
+          q('En déduire la valeur efficace $U$.', Um / Math.SQRT2, 'V', ['ch03Efficace', 'ch04Eff'],
+            '<p>Pour une sinusoïde, ' + M('U = frac(Û;sqrt(2))') + ' (comme dans le document 3 : 2 A maximum → 1,41 A efficace). La valeur moyenne, elle, est nulle.</p>' +
+            eq('U', 'frac(' + num(Um) + ';sqrt(2))', fmt(Um / Math.SQRT2, 'V')))
+        ]
+      };
+    }
+  });
+
+  X.problemes.push({
+    id: 'multimetre-trms', titre: 'Mesures au multimètre TRMS d\'une tension ondulée', chapitre: 'ch03', parties: ['ch03/trms', 'ch03/multimetres-rms', 'ch03/moyenne-efficace'], niveau: 2,
+    generer: function () {
+      const U0 = choix([2, 5, 10, 12, 24]), Um = choix([1, 2, 3, 5]);
+      const Uond = Um / Math.SQRT2, Utot = Math.sqrt(U0 * U0 + Uond * Uond);
+      return {
+        circuit: null,
+        enonce: '<p>Une tension ' + M('u(t)') + ' est la somme d\'une composante continue ' + M('&lt;u&gt;') + ' = ' + fmt(U0, 'V') + ' et d\'une ondulation sinusoïdale de valeur maximale ' +
+          fmt(Um, 'V') + ' : ' + M('u = &lt;u&gt; + u_{ond}') + '. On la mesure avec un multimètre TRMS.</p>',
+        questions: [
+          q('Quelle valeur affiche le multimètre en position DC ?', U0, 'V', ['ch03Decomposition'], '<p>En position DC, le multimètre mesure la valeur moyenne, c\'est-à-dire la composante continue.</p>' + eq('&lt;u&gt;', fmt(U0, 'V'))),
+          q('Quelle valeur affiche-t-il en position AC ?', Uond, 'V', ['ch03Decomposition', 'ch04Eff'],
+            '<p>En position AC, il mesure la valeur efficace de la seule composante alternative (l\'ondulation).</p>' + eq('U_{ond}', 'frac(' + num(Um) + ';sqrt(2))', fmt(Uond, 'V'))),
+          q('Quelle valeur affiche-t-il en position AC+DC ?', Utot, 'V', ['ch03Efficace'],
+            '<p>En position AC+DC, il mesure la valeur efficace du signal complet. Relation ajoutée par le site (hors polycopié) :</p>' +
+            eq('U', 'sqrt(&lt;u&gt;^2 + U_{ond}^2)', 'sqrt(' + num(U0) + '^2 + ' + num(Uond) + '^2)', fmt(Utot, 'V'))),
+          q('Quelle est la valeur maximale de $u(t)$ ?', U0 + Um, 'V', ['ch03Decomposition'], eq('U_{max}', '&lt;u&gt; + ' + num(Um), fmt(U0 + Um, 'V')))
+        ]
+      };
+    }
+  });
+
+  // ---------- Chapitre 4 : déphasage ----------
+
+  X.problemes.push({
+    id: 'fresnel-lecture', titre: 'Lecture d\'une représentation de Fresnel', chapitre: 'ch04', parties: ['ch04/td', 'ch04/definition'], niveau: 1,
+    generer: function () {
+      const kV = choix([10, 20, 30, 50]), kI = choix([0.25, 0.5, 1, 2]);
+      const lV = choix([2.5, 3, 3.4, 4, 4.6]), lI = choix([1.5, 2, 2.5, 3]);
+      const phi = choix([18, 30, 45, 60]) * (Math.random() < 0.5 ? 1 : -1), r = phi * Math.PI / 180;
+      const V = lV * kV, I = lI * kI;
+      const dessin = PE.dessin.vecteurs([
+        { de: C.c(0, 0), a: C.c(lV, 0), nom: 'V', classe: 'tension' },
+        { de: C.c(0, 0), a: C.c(lI * Math.cos(r), -lI * Math.sin(r)), nom: 'I', classe: 'courant', cote: -1 }
+      ], 360, 240);
+      return {
+        circuit: null,
+        enonce: '<p>On donne la représentation de Fresnel ci-dessous (sens + : trigonométrique). Échelles : ' + num(kV) + ' V/cm et ' + num(kI) + ' A/cm. On mesure : ' +
+          M('V') + ' : ' + num(lV) + ' cm ; ' + M('I') + ' : ' + num(lI) + ' cm ; angle entre les deux vecteurs : ' + Math.abs(phi) + '°, ' + M('I') + ' étant ' +
+          (phi > 0 ? 'en dessous' : 'au-dessus') + ' de ' + M('V') + '.</p><div class="schema-wrap">' + dessin + '</div>',
+        questions: [
+          q('Déterminer la valeur efficace $V$ de la tension.', V, 'V', [], eq('V', num(lV) + ' cm × ' + num(kV) + ' V/cm', fmt(V, 'V'))),
+          q('Déterminer la valeur efficace $I$ du courant.', I, 'A', [], eq('I', num(lI) + ' cm × ' + num(kI) + ' A/cm', fmt(I, 'A'))),
+          q('Déterminer le déphasage $φ$ de $i$ par rapport à $v$, en degrés et avec son signe.', phi, '°', ['ch04Def'],
+            '<p>' + M('I') + ' est ' + (phi > 0 ? 'en retard (tourné dans le sens horaire)' : 'en avance (tourné dans le sens trigonométrique)') + ' par rapport à ' + M('V') +
+            ' : ' + M('φ') + ' est ' + (phi > 0 ? 'positif, dipôle inductif' : 'négatif, dipôle capacitif') + '.</p>' + eq('φ', (phi > 0 ? '+' : '−') + Math.abs(phi) + '°'), { tolAbs: 1 }),
+          q('Calculer la valeur maximale du courant, utile pour écrire $i(t) = I sqrt(2) sin(ωt − φ)$.', I * Math.SQRT2, 'A', ['ch04Eff', 'ch04Ecriture'],
+            eq('I sqrt(2)', num(I) + ' × sqrt(2)', fmt(I * Math.SQRT2, 'A')))
+        ]
+      };
+    }
+  });
+
+  X.problemes.push({
+    id: 'dephasage-industrie', titre: 'Déphasage d\'une installation et surtaxe', chapitre: 'ch04', parties: ['ch04/mesure', 'ch04/industrie', 'ch04/definition'], niveau: 1,
+    generer: function () {
+      const f = 50, T = 1 / f, dt = choix([0.5, 0.8, 1, 1.2, 1.5, 2, 2.5, 3]) * 1e-3;
+      const deg = 360 * dt / T, rad = 2 * Math.PI * dt / T, dtMax = 0.38 * T / (2 * Math.PI);
+      return {
+        circuit: null,
+        enonce: '<p>Une installation industrielle est alimentée par le réseau (' + fmt(f, 'Hz') + '). À l\'oscilloscope, le courant passe par son maximum ' + fmt(dt, 's') +
+          ' après la tension.</p>',
+        questions: [
+          q('Calculer la période $T$ du réseau.', T, 's', ['ch04Freq'], eq('T', 'frac(1;f)', 'frac(1;' + num(f) + ')', fmt(T, 's'))),
+          q('Calculer le déphasage $φ$ en degrés.', deg, '°', ['ch04PhiDeg', 'ch04Def'],
+            eq('φ', 'frac(360 × Δt;T)', 'frac(360 × ' + num(dt) + ';' + num(T) + ')', PE.fmtDeg(deg)) + '<p>Le courant est en retard : ' + M('φ') + ' est positif (installation inductive).</p>', { tolAbs: 0.5 }),
+          q('Calculer le déphasage $φ$ en radians.', rad, 'rad', ['ch04PhiRad', 'ch04Seuil'],
+            eq('φ', 'frac(2π × Δt;T)', 'frac(2π × ' + num(dt) + ';' + num(T) + ')', num(rad) + ' rad') +
+            '<p>' + (rad < 0.38 ? 'φ &lt; 0,38 rad : pas de surtaxe.' : 'φ ≥ 0,38 rad : le fournisseur d\'électricité applique une surtaxe ; il faut relever le facteur de puissance avec des condensateurs.') + '</p>'),
+          q('Quel décalage $Δt$ maximal permet d\'éviter la surtaxe ?', dtMax, 's', ['ch04PhiRad', 'ch04Seuil'],
+            eq('Δt_{max}', 'frac(0,38 × T;2π)', 'frac(0,38 × ' + num(T) + ';2π)', fmt(dtMax, 's')))
         ]
       };
     }
