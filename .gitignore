@@ -3,3 +3,6 @@
 .claude/settings.local.json
 Thumbs.db
 desktop.ini
+
+# Photos d'origine des polycopiés (converties en PDF par outils/scanner.py)
+Cours/photos/

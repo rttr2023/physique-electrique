@@ -9,11 +9,18 @@ Consigne éventuelle de l'utilisateur : $ARGUMENTS
 
 **L'utilisateur ne veut rien vérifier lui-même.** Tu travailles du début à la fin sans lui poser de question ni lui demander de valider : les doutes se tranchent avec les règles ci-dessous, les contrôles sont automatiques (scripts) ou faits par une relecture indépendante, et ce qui reste incertain est seulement listé dans le compte rendu final. Le volume peut être important (toute une année de cours) : avance chapitre par chapitre, enregistre chaque étape dans Git, et sache que la commande peut être relancée pour reprendre là où elle s'est arrêtée.
 
-Référence du format : `outils/FORMAT-CHAPITRE.md` (lis-la avant d'écrire). Outils : `node outils/inventaire.js`, `node outils/renommer.js`, `node outils/verifier-chapitre.js <fichier>`, `node outils/test.js`.
+Référence du format : `outils/FORMAT-CHAPITRE.md` (lis-la avant d'écrire). Outils : `python outils/scanner.py`, `node outils/inventaire.js`, `node outils/renommer.js`, `node outils/verifier-chapitre.js <fichier>`, `node outils/test.js`.
 
 ## 0. Sauvegarde
 
 `git status`. S'il y a des modifications non enregistrées, enregistre-les d'abord (`git add -A` puis `git commit -m "Sauvegarde avant intégration des cours"`). Lance `node outils/test.js` : s'il échoue avant même de commencer, répare d'abord (c'est souvent un chapitre resté à moitié branché lors d'une séance interrompue : voir étape 5).
+
+## 0 bis. Photos
+
+S'il y a des photos (JPG, PNG) dans `Cours/`, convertis-les en PDF façon scan :
+1. `python outils/scanner.py --apercu` puis lis la planche de contrôle indiquée avec Read. Chaque page doit être à l'endroit, entière et lisible.
+2. Corrige au cas par cas avec les réglages de l'outil : page à l'envers → `NOM=3` ; texte coupé ou mauvais recadrage → `NOM=1:plein` (ou `NOM=3:plein`). Relance l'aperçu avec tous les réglages jusqu'à ce que la planche soit bonne.
+3. `python outils/scanner.py <mêmes réglages>` : les PDF sont écrits dans `Cours/`, les photos rangées dans `Cours/photos/` (hors Git). Commit « Photos converties en PDF ».
 
 ## 1. Inventaire des scans
 
