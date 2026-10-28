@@ -1,4 +1,124 @@
 {
+  "A1-Ch01-p01.pdf": {
+    "annee": 1,
+    "chapitre": 1,
+    "titre": "Le cas particulier du régime continu",
+    "type": "cours",
+    "note": "photo convertie ; date manuscrite 01/09/26 ; annotations manuscrites « condensateur », « bobine » ; tableau des dipôles en régime continu, associations de résistances",
+    "origine": "IMG_20261028_091122.pdf"
+  },
+  "A1-Ch01-p02.pdf": {
+    "annee": 1,
+    "chapitre": 1,
+    "titre": "Le cas particulier du régime continu",
+    "type": "cours",
+    "note": "suite : n résistances identiques, MET (Thévenin), loi d'Ohm des dipôles actifs",
+    "origine": "IMG_20261028_091135.pdf"
+  },
+  "A1-Ch01-p03.pdf": {
+    "annee": 1,
+    "chapitre": 1,
+    "titre": "Le cas particulier du régime continu",
+    "type": "cours",
+    "note": "suite : diviseur de tension, théorème de superposition avec exemple ; annotations manuscrites « Équilibre entre E et U », « Loi des mailles », « E + U = 0 »",
+    "origine": "IMG_20261028_091145.pdf"
+  },
+  "A1-Ch01-p04.pdf": {
+    "annee": 1,
+    "chapitre": 1,
+    "titre": "Le cas particulier du régime continu",
+    "type": "cours",
+    "note": "suite : résolution de l'exemple de superposition en 3 étapes (U = 15,6 V)",
+    "origine": "IMG_20261028_091156.pdf"
+  },
+  "A1-Ch02-p01.pdf": {
+    "annee": 1,
+    "chapitre": 2,
+    "titre": "Les régimes variables quelconques",
+    "type": "cours",
+    "note": "photo convertie ; introduction, relations tension/courant des dipôles en régime variable",
+    "origine": "IMG_20261028_091219.pdf"
+  },
+  "A1-Ch02-p02.pdf": {
+    "annee": 1,
+    "chapitre": 2,
+    "titre": "Les régimes variables quelconques",
+    "type": "cours",
+    "note": "suite : conventions récepteur/générateur, lois de Kirchhoff ; annotations manuscrites (exemple de loi des nœuds)",
+    "origine": "IMG_20261028_091228.pdf"
+  },
+  "A1-Ch02-p03.pdf": {
+    "annee": 1,
+    "chapitre": 2,
+    "titre": "Les régimes variables quelconques",
+    "type": "cours",
+    "note": "suite : stockage d'énergie (expériences avec vidéos, lien padlet) ; annotation manuscrite « Oui mais il se vide instantanément »",
+    "origine": "IMG_20261028_091234.pdf"
+  },
+  "A1-Ch02-p04.pdf": {
+    "annee": 1,
+    "chapitre": 2,
+    "titre": "Les régimes variables quelconques",
+    "type": "cours",
+    "note": "suite : question 10, expérience 4 (vidéo n°4) ; page presque vide",
+    "origine": "IMG_20261028_091241.pdf"
+  },
+  "A1-Ch03-p01.pdf": {
+    "annee": 1,
+    "chapitre": 3,
+    "titre": "Mesure de tension",
+    "type": "cours",
+    "note": "photo convertie ; document 1 : familles de signaux",
+    "origine": "IMG_20261028_091257.pdf"
+  },
+  "A1-Ch03-p02.pdf": {
+    "annee": 1,
+    "chapitre": 3,
+    "titre": "Mesure de tension",
+    "type": "cours",
+    "note": "suite : documents 2 à 4 (grandeur périodique, valeur moyenne/efficace, multimètres RMS)",
+    "origine": "IMG_20261028_091306.pdf"
+  },
+  "A1-Ch03-p03.pdf": {
+    "annee": 1,
+    "chapitre": 3,
+    "titre": "Mesure de tension",
+    "type": "cours",
+    "note": "suite : documents 5 à 7 (multimètres TRMS, écriture normalisée, vidéo QR code)",
+    "origine": "IMG_20261028_091312.pdf"
+  },
+  "A1-Ch04-p01.pdf": {
+    "annee": 1,
+    "chapitre": 4,
+    "titre": "Le déphasage courant/tension en régime sinusoïdal",
+    "type": "td",
+    "note": "TD du chapitre 4 : exercice 1 (Fresnel), début exercice 2 (oscillogramme) ; page d'ouverture du chapitre absente des photos",
+    "origine": "IMG_20261028_091358.pdf"
+  },
+  "A1-Ch04-p02.pdf": {
+    "annee": 1,
+    "chapitre": 4,
+    "titre": "Le déphasage courant/tension en régime sinusoïdal",
+    "type": "td",
+    "note": "suite du TD : exercices 2 et 3, éléments de réponse ; photo cadrée serré, bord gauche limite",
+    "origine": "IMG_20261028_091405.pdf"
+  },
+  "A1-Ch04-p03.pdf": {
+    "annee": 1,
+    "chapitre": 4,
+    "titre": "Le déphasage courant/tension en régime sinusoïdal",
+    "type": "annexe",
+    "note": "Annexe 1 : documents 1 et 2 (déphasage, importance dans l'industrie) ; annotation manuscrite (tan φ = …)",
+    "origine": "IMG_20261028_091414.pdf"
+  },
+  "A1-Ch04-p04.pdf": {
+    "annee": 1,
+    "chapitre": 4,
+    "titre": "Le déphasage courant/tension en régime sinusoïdal",
+    "type": "annexe",
+    "note": "suite de l'annexe 1 : documents 3 et 4 (relèvement du facteur de puissance, mesure du déphasage) ; annotations manuscrites (P = UI cos φ, ω = 2π/T, expressions u(t), i(t))",
+    "origine": "IMG_20261028_091420.pdf"
+  },
   "A1-Ch05-p01.pdf": {
     "annee": 1,
     "chapitre": 5,
