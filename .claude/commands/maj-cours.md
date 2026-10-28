@@ -82,4 +82,5 @@ Une fois tous les chapitres branchés, reprends un par un ceux qui s'y prêtent 
 
 1. `node outils/inventaire.js` : plus rien à inventorier ni à intégrer, aucune incohérence. `node outils/test.js` : tout passe.
 2. Ajoute en tête de `Cours/journal.md` (crée-le s'il n'existe pas) une entrée datée : chapitres créés ou complétés, nombre de scans, scans ignorés et pourquoi, exercices et calculs ajoutés, et la liste des doutes (passages illisibles, écarts de valeurs, schémas décrits en texte, rappels ajoutés hors cours). Commit « Journal d'intégration ».
-3. Compte rendu à l'utilisateur, court : ce qui a été intégré, ce qui est désormais disponible sur le site, et les doutes à garder en tête en révisant (sans lui demander de les vérifier).
+3. Mise en ligne : `git push` (le site est publié par GitHub Pages sur https://rttr2023.github.io/physique-electrique/ et se met à jour en une ou deux minutes).
+4. Compte rendu à l'utilisateur, court : ce qui a été intégré, ce qui est désormais disponible sur le site, et les doutes à garder en tête en révisant (sans lui demander de les vérifier).
