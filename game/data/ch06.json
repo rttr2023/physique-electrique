@@ -1,0 +1,697 @@
+{
+  "id": "ch06",
+  "annee": 1,
+  "numero": 6,
+  "titre": "Les puissances en régime sinusoïdal",
+  "sources": ["A1-Ch06-p01.pdf", "A1-Ch06-p02.pdf", "A1-Ch06-p03.pdf", "A1-Ch06-p04.pdf", "A1-Ch06-p05.pdf", "A1-Ch06-p06.pdf", "A1-Ch06-p07.pdf", "A1-Ch06-p08.pdf", "A1-Ch06-p09.pdf"],
+  "objectifs": [
+    "8.1 Connaître les noms, les expressions et les unités des puissances p, P, Q et S",
+    "8.2 Connaître la relation entre P, Q et S",
+    "8.3 Savoir calculer Q connaissant P et le facteur de puissance",
+    "8.4 Connaître les différentes relations des puissances P et Q pour une résistance, une inductance pure et un condensateur",
+    "8.5 Savoir dans quel cas on utilise une des précédentes relations plutôt qu'une autre",
+    "8.6 Connaître le théorème de Boucherot",
+    "8.7 Savoir utiliser la méthode de Boucherot pour déterminer une valeur efficace de tension ou de courant dans une installation"
+  ],
+
+  "notions": [
+    {
+      "id": "ch06.n-instantanee",
+      "nom": "Puissance instantanée p",
+      "definition": "p = v(t) × i(t), reçue par le dipôle en convention récepteur. p > 0 : le dipôle reçoit ; p < 0 : il fournit. Même si u et i ont une moyenne nulle, la moyenne de p est généralement non nulle.",
+      "source": { "fichier": "A1-Ch06-p01.pdf", "page": 1, "zone": "document 1" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-active",
+      "nom": "Puissance active P",
+      "definition": "Valeur moyenne de la puissance instantanée, en watts (W). Elle est liée à la quantité d'énergie électrique absorbée par un système.",
+      "source": { "fichier": "A1-Ch06-p01.pdf", "page": 1, "zone": "document 2" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-apparente",
+      "nom": "Puissance apparente S",
+      "definition": "Produit des valeurs efficaces V × I, en V.A. Elle ne représente aucune puissance réelle (d'où l'unité VA et non W) mais sert au dimensionnement des installations.",
+      "source": { "fichier": "A1-Ch06-p01.pdf", "page": 1, "zone": "document 3" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-facteur",
+      "nom": "Facteur de puissance k",
+      "definition": "k = P/S, sans unité, valable dans tous les régimes. En sinusoïdal seulement, k = cos φ. On en déduit k ≤ 1 ; un bon facteur de puissance est proche de 1.",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-mauvais-facteur",
+      "nom": "Conséquences d'un mauvais facteur de puissance",
+      "definition": "I = P/(V cos φ) : plus cos φ est petit, plus le courant est grand pour la même puissance active. D'où un coût d'installation plus élevé (conducteurs plus gros), plus de pertes en ligne et des surtaxes du fournisseur.",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-reactive",
+      "nom": "Puissance réactive Q",
+      "definition": "Puissance liée à la présence d'un déphasage, donc à la qualité de l'énergie. Unité : VAR (volt-ampère réactif). Définie en sinusoïdal par S² = P² + Q².",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 5" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-triangle",
+      "nom": "Triangle des puissances",
+      "definition": "Triangle rectangle de côtés P (horizontal), Q (vertical) et S (hypoténuse), avec l'angle φ entre P et S. Circuit inductif : Q vers le haut ; circuit capacitif : Q vers le bas.",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 5, figures" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-boucherot",
+      "nom": "Théorème de Boucherot",
+      "definition": "La puissance active fournie par le générateur est égale à la somme des puissances actives consommées par chaque récepteur ; de même pour la puissance réactive. Pas valable pour les puissances apparentes.",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 6" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-relevement",
+      "nom": "Relever le facteur de puissance",
+      "definition": "Les installations inductives (moteurs) consomment de la puissance réactive : on ajoute un élément qui en fournit. 2 solutions : batterie de condensateurs, ou moteur synchrone surexcité à vide (compensateur synchrone).",
+      "source": { "fichier": "A1-Ch06-p03.pdf", "page": 1, "zone": "document 7" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-effet-relevement",
+      "nom": "Effet du condensateur de relèvement",
+      "definition": "Condensateur en dérivation sur le dipôle inductif : P' = P et Q' = Q + Q_C avec Q_C < 0, donc Q' < Q. φ diminue, cos φ augmente, I' < I : même puissance active avec moins de courant en ligne.",
+      "source": { "fichier": "A1-Ch06-p03.pdf", "page": 1, "zone": "document 7, après relèvement" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-p-constante",
+      "nom": "P inchangée par la batterie",
+      "definition": "L'ajout d'une batterie de condensateurs ne modifie pas la puissance active d'une installation : même P avant et après redressement.",
+      "source": { "fichier": "A1-Ch06-p03.pdf", "page": 1, "zone": "document 8" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-choix-relation",
+      "nom": "En fonction de I ou de V ?",
+      "definition": "En série (même courant) : expressions en fonction de I. En dérivation (même tension) : expressions en fonction de V.",
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "annexe, § 3" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.n-methode-boucherot",
+      "nom": "Méthode de Boucherot (4 étapes)",
+      "definition": "Calculer V ou I à l'entrée d'un système par les puissances, sans complexes : 1) P_T = somme des P de chaque résistance ; 2) Q_T = somme des Q de chaque bobine et condensateur ; 3) S_T = √(P_T² + Q_T²) ; 4) S_T = V × I (monophasé) donne V ou I.",
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "annexe, § 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    }
+  ],
+
+  "formules": [
+    {
+      "id": "ch06.p-inst", "site_id": "pinst",
+      "nom": "Puissance instantanée",
+      "latex": "p = v(t) \\times i(t)",
+      "variables": [
+        { "symbole": "p", "code": "p", "signification": "puissance instantanée reçue", "unite": "W" },
+        { "symbole": "v(t)", "code": "v", "signification": "tension instantanée", "unite": "V" },
+        { "symbole": "i(t)", "code": "i", "signification": "courant instantané", "unite": "A" }
+      ],
+      "conditions": "Convention récepteur.",
+      "calcul": { "cible": "p", "expression": "v*i" },
+      "source": { "fichier": "A1-Ch06-p01.pdf", "page": 1, "zone": "document 1, encadré" },
+      "origine": "scan", "ajouts": ["unités : non écrites dans le document 1"], "à_vérifier": false
+    },
+    {
+      "id": "ch06.p", "site_id": "P",
+      "nom": "Puissance active",
+      "latex": "P = V I \\cos\\varphi",
+      "variables": [
+        { "symbole": "P", "code": "P", "signification": "puissance active", "unite": "W" },
+        { "symbole": "V", "code": "V", "signification": "tension efficace", "unite": "V" },
+        { "symbole": "I", "code": "I", "signification": "courant efficace", "unite": "A" },
+        { "symbole": "\\varphi", "code": "phi", "signification": "déphasage", "unite": "rad" }
+      ],
+      "conditions": "Régime sinusoïdal. Valeur moyenne de p.",
+      "calcul": { "cible": "P", "expression": "V*I*Math.cos(phi)" },
+      "source": { "fichier": "A1-Ch06-p01.pdf", "page": 1, "zone": "document 2, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.s", "site_id": "S",
+      "nom": "Puissance apparente",
+      "latex": "S = V I",
+      "variables": [
+        { "symbole": "S", "code": "S", "signification": "puissance apparente", "unite": "VA" },
+        { "symbole": "V", "code": "V", "signification": "tension efficace", "unite": "V" },
+        { "symbole": "I", "code": "I", "signification": "courant efficace", "unite": "A" }
+      ],
+      "conditions": "Sert au dimensionnement ; S_T = V × I à l'entrée d'un système (monophasé).",
+      "calcul": { "cible": "S", "expression": "V*I" },
+      "source": { "fichier": "A1-Ch06-p01.pdf", "page": 1, "zone": "document 3, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.k", "site_id": "k",
+      "nom": "Facteur de puissance (définition générale)",
+      "latex": "k = \\dfrac{P}{S}",
+      "variables": [
+        { "symbole": "k", "code": "k", "signification": "facteur de puissance (sans unité)", "unite": "" },
+        { "symbole": "P", "code": "P", "signification": "puissance active", "unite": "W" },
+        { "symbole": "S", "code": "S", "signification": "puissance apparente", "unite": "VA" }
+      ],
+      "conditions": "Valable pour tous les régimes.",
+      "calcul": { "cible": "k", "expression": "P/S" },
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 4, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.k-cos", "site_id": "k",
+      "nom": "Facteur de puissance en sinusoïdal",
+      "latex": "k = \\cos\\varphi",
+      "variables": [
+        { "symbole": "k", "code": "k", "signification": "facteur de puissance", "unite": "" },
+        { "symbole": "\\varphi", "code": "phi", "signification": "déphasage", "unite": "rad" }
+      ],
+      "conditions": "Uniquement en régime sinusoïdal. k ≤ 1.",
+      "calcul": { "cible": "k", "expression": "Math.cos(phi)" },
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 4, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.i-ligne", "site_id": null,
+      "nom": "Courant en ligne en fonction du facteur de puissance",
+      "latex": "I = \\dfrac{P}{V \\cos\\varphi}",
+      "variables": [
+        { "symbole": "I", "code": "I", "signification": "courant efficace en ligne", "unite": "A" },
+        { "symbole": "P", "code": "P", "signification": "puissance active", "unite": "W" },
+        { "symbole": "V", "code": "V", "signification": "tension efficace", "unite": "V" },
+        { "symbole": "\\varphi", "code": "phi", "signification": "déphasage", "unite": "rad" }
+      ],
+      "conditions": "À P donnée, I augmente quand cos φ diminue.",
+      "calcul": { "cible": "I", "expression": "P/(V*Math.cos(phi))" },
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.s2", "site_id": "S2",
+      "nom": "Relation entre P, Q et S",
+      "latex": "S^2 = P^2 + Q^2",
+      "variables": [
+        { "symbole": "S", "code": "S", "signification": "puissance apparente", "unite": "VA" },
+        { "symbole": "P", "code": "P", "signification": "puissance active", "unite": "W" },
+        { "symbole": "Q", "code": "Q", "signification": "puissance réactive", "unite": "VAR" }
+      ],
+      "conditions": "Régime sinusoïdal (définition de Q).",
+      "calcul": { "cible": "S", "expression": "Math.sqrt(P*P+Q*Q)" },
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 5, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.q", "site_id": "Q",
+      "nom": "Puissance réactive",
+      "latex": "Q = V I \\sin\\varphi",
+      "variables": [
+        { "symbole": "Q", "code": "Q", "signification": "puissance réactive", "unite": "VAR" },
+        { "symbole": "V", "code": "V", "signification": "tension efficace", "unite": "V" },
+        { "symbole": "I", "code": "I", "signification": "courant efficace", "unite": "A" },
+        { "symbole": "\\varphi", "code": "phi", "signification": "déphasage", "unite": "rad" }
+      ],
+      "conditions": "Régime sinusoïdal. Q > 0 pour un circuit inductif, Q < 0 pour un circuit capacitif (triangles des puissances).",
+      "calcul": { "cible": "Q", "expression": "V*I*Math.sin(phi)" },
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 5, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.boucherot-p", "site_id": "boucherot",
+      "nom": "Théorème de Boucherot (puissances actives)",
+      "latex": "P_T = P_1 + P_2 + P_3 + \\cdots",
+      "variables": [
+        { "symbole": "P_T", "code": "PT", "signification": "puissance active totale fournie", "unite": "W" },
+        { "symbole": "P_1", "code": "P1", "signification": "puissance active d'un récepteur", "unite": "W" },
+        { "symbole": "P_2", "code": "P2", "signification": "puissance active d'un récepteur", "unite": "W" },
+        { "symbole": "P_3", "code": "P3", "signification": "puissance active d'un récepteur", "unite": "W" }
+      ],
+      "conditions": "Somme sur tous les récepteurs.",
+      "calcul": { "cible": "PT", "expression": "P1+P2+P3" },
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 6" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.boucherot-q", "site_id": "boucherot",
+      "nom": "Théorème de Boucherot (puissances réactives)",
+      "latex": "Q_T = Q_1 + Q_2 + Q_3 + \\cdots",
+      "variables": [
+        { "symbole": "Q_T", "code": "QT", "signification": "puissance réactive totale", "unite": "VAR" },
+        { "symbole": "Q_1", "code": "Q1", "signification": "puissance réactive d'un récepteur", "unite": "VAR" },
+        { "symbole": "Q_2", "code": "Q2", "signification": "puissance réactive d'un récepteur", "unite": "VAR" },
+        { "symbole": "Q_3", "code": "Q3", "signification": "puissance réactive d'un récepteur", "unite": "VAR" }
+      ],
+      "conditions": "Somme algébrique : les Q des condensateurs sont négatifs.",
+      "calcul": { "cible": "QT", "expression": "Q1+Q2+Q3" },
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 6" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.st", "site_id": null,
+      "nom": "Puissance apparente totale",
+      "latex": "S_T = \\sqrt{P_T^2 + Q_T^2}",
+      "variables": [
+        { "symbole": "S_T", "code": "ST", "signification": "puissance apparente totale", "unite": "VA" },
+        { "symbole": "P_T", "code": "PT", "signification": "puissance active totale", "unite": "W" },
+        { "symbole": "Q_T", "code": "QT", "signification": "puissance réactive totale", "unite": "VAR" }
+      ],
+      "conditions": "Boucherot ne s'applique pas à S : on passe toujours par P_T et Q_T.",
+      "calcul": { "cible": "ST", "expression": "Math.sqrt(PT*PT+QT*QT)" },
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 6, encadré d'avertissement" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.relevement", "site_id": "Ccomp",
+      "nom": "Capacité de relèvement du facteur de puissance",
+      "latex": "C = \\dfrac{P\\,(\\tan\\varphi - \\tan\\varphi')}{2\\pi f V^2}",
+      "variables": [
+        { "symbole": "C", "code": "C", "signification": "capacité de la batterie de condensateurs", "unite": "F" },
+        { "symbole": "P", "code": "P", "signification": "puissance active de l'installation", "unite": "W" },
+        { "symbole": "\\varphi", "code": "phi", "signification": "déphasage avant relèvement", "unite": "rad" },
+        { "symbole": "\\varphi'", "code": "phi2", "signification": "déphasage visé après relèvement", "unite": "rad" },
+        { "symbole": "f", "code": "f", "signification": "fréquence de la tension d'alimentation", "unite": "Hz" },
+        { "symbole": "V", "code": "V", "signification": "tension efficace d'alimentation", "unite": "V" }
+      ],
+      "conditions": "Pour passer de cos φ à une valeur plus élevée cos φ' ; P ne change pas.",
+      "calcul": { "cible": "C", "expression": "P*(Math.tan(phi)-Math.tan(phi2))/(2*Math.PI*f*V*V)" },
+      "source": { "fichier": "A1-Ch06-p03.pdf", "page": 1, "zone": "document 8, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.tan-pq", "site_id": "tanphiPQ",
+      "nom": "Déphasage à partir des puissances",
+      "latex": "\\tan\\varphi = \\dfrac{Q}{P}",
+      "variables": [
+        { "symbole": "\\varphi", "code": "phi", "signification": "déphasage", "unite": "rad" },
+        { "symbole": "Q", "code": "Q", "signification": "puissance réactive", "unite": "VAR" },
+        { "symbole": "P", "code": "P", "signification": "puissance active", "unite": "W" }
+      ],
+      "conditions": "Triangle des puissances : côté opposé / côté adjacent.",
+      "calcul": { "cible": "phi", "expression": "Math.atan(Q/P)" },
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 1" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.q-ptan", "site_id": "QPtan",
+      "nom": "Q à partir de P et du facteur de puissance",
+      "latex": "Q = P \\tan\\varphi",
+      "variables": [
+        { "symbole": "Q", "code": "Q", "signification": "puissance réactive", "unite": "VAR" },
+        { "symbole": "P", "code": "P", "signification": "puissance active", "unite": "W" },
+        { "symbole": "\\varphi", "code": "phi", "signification": "déphasage", "unite": "rad" }
+      ],
+      "conditions": "On connaît P et cos φ (donc φ).",
+      "calcul": { "cible": "Q", "expression": "P*Math.tan(phi)" },
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 1, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.p-r-i", "site_id": "PR",
+      "nom": "Puissance active d'une résistance (en fonction de I)",
+      "latex": "P = R I^2 \\quad ; \\quad Q = 0",
+      "variables": [
+        { "symbole": "P", "code": "P", "signification": "puissance active", "unite": "W" },
+        { "symbole": "R", "code": "R", "signification": "résistance", "unite": "Ω" },
+        { "symbole": "I", "code": "I", "signification": "courant efficace dans R", "unite": "A" }
+      ],
+      "conditions": "Plutôt pour une résistance en série (même courant).",
+      "calcul": { "cible": "P", "expression": "R*I*I" },
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 2 ; tableau sur A1-Ch06-p07.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.p-r-v", "site_id": "PR",
+      "nom": "Puissance active d'une résistance (en fonction de V)",
+      "latex": "P = \\dfrac{V^2}{R} \\quad ; \\quad Q = 0",
+      "variables": [
+        { "symbole": "P", "code": "P", "signification": "puissance active", "unite": "W" },
+        { "symbole": "V", "code": "V", "signification": "tension efficace aux bornes de R", "unite": "V" },
+        { "symbole": "R", "code": "R", "signification": "résistance", "unite": "Ω" }
+      ],
+      "conditions": "Plutôt pour une résistance en dérivation (même tension).",
+      "calcul": { "cible": "P", "expression": "V*V/R" },
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 2 ; tableau sur A1-Ch06-p07.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.q-l-i", "site_id": "QL",
+      "nom": "Puissance réactive d'une inductance pure (en fonction de I)",
+      "latex": "Q = L\\omega I^2 \\quad ; \\quad P = 0",
+      "variables": [
+        { "symbole": "Q", "code": "Q", "signification": "puissance réactive", "unite": "VAR" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" },
+        { "symbole": "I", "code": "I", "signification": "courant efficace dans L", "unite": "A" }
+      ],
+      "conditions": "Plutôt pour une inductance en série.",
+      "calcul": { "cible": "Q", "expression": "L*w*I*I" },
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 2 ; tableau sur A1-Ch06-p07.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.q-l-v", "site_id": "QL",
+      "nom": "Puissance réactive d'une inductance pure (en fonction de V)",
+      "latex": "Q = \\dfrac{V^2}{L\\omega} \\quad ; \\quad P = 0",
+      "variables": [
+        { "symbole": "Q", "code": "Q", "signification": "puissance réactive", "unite": "VAR" },
+        { "symbole": "V", "code": "V", "signification": "tension efficace aux bornes de L", "unite": "V" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" }
+      ],
+      "conditions": "Plutôt pour une inductance en dérivation.",
+      "calcul": { "cible": "Q", "expression": "V*V/(L*w)" },
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 2 ; tableau sur A1-Ch06-p07.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.q-c-i", "site_id": "QC",
+      "nom": "Puissance réactive d'un condensateur (en fonction de I)",
+      "latex": "Q = -\\dfrac{I^2}{C\\omega} \\quad ; \\quad P = 0",
+      "variables": [
+        { "symbole": "Q", "code": "Q", "signification": "puissance réactive (négative)", "unite": "VAR" },
+        { "symbole": "I", "code": "I", "signification": "courant efficace dans C", "unite": "A" },
+        { "symbole": "C", "code": "C", "signification": "capacité", "unite": "F" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" }
+      ],
+      "conditions": "Plutôt pour un condensateur en série.",
+      "calcul": { "cible": "Q", "expression": "-I*I/(C*w)" },
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 2 ; tableau sur A1-Ch06-p07.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.q-c-v", "site_id": "QC",
+      "nom": "Puissance réactive d'un condensateur (en fonction de V)",
+      "latex": "Q = -C\\omega V^2 \\quad ; \\quad P = 0",
+      "variables": [
+        { "symbole": "Q", "code": "Q", "signification": "puissance réactive (négative)", "unite": "VAR" },
+        { "symbole": "C", "code": "C", "signification": "capacité", "unite": "F" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" },
+        { "symbole": "V", "code": "V", "signification": "tension efficace aux bornes de C", "unite": "V" }
+      ],
+      "conditions": "Plutôt pour un condensateur en dérivation.",
+      "calcul": { "cible": "Q", "expression": "-C*w*V*V" },
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 2 ; tableau sur A1-Ch06-p07.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    }
+  ],
+
+  "relations": [
+    {
+      "de": "ch06.p-inst", "vers": "ch02.puissance-instantanee", "type": "équivalent",
+      "explication": "Même puissance instantanée p = v × i, ici en régime sinusoïdal.",
+      "source": { "fichier": "A1-Ch06-p01.pdf", "page": 1, "zone": "document 1" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.k-cos", "vers": "ch06.k", "type": "cas_particulier",
+      "explication": "En sinusoïdal, P = VI cos φ et S = VI, d'où k = cos φ.",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.i-ligne", "vers": "ch06.p", "type": "découle_de",
+      "explication": "P = VI cos φ, soit I = P/(V cos φ).",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.q", "vers": "ch06.s2", "type": "découle_de",
+      "explication": "Q = VI sin φ se déduit du triangle des puissances.",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 5" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.tan-pq", "vers": "ch06.s2", "type": "découle_de",
+      "explication": "Trigonométrie dans le triangle des puissances.",
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 1" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.q-ptan", "vers": "ch06.tan-pq", "type": "découle_de",
+      "explication": "tan φ = Q/P donne Q = P tan φ.",
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 1" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.st", "vers": "ch06.s2", "type": "utilise",
+      "explication": "Pour S_T on utilise la relation du document 5, pas Boucherot.",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 6" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.n-methode-boucherot", "vers": "ch06.boucherot-p", "type": "utilise",
+      "explication": "Étape 1 de la méthode.",
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "annexe, § 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.n-methode-boucherot", "vers": "ch06.boucherot-q", "type": "utilise",
+      "explication": "Étape 2 de la méthode.",
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "annexe, § 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.n-methode-boucherot", "vers": "ch06.st", "type": "utilise",
+      "explication": "Étape 3 de la méthode.",
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "annexe, § 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.n-methode-boucherot", "vers": "ch06.s", "type": "utilise",
+      "explication": "Étape 4 : S_T = V × I donne V ou I à l'entrée.",
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "annexe, § 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.p-r-i", "vers": "ch05.zr", "type": "découle_de",
+      "explication": "Z = R donc V = RI, φ = 0 : P = VI = RI² = V²/R.",
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 2" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.q-l-i", "vers": "ch05.zl", "type": "découle_de",
+      "explication": "Z = Lω donc V = LωI, φ = π/2 : Q = VI = LωI² = V²/(Lω).",
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 2" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.q-c-v", "vers": "ch05.zc", "type": "découle_de",
+      "explication": "Z = 1/(Cω), φ = −π/2 donc sin φ = −1 : Q = −VI = −CωV² = −I²/(Cω).",
+      "source": { "fichier": "A1-Ch06-p06.pdf", "page": 1, "zone": "annexe, § 2" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.p-r-v", "vers": "ch06.p-r-i", "type": "équivalent",
+      "explication": "Même puissance : en fonction de V en dérivation, de I en série.",
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "tableau récapitulatif et § 3" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.q-l-v", "vers": "ch06.q-l-i", "type": "équivalent",
+      "explication": "Même puissance : en fonction de V en dérivation, de I en série.",
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "tableau récapitulatif et § 3" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.q-c-v", "vers": "ch06.q-c-i", "type": "équivalent",
+      "explication": "Même puissance : en fonction de V en dérivation, de I en série.",
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "tableau récapitulatif et § 3" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.relevement", "vers": "ch06.q-ptan", "type": "utilise",
+      "explication": "Le condensateur doit fournir Q − Q' = P(tan φ − tan φ').",
+      "source": { "fichier": "A1-Ch06-p03.pdf", "page": 1, "zone": "document 8" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.relevement", "vers": "ch04.def-batterie", "type": "utilise",
+      "explication": "C'est la capacité de la batterie de condensateurs du ch04 (document 3).",
+      "source": { "fichier": "A1-Ch06-p03.pdf", "page": 1, "zone": "documents 7 et 8" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch06.i-ligne", "vers": "ch04.courant-manuscrit", "type": "équivalent",
+      "explication": "La même relation était notée à la main au ch04.",
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 4" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    }
+  ],
+
+  "pieges": [
+    {
+      "id": "ch06.piege-boucherot-s",
+      "texte": "Le théorème de Boucherot n'est PAS valable pour S : on n'additionne jamais les puissances apparentes. S_T = √(P_T² + Q_T²).",
+      "lie_a": ["ch06.st", "ch06.boucherot-p", "ch06.boucherot-q"],
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 6, encadré d'avertissement" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.piege-unites",
+      "texte": "Unités : P en W, Q en VAR, S en VA. Ne jamais exprimer S en watts.",
+      "lie_a": ["ch06.p", "ch06.q", "ch06.s"],
+      "source": { "fichier": "A1-Ch06-p01.pdf", "page": 1, "zone": "documents 2, 3 et 5" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.piege-k-cos",
+      "texte": "k = cos φ uniquement en régime sinusoïdal ; la définition générale est k = P/S.",
+      "lie_a": ["ch06.k", "ch06.k-cos"],
+      "source": { "fichier": "A1-Ch06-p02.pdf", "page": 1, "zone": "document 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.piege-qc-negatif",
+      "texte": "La puissance réactive d'un condensateur est négative (il en fournit) : ne pas oublier le signe − dans la somme des Q.",
+      "lie_a": ["ch06.q-c-i", "ch06.q-c-v", "ch06.boucherot-q"],
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "tableau récapitulatif ; Q_C < 0 sur A1-Ch06-p03.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.piege-i-ou-v",
+      "texte": "En série, utiliser les expressions en fonction de I ; en dérivation, en fonction de V (on connaît la grandeur commune).",
+      "lie_a": ["ch06.p-r-i", "ch06.p-r-v", "ch06.q-l-i", "ch06.q-l-v", "ch06.q-c-i", "ch06.q-c-v"],
+      "source": { "fichier": "A1-Ch06-p07.pdf", "page": 1, "zone": "annexe, § 3" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.piege-p-constante",
+      "texte": "Un condensateur de relèvement ne change pas P : seuls Q, φ, S et I diminuent.",
+      "lie_a": ["ch06.relevement"],
+      "source": { "fichier": "A1-Ch06-p03.pdf", "page": 1, "zone": "documents 7 et 8" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.piege-tan-prime",
+      "texte": "Dans la formule de relèvement, c'est tan φ − tan φ' (avant moins après) et V² au dénominateur.",
+      "lie_a": ["ch06.relevement"],
+      "source": { "fichier": "A1-Ch06-p03.pdf", "page": 1, "zone": "document 8" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    }
+  ],
+
+  "exemples": [
+    {
+      "id": "ch06.ex-probleme",
+      "titre": "Problématique : tension à appliquer en tête de ligne",
+      "type": "exemple_cours",
+      "enonce": "Une ligne de 500 m ($r$ : 0,14 mΩ/m ; $l$ : 2·10⁻⁷ H/m) alimente le primaire d'un transformateur modélisé par $R$ = 0,2 Ω en série, puis $R_f$ = 605 Ω, $L$ = 0,28 H et $R_{charge}$ = 1,07 Ω en dérivation sous $V_2$ = 230 V. Courant en ligne : 200 A ; $f$ = 50 Hz. 2.1 Calculer $r$ et $l$. 2.2 Par la méthode de Boucherot, calculer $V_1$.",
+      "donnees": [
+        { "code": "rm", "symbole": "r_{/m}", "valeur": 0.00014, "unite": "Ω/m" },
+        { "code": "lm", "symbole": "l_{/m}", "valeur": 2e-7, "unite": "H/m" },
+        { "code": "long", "symbole": "\\ell", "valeur": 500, "unite": "m" },
+        { "code": "R", "symbole": "R", "valeur": 0.2, "unite": "Ω" },
+        { "code": "L", "symbole": "L", "valeur": 0.28, "unite": "H" },
+        { "code": "Rf", "symbole": "R_f", "valeur": 605, "unite": "Ω" },
+        { "code": "Rch", "symbole": "R_{charge}", "valeur": 1.07, "unite": "Ω" },
+        { "code": "V2", "symbole": "V_2", "valeur": 230, "unite": "V" },
+        { "code": "I", "symbole": "I", "valeur": 200, "unite": "A" },
+        { "code": "w", "symbole": "\\omega", "valeur": 314.16, "unite": "rad/s" }
+      ],
+      "etapes": [
+        { "question": "Résistance r de la ligne ?", "formules": [], "calcul": "rm*long", "reponse": { "valeur": 0.07, "unite": "Ω", "texte": "r = 0,14 × 10⁻³ × 500 = 0,07 Ω" } },
+        { "question": "Inductance l de la ligne ?", "formules": [], "calcul": "lm*long", "reponse": { "valeur": 0.0001, "unite": "H", "texte": "l = 2 × 10⁻⁷ × 500 = 0,1 mH" } },
+        { "question": "Étape 1 : P_T ?", "formules": ["ch06.p-r-v", "ch06.p-r-i", "ch06.boucherot-p"], "calcul": "V2*V2/Rf + V2*V2/Rch + (R+rm*long)*I*I", "reponse": { "valeur": 60326, "unite": "W", "texte": "P_T = 230²/605 + 230²/1,07 + (0,2 + 0,07) × 200² ≈ 60,3 kW" } },
+        { "question": "Étape 2 : Q_T ?", "formules": ["ch06.q-l-v", "ch06.q-l-i", "ch06.boucherot-q"], "calcul": "V2*V2/(L*w) + lm*long*w*I*I", "reponse": { "valeur": 1858, "unite": "VAR", "texte": "Q_T = 230²/(0,28 × 314) + 0,1·10⁻³ × 314 × 200² ≈ 1,86 kVAR" } },
+        { "question": "Étape 3 : S_T ?", "formules": ["ch06.st"], "calcul": "Math.sqrt(Math.pow(V2*V2/Rf + V2*V2/Rch + (R+rm*long)*I*I,2)+Math.pow(V2*V2/(L*w) + lm*long*w*I*I,2))", "reponse": { "valeur": 60355, "unite": "VA", "texte": "S_T ≈ 60,4 kVA" } },
+        {
+          "question": "Étape 4 : V_1 ?", "formules": ["ch06.s"], "calcul": "Math.sqrt(Math.pow(V2*V2/Rf + V2*V2/Rch + (R+rm*long)*I*I,2)+Math.pow(V2*V2/(L*w) + lm*long*w*I*I,2))/I",
+          "reponse": { "valeur": 301.8, "unite": "V", "texte": "V_1 = S_T / I ≈ 302 V" },
+          "à_vérifier": true,
+          "note": "Données incohérentes dans l'énoncé : sous V_2 = 230 V, R_charge = 1,07 Ω absorbe déjà 230/1,07 ≈ 215 A, plus que les 200 A annoncés en ligne. Le résultat (302 V) applique la méthode aux données telles quelles ; à comparer à la correction du professeur."
+        }
+      ],
+      "source": { "fichier": "A1-Ch06-p04.pdf", "page": 1, "zone": "problématique ; données et questions sur A1-Ch06-p05.pdf" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false,
+      "note": "Pas de corrigé dans le polycopié : résolution faite avec les formules du cours. La question subsidiaire (dimensionnement de la section par la chute de tension) relève du cours d'électrotechnique et n'est pas traitée."
+    },
+    {
+      "id": "ch06.td-ex1",
+      "titre": "TD exercice 1 — Dimensionnement électrique d'un atelier",
+      "type": "td",
+      "enonce": "Un atelier ($P$ = 30 kW ; $Q$ = 22,5 kVAR) est alimenté sous 230 V, 50 Hz par un câble de 700 m ($r$ : 7,8·10⁻⁵ Ω/m ; $l$ : 2,39·10⁻⁷ H/m) depuis le secondaire d'un transformateur. 1. $S$ côté atelier ? 2. $I$ en ligne ? 3. $V_s$ par Boucherot ?",
+      "donnees": [
+        { "code": "P", "symbole": "P", "valeur": 30000, "unite": "W" },
+        { "code": "Q", "symbole": "Q", "valeur": 22500, "unite": "VAR" },
+        { "code": "V", "symbole": "V", "valeur": 230, "unite": "V" },
+        { "code": "rm", "symbole": "r_{/m}", "valeur": 7.8e-5, "unite": "Ω/m" },
+        { "code": "lm", "symbole": "l_{/m}", "valeur": 2.39e-7, "unite": "H/m" },
+        { "code": "long", "symbole": "\\ell", "valeur": 700, "unite": "m" },
+        { "code": "w", "symbole": "\\omega", "valeur": 314.16, "unite": "rad/s" }
+      ],
+      "etapes": [
+        { "question": "Puissance apparente S côté atelier ?", "formules": ["ch06.s2"], "calcul": "Math.sqrt(P*P+Q*Q)", "reponse": { "valeur": 37500, "unite": "VA", "texte": "S = 37,5 kVA" } },
+        { "question": "Courant en ligne I ?", "formules": ["ch06.s"], "calcul": "Math.sqrt(P*P+Q*Q)/V", "reponse": { "valeur": 163, "unite": "A", "texte": "I = 163 A" } },
+        { "question": "Tension V_s du secondaire ?", "formules": ["ch06.n-methode-boucherot", "ch06.p-r-i", "ch06.q-l-i", "ch06.st"], "calcul": "Math.sqrt(Math.pow(P+rm*long*Math.pow(Math.sqrt(P*P+Q*Q)/V,2),2)+Math.pow(Q+lm*long*w*Math.pow(Math.sqrt(P*P+Q*Q)/V,2),2))/(Math.sqrt(P*P+Q*Q)/V)", "reponse": { "valeur": 242, "unite": "V", "texte": "V_s = 242 V" } }
+      ],
+      "source": { "fichier": "A1-Ch06-p08.pdf", "page": 1, "zone": "TD, exercice 1 ; réponses sur A1-Ch06-p09.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.td-ex2",
+      "titre": "TD exercice 2 — Schéma monophasé équivalent d'une installation triphasée",
+      "type": "td",
+      "enonce": "Sous $V$ = 230 V, 50 Hz : un condensateur $C$ = 470 µF en dérivation avec une branche $R$ = 3,33 Ω en série avec $L$ = 13,3 mH (courant $I_1$). 1. Calculer $I_1$ par un calcul d'impédance. 2. En déduire $I$ par Boucherot. 3. Courant en ligne sans le condensateur ?",
+      "donnees": [
+        { "code": "C", "symbole": "C", "valeur": 0.00047, "unite": "F" },
+        { "code": "R", "symbole": "R", "valeur": 3.33, "unite": "Ω" },
+        { "code": "L", "symbole": "L", "valeur": 0.0133, "unite": "H" },
+        { "code": "V", "symbole": "V", "valeur": 230, "unite": "V" },
+        { "code": "w", "symbole": "\\omega", "valeur": 314.16, "unite": "rad/s" }
+      ],
+      "etapes": [
+        { "question": "I_1 ?", "formules": ["ch05.z-rl", "ch05.ohm-sinus"], "calcul": "V/Math.sqrt(R*R+L*w*L*w)", "reponse": { "valeur": 43.1, "unite": "A", "texte": "I_1 = 43,1 A" } },
+        { "question": "I par Boucherot ?", "formules": ["ch06.p-r-i", "ch06.q-l-i", "ch06.q-c-v", "ch06.st", "ch06.s"], "calcul": "Math.sqrt(Math.pow(R*V*V/(R*R+L*w*L*w),2)+Math.pow(L*w*V*V/(R*R+L*w*L*w)-C*w*V*V,2))/V", "reponse": { "valeur": 26.9, "unite": "A", "texte": "I = 26,9 A" } },
+        { "question": "Sans le condensateur ?", "formules": ["ch06.n-effet-relevement"], "calcul": "V/Math.sqrt(R*R+L*w*L*w)", "reponse": { "valeur": 43.1, "unite": "A", "texte": "Le courant en ligne serait I_1 = 43,1 A." }, "note": "Réponse non donnée dans le corrigé : sans C, le courant en ligne est celui de la branche R, L." }
+      ],
+      "source": { "fichier": "A1-Ch06-p08.pdf", "page": 1, "zone": "TD, exercice 2 ; réponses sur A1-Ch06-p09.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch06.td-ex3",
+      "titre": "TD exercice 3 — Essais d'un transformateur monophasé",
+      "type": "td",
+      "enonce": "Partie A, essai à vide ($R_f$ // $L_m$) : $V_1$ = 10 000 V, $I_1$ = 0,85 A, $P$ = 1 kW. Partie B, essai en court-circuit ($R_s$ en série avec $L_s$) : $V_1$ = 430 V, $I_1$ = 10 A, $I_2$ = 833 A, $P$ = 1,6 kW. Calculer S, Q, identifier les éléments consommant P et Q, puis $R_f$, $L_m$, $R_s$, $L_s$.",
+      "donnees": [
+        { "code": "V0", "symbole": "V_1", "valeur": 10000, "unite": "V" },
+        { "code": "I0", "symbole": "I_1", "valeur": 0.85, "unite": "A" },
+        { "code": "P0", "symbole": "P", "valeur": 1000, "unite": "W" },
+        { "code": "Vcc", "symbole": "V_{1cc}", "valeur": 430, "unite": "V" },
+        { "code": "Icc", "symbole": "I_{1cc}", "valeur": 10, "unite": "A" },
+        { "code": "I2", "symbole": "I_2", "valeur": 833, "unite": "A" },
+        { "code": "Pcc", "symbole": "P_{cc}", "valeur": 1600, "unite": "W" },
+        { "code": "w", "symbole": "\\omega", "valeur": 314.16, "unite": "rad/s" }
+      ],
+      "etapes": [
+        { "question": "A.1 Puissance apparente à vide ?", "formules": ["ch06.s"], "calcul": "V0*I0", "reponse": { "valeur": 8500, "unite": "VA", "texte": "S = 8500 VA" } },
+        { "question": "A.2 Puissance réactive à vide ?", "formules": ["ch06.s2"], "calcul": "Math.sqrt(V0*I0*V0*I0-P0*P0)", "reponse": { "valeur": 8440, "unite": "VAR", "texte": "Q = 8440 VAR" } },
+        { "question": "A.3 / A.4 Qui consomme P et Q ?", "formules": ["ch06.p-r-v", "ch06.q-l-v"], "reponse": { "texte": "P : R_f (la seule résistance) ; Q : L_m (la seule inductance)." }, "note": "Réponse non donnée dans le corrigé : déduite du tableau récapitulatif." },
+        { "question": "A.5 R_f ?", "formules": ["ch06.p-r-v"], "calcul": "V0*V0/P0", "reponse": { "valeur": 100000, "unite": "Ω", "texte": "R_f = V²/P = 100 kΩ" } },
+        { "question": "A.5 L_m ?", "formules": ["ch06.q-l-v"], "calcul": "V0*V0/(Math.sqrt(V0*I0*V0*I0-P0*P0)*w)", "reponse": { "valeur": 37.7, "unite": "H", "texte": "L_m = V²/(Qω) = 37,7 H" } },
+        { "question": "B.1 Puissance apparente en court-circuit ?", "formules": ["ch06.s"], "calcul": "Vcc*Icc", "reponse": { "valeur": 4300, "unite": "VA", "texte": "S = 4300 VA" } },
+        { "question": "B.2 Puissance réactive en court-circuit ?", "formules": ["ch06.s2"], "calcul": "Math.sqrt(Vcc*Icc*Vcc*Icc-Pcc*Pcc)", "reponse": { "valeur": 3991, "unite": "VAR", "texte": "Q = 3991 VAR" } },
+        { "question": "B.3 / B.4 Qui consomme P et Q ?", "formules": ["ch06.p-r-i", "ch06.q-l-i"], "reponse": { "texte": "P : R_s ; Q : L_s." }, "note": "Réponse non donnée dans le corrigé : déduite du tableau récapitulatif." },
+        { "question": "B.5 R_s ?", "formules": ["ch06.p-r-i"], "calcul": "Pcc/(I2*I2)", "reponse": { "valeur": 0.0023, "unite": "Ω", "texte": "R_s = P/I_2² = 2,3 mΩ" } },
+        { "question": "B.5 L_s ?", "formules": ["ch06.q-l-i"], "calcul": "Math.sqrt(Vcc*Icc*Vcc*Icc-Pcc*Pcc)/(w*I2*I2)", "reponse": { "valeur": 1.83e-5, "unite": "H", "texte": "L_s = Q/(ω I_2²) = 1,83·10⁻⁵ H" } }
+      ],
+      "source": { "fichier": "A1-Ch06-p08.pdf", "page": 1, "zone": "TD, exercice 3 ; parties A et B et réponses sur A1-Ch06-p09.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    }
+  ],
+
+  "manques": [
+    {
+      "texte": "La page 5 renvoie à « l'annexe 1 » (nom laissé en blanc) en plus de l'annexe du chapitre : aucune annexe 1 propre au chapitre 6 n'est dans les scans.",
+      "source": { "fichier": "A1-Ch06-p05.pdf", "page": 1, "zone": "travail à effectuer, dernière consigne" },
+      "origine": "scan", "ajouts": [], "à_vérifier": true,
+      "note": "Peut-être l'annexe 1 du ch04 (déphasage) ou un document manquant. À vérifier."
+    }
+  ]
+}

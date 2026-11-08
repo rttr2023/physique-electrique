@@ -3,7 +3,7 @@
 Fichier généré par `node game/outils/verifier-donnees.js` : ne pas le modifier à la main.
 Pour corriger : modifie le JSON du chapitre (texte, valeur), passe `"à_vérifier"` à `false` et relance le script.
 
-## 1. Passages illisibles, ambigus ou contradictoires (19)
+## 1. Passages illisibles, ambigus ou contradictoires (21)
 
 ### ch01
 
@@ -55,7 +55,14 @@ Pour corriger : modifie le JSON du chapitre (texte, valeur), passe `"à_vérifie
 - **ch05.ex-b-rl** (exemple) — `A1-Ch05-p07.pdf`, exercice B (énoncé)
   Pas de corrigé dans le polycopié : résolution proposée, à faire valider avant utilisation dans le jeu.
 
-## 2. Compléments hors scan (connaissances générales, signalés) (36)
+### ch06
+
+- **ch06.ex-probleme étape 6** (étape d'exemple) — `A1-Ch06-p04.pdf`, problématique ; données et questions sur A1-Ch06-p05.pdf
+  Données incohérentes dans l'énoncé : sous V_2 = 230 V, R_charge = 1,07 Ω absorbe déjà 230/1,07 ≈ 215 A, plus que les 200 A annoncés en ligne. Le résultat (302 V) applique la méthode aux données telles quelles ; à comparer à la correction du professeur.
+- **ch06 manque 1** (manque) — `A1-Ch06-p05.pdf`, travail à effectuer, dernière consigne
+  Peut-être l'annexe 1 du ch04 (déphasage) ou un document manquant. À vérifier.
+
+## 2. Compléments hors scan (connaissances générales, signalés) (37)
 
 Ces éléments sont fidèles au scan, mais un détail a été complété (souvent les unités, que le polycopié n'écrit pas).
 
@@ -109,4 +116,8 @@ Ces éléments sont fidèles au scan, mais un détail a été complété (souven
 - **ch05.tau-rl** : formule absente des scans ; R_th se calcule comme au ch01 (MET, sources éteintes)
 - **ch05.ex-a-rc** : résolution complète faite hors polycopié (aucun corrigé)
 - **ch05.ex-b-rl** : résolution complète faite hors polycopié (aucun corrigé)
+
+### ch06
+
+- **ch06.p-inst** : unités : non écrites dans le document 1
 
