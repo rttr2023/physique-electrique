@@ -15,7 +15,7 @@
   Q.TOLERANCE = 0.02;
 
   // Groupes d'unités faciles à confondre (pour des propositions crédibles).
-  const CONFUSIONS = [['W', 'VA', 'VAR', 'J'], ['V', 'A', 'Ω'], ['H', 'F', 'C'], ['Hz', 'rad/s', 's'], ['°', 'rad', ''], ['V/s', 'A/s', 'V'], ['Ω', 'S', 'H']];
+  const CONFUSIONS = [['W', 'VA', 'VAR', 'J'], ['V', 'A', 'Ω'], ['H', 'F', 'C'], ['Hz', 'rad/s', 's'], ['°', 'rad', ''], ['V/s', 'A/s', 'V'], ['Ω', 'H', 'F']];
   const E12 = [1, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2];
 
   function D() { return AMP.donnees; }
@@ -40,7 +40,7 @@
   Q.ficheFormule = function (f, avecSource) {
     let h = '<div class="formule-bloc">' + AMP.tex(f.latex, true) + '</div>';
     h += '<table class="variables">' + (f.variables || []).map(function (v) {
-      return '<tr><td>' + AMP.tex(v.symbole) + '</td><td>' + AMP.esc(v.signification) + '</td><td class="u">' + AMP.esc(AMP.nomUnite(v.unite)) + '</td></tr>';
+      return '<tr><td>' + AMP.tex(v.symbole) + '</td><td>' + AMP.texte(v.signification) + '</td><td class="u">' + AMP.esc(AMP.nomUnite(v.unite)) + '</td></tr>';
     }).join('') + '</table>';
     if (f.conditions) h += '<p class="conditions">' + AMP.texte(f.conditions) + '</p>';
     if (avecSource !== false) h += Q.sourceHtml(f);
@@ -137,17 +137,18 @@
     let autres = itemsDuChapitre(it.ch, 'notion').filter(function (x) { return x.id !== it.id; });
     if (autres.length < 3) autres = autres.concat(Object.values(D().items).filter(function (x) { return x.type === 'notion' && x.ch !== it.ch; }));
     const leurres = AMP.melanger(autres, rnd).slice(0, 3);
-    const correction = '<p><strong>' + AMP.esc(n.nom) + '</strong> : ' + AMP.texte(n.definition) + '</p>' + Q.sourceHtml(n);
+    const correction = '<p><strong>' + AMP.texte(n.nom) + '</strong> : ' + AMP.texte(n.definition) + '</p>' + Q.sourceHtml(n);
     if (rnd() < 0.5) {
       return {
-        titre: 'Que signifie…', enonceHtml: '<p class="q-grand">« ' + AMP.esc(n.nom) + ' » ?</p>', mode: 'choix',
-        choix: AMP.melanger([{ html: AMP.texte(n.definition), juste: true }].concat(leurres.map(function (x) { return { html: AMP.texte(x.el.definition), juste: false }; })), rnd),
+        titre: 'Que signifie…', enonceHtml: '<p class="q-grand">« ' + AMP.texte(n.nom) + ' » ?</p>', mode: 'choix',
+        // Chaque définition est masquée avec son propre nom : la bonne ne se trahit pas en répétant les mots de la question.
+        choix: AMP.melanger([{ html: AMP.texte(masquer(n.definition, n.nom)), juste: true }].concat(leurres.map(function (x) { return { html: AMP.texte(masquer(x.el.definition, x.el.nom)), juste: false }; })), rnd),
         correctionHtml: correction
       };
     }
     return {
       titre: 'De quelle notion s\'agit-il ?', enonceHtml: '<blockquote>' + AMP.texte(masquer(n.definition, n.nom)) + '</blockquote>', mode: 'choix',
-      choix: AMP.melanger([{ html: AMP.esc(n.nom), juste: true }].concat(leurres.map(function (x) { return { html: AMP.esc(x.el.nom), juste: false }; })), rnd),
+      choix: AMP.melanger([{ html: AMP.texte(n.nom), juste: true }].concat(leurres.map(function (x) { return { html: AMP.texte(x.el.nom), juste: false }; })), rnd),
       correctionHtml: correction
     };
   }
@@ -182,10 +183,10 @@
       const k = AMP.texSimple(s); if (vus[k]) return false; vus[k] = true; return true;
     }).slice(0, 3);
     return {
-      titre: 'Complète la formule', enonceHtml: '<p class="q-petit">' + AMP.esc(f.nom) + '</p><div class="formule-bloc">' + AMP.tex(latexTrou, true) + '</div>',
+      titre: 'Complète la formule', enonceHtml: '<p class="q-petit">' + AMP.texte(f.nom) + '</p><div class="formule-bloc">' + AMP.tex(latexTrou, true) + '</div>',
       mode: 'choix',
       choix: AMP.melanger([{ html: AMP.tex(v.symbole), juste: true }].concat(leurres.map(function (s) { return { html: AMP.tex(s), juste: false }; })), rnd),
-      correctionHtml: '<p>Il manquait ' + AMP.tex(v.symbole) + ' : ' + AMP.esc(v.signification) + '.</p>' + Q.ficheFormule(f),
+      correctionHtml: '<p>Il manquait ' + AMP.tex(v.symbole) + ' : ' + AMP.texte(v.signification) + '.</p>' + Q.ficheFormule(f),
       aides: { memo: null, unite: null }
     };
   }
@@ -202,7 +203,7 @@
       const prop = unitesProposees(bonne, it.ch, rnd).slice(0, 4);
       if (prop.indexOf(bonne) < 0) prop[0] = bonne;
       return {
-        titre: 'Quelle unité ?', enonceHtml: '<p class="q-grand">' + AMP.tex(v.symbole) + '</p><p>' + AMP.esc(v.signification) + ' <span class="q-petit">(' + AMP.esc(f.nom) + ')</span></p>',
+        titre: 'Quelle unité ?', enonceHtml: '<p class="q-grand">' + AMP.tex(v.symbole) + '</p><p>' + AMP.texte(v.signification) + ' <span class="q-petit">(' + AMP.texte(f.nom) + ')</span></p>',
         mode: 'choix',
         choix: AMP.melanger(prop, rnd).map(function (u) { return { html: AMP.esc(AMP.nomUnite(u)), juste: u === bonne }; }),
         correctionHtml: '<p>' + AMP.tex(v.symbole) + ' s\'exprime en <strong>' + AMP.esc(AMP.nomUnite(bonne)) + '</strong>.</p>' + Q.ficheFormule(f)
@@ -210,7 +211,7 @@
     }
     const leurres = AMP.melanger(autres, rnd).filter(function (x, i, l) { return l.findIndex(function (y) { return y.el.latex === x.el.latex; }) === i; }).slice(0, 3);
     return {
-      titre: 'Quelle relation ?', enonceHtml: '<p class="q-grand">' + AMP.esc(f.nom) + '</p>' + (f.conditions ? '<p class="q-petit">' + AMP.texte(f.conditions) + '</p>' : ''),
+      titre: 'Quelle relation ?', enonceHtml: '<p class="q-grand">' + AMP.texte(f.nom) + '</p>' + (f.conditions ? '<p class="q-petit">' + AMP.texte(f.conditions) + '</p>' : ''),
       mode: 'choix',
       choix: AMP.melanger([{ html: AMP.tex(f.latex), juste: true }].concat(leurres.map(function (x) { return { html: AMP.tex(x.el.latex), juste: false }; })), rnd),
       correctionHtml: Q.ficheFormule(f)
@@ -247,13 +248,13 @@
     const t = Q.tirerCalcul(f, rnd);
     if (!t) return null;
     const donnees = '<ul class="donnees">' + t.affichage.map(function (a) {
-      return '<li>' + AMP.tex(a.v.symbole) + ' = ' + AMP.esc(a.texte) + ' <span class="q-petit">(' + AMP.esc(a.v.signification) + ')</span></li>';
+      return '<li>' + AMP.tex(a.v.symbole) + ' = ' + AMP.esc(a.texte) + ' <span class="q-petit">(' + AMP.texte(a.v.signification) + ')</span></li>';
     }).join('') + '</ul>';
     const enRad = t.unite === 'rad' ? ' Réponds en radians.' : (AMP.normUnite(t.cible.unite) === 'rad' ? ' Réponds en degrés.' : '');
     return {
       titre: 'Calcule !',
-      enonceHtml: '<p>Calcule <strong>' + AMP.esc(t.cible.signification) + '</strong> ' + AMP.tex(t.cible.symbole) + '.' + enRad + '</p>' +
-        '<p class="q-petit">Relation : ' + AMP.esc(f.nom) + '</p>' + donnees,
+      enonceHtml: '<p>Calcule <strong>' + AMP.texte(t.cible.signification) + '</strong> ' + AMP.tex(t.cible.symbole) + '.' + enRad + '</p>' +
+        '<p class="q-petit">Relation : ' + AMP.texte(f.nom) + '</p>' + donnees,
       mode: 'saisie',
       attendu: { valeur: t.valeur, unite: t.unite, tolerance: Q.TOLERANCE },
       unites: unitesProposees(t.unite, it.ch, rnd),
@@ -299,12 +300,14 @@
     const r = etape.reponse;
     return (ex.donnees || []).find(function (d) { return Math.abs(d.valeur - r.valeur) <= 1e-9 * Math.max(1, Math.abs(r.valeur)) && AMP.normUnite(d.unite) === AMP.normUnite(r.unite); });
   }
+  Q.donneePour = donneePour;
   Q.etapesActives = function (ex) {
     return (ex.etapes || []).filter(function (e) { return !e['à_vérifier']; });
   };
   Q.modifiable = function (ex) {
     return Q.etapesActives(ex).every(function (e) {
-      return !e.reponse || typeof e.reponse.valeur !== 'number' || e.calcul || donneePour(ex, e);
+      // Une étape dont la réponse se lit sur un document (donnée sans calcul) impose les valeurs du cours.
+      return !e.reponse || typeof e.reponse.valeur !== 'number' || e.calcul;
     }) && (ex.donnees || []).length > 0;
   };
   // Valeurs d'un exemple : celles du cours, ou modifiées de −25 % à +30 % (sauf fréquences et pulsations).
@@ -323,7 +326,7 @@
     const r = etape.reponse || {};
     const base = {
       type: 'etape', ids: ids, etoiles: 3, titre: etape.question,
-      enonceHtml: '<p class="q-grand">' + AMP.esc(etape.question) + '</p>'
+      enonceHtml: '<p class="q-grand">' + AMP.texte(etape.question) + '</p>'
     };
     let valeur = null;
     if (typeof r.valeur === 'number') {

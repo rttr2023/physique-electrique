@@ -127,7 +127,7 @@ Chaque type est généré à partir des JSON ; un ennemi propose un type selon s
 | **Soudure** (formule à trous) | `P = V I \boxed{?}` → choisir parmi 4 morceaux ou symboles | `formules[].latex` ; on masque une `variable` ; leurres : autres variables du chapitre | ★★ |
 | **Arc calculé** (calcul) | énoncé avec valeurs → saisir **nombre + préfixe + unité** | `formules[].calcul` + valeurs tirées au hasard (§ 5.4) | ★★★ |
 | **Diagnostic** (unité / bonne formule) | « Unité de Q ? » ou « En dérivation, je connais V : quelle expression de P ? » | `variables[].unite`, `formules[].conditions`, `relations` | ★★ |
-| **Contre-piège** (vrai ou faux) | une affirmation, vraie ou piégée | `pieges` pour les affirmations vraies ; pour les fausses, des versions inversées écrites pour le jeu dans `game/data/affirmations-fausses.json` (ex. « en continu, la bobine est un circuit ouvert »), que tu relis | ★ |
+| **Contre-piège** (vrai ou faux) | une affirmation, vraie ou piégée | `pieges` pour les affirmations vraies ; pour les fausses, des versions inversées écrites pour le jeu dans `game/data/affirmations.json` (ex. « en continu, la bobine est un circuit ouvert »), que tu relis | ★ |
 
 Le calcul est l'attaque la plus forte : le jeu pousse à faire de vrais calculs sans les rendre obligatoires.
 
@@ -316,7 +316,7 @@ En plus des JSON de cours (inchangés) :
 | `game/data/regions.json` | chapitre → région (nom, palette, gabarit de carte, boss = id d'exemple, Parasites) |
 | `game/data/plages.json` | plages réalistes des grandeurs pour les calculs |
 | `game/data/cartes/*.json` | gabarits de carte (tuiles, emplacements des PNJ, portes) |
-| `game/data/affirmations-fausses.json` | versions fausses des pièges pour le Contre-piège (une par piège, relues par Romain) |
+| `game/data/affirmations.json` | versions fausses des pièges pour le Contre-piège (une par piège, relues par Romain) |
 | `game/data/dialogues.json` | phrases d'ambiance des PNJ (« Salut ! Tu savais que… ») autour des définitions du cours |
 
 ---

@@ -124,10 +124,11 @@
       .replace(/\\[,;! ]/g, ' ').replace(/\{,\}/g, ',').replace(/[{}]/g, '').replace(/\^2/g, '²').replace(/\^\\circ|\^°/g, '°');
     return t;
   };
-  // Texte du cours contenant des formules entre $...$.
+  // Texte du cours contenant des formules entre $...$. Hors formules, « R_1 », « E_TH », « R_{eq} » deviennent des indices.
   AMP.texte = function (s) {
     return String(s == null ? '' : s).split(/(\$[^$]+\$)/g).map(function (part) {
-      return /^\$[^$]+\$$/.test(part) ? AMP.tex(part.slice(1, -1)) : AMP.esc(part);
+      if (/^\$[^$]+\$$/.test(part)) return AMP.tex(part.slice(1, -1));
+      return AMP.esc(part).replace(/([A-Za-zΩφωτ])_\{?([A-Za-z0-9]+)\}?/g, '$1<sub>$2</sub>');
     }).join('');
   };
 

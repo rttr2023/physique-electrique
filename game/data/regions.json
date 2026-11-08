@@ -1,58 +1,180 @@
 {
   "_aide": "Une région par chapitre. chapitre : id du JSON de cours. gabarit : carte dans data/cartes/. theme : remplacement de couleurs de la palette (voir js/sprites.js). boss.exemples : id d'exemples du chapitre joués en étapes ; boss.serie : nombre de questions ajoutées sur le chapitre. portail : lettre du portail dans le village. Un chapitre de data/index.json absent d'ici reçoit une région par défaut.",
-  "village": { "nom": "Le Poste Source", "gabarit": "village", "theme": {} },
+  "village": {
+    "nom": "Le Poste Source",
+    "gabarit": "village",
+    "theme": {}
+  },
   "regions": [
     {
-      "chapitre": "ch01", "portail": "a", "nom": "Vallée du Continu", "gabarit": "plaine",
+      "chapitre": "ch01",
+      "portail": "a",
+      "nom": "Vallée du Continu",
+      "gabarit": "plaine",
       "couleur": "tension",
       "theme": {},
-      "parasites": ["court-jus", "ohmlette", "fuite"],
-      "boss": { "nom": "Le Superposeur", "exemples": ["ch01.ex-superposition"], "serie": 0 },
+      "parasites": [
+        "court-jus",
+        "ohmlette",
+        "fuite"
+      ],
+      "boss": {
+        "nom": "Le Superposeur",
+        "exemples": [
+          "ch01.ex-superposition"
+        ],
+        "serie": 0
+      },
       "equipement": "gants"
     },
     {
-      "chapitre": "ch02", "portail": "b", "nom": "Marais des Transitoires", "gabarit": "marais",
+      "chapitre": "ch02",
+      "portail": "b",
+      "nom": "Marais des Transitoires",
+      "gabarit": "marais",
       "couleur": "courant",
-      "theme": { "n": "e", "o": "f", "m": "1", "~": "~" },
-      "parasites": ["fuite", "spectre", "court-jus"],
-      "boss": { "nom": "La Bobine Insomniaque", "exemples": [], "serie": 6 },
+      "theme": {
+        "o": "n",
+        "n": "m",
+        "m": "x"
+      },
+      "parasites": [
+        "fuite",
+        "spectre",
+        "court-jus"
+      ],
+      "boss": {
+        "nom": "La Bobine Insomniaque",
+        "exemples": [],
+        "serie": 6
+      },
       "equipement": "casque"
     },
     {
-      "chapitre": "ch03", "portail": "c", "nom": "Observatoire des Mesures", "gabarit": "plaine",
+      "chapitre": "ch03",
+      "portail": "c",
+      "nom": "Observatoire des Mesures",
+      "gabarit": "plaine",
       "couleur": "courant",
-      "theme": { "n": "3", "o": "4", "m": "2", "+": "g" },
-      "parasites": ["harmonique", "spectre", "ohmlette"],
-      "boss": { "nom": "L'Imposteur RMS", "exemples": ["ch03.ex-frequences", "ch03.ex-efficace"], "serie": 3 },
+      "theme": {
+        "n": "3",
+        "o": "4",
+        "m": "2"
+      },
+      "parasites": [
+        "harmonique",
+        "spectre",
+        "ohmlette"
+      ],
+      "boss": {
+        "nom": "L'Imposteur RMS",
+        "exemples": [
+          "ch03.ex-frequences",
+          "ch03.ex-efficace"
+        ],
+        "serie": 3
+      },
       "equipement": "multimetre"
     },
     {
-      "chapitre": "ch04", "portail": "d", "nom": "Forêt de l'Alternatif", "gabarit": "marais",
+      "chapitre": "ch04",
+      "portail": "d",
+      "nom": "Forêt de l'Alternatif",
+      "gabarit": "marais",
       "couleur": "puissance",
-      "theme": { "n": "m", "o": "n", "~": "i" },
-      "parasites": ["harmonique", "spectre", "court-jus"],
-      "boss": { "nom": "Le Déphaseur", "exemples": ["ch04.td-ex2"], "serie": 0 },
+      "theme": {
+        "m": "1",
+        "n": "m",
+        "o": "n",
+        "f": "j",
+        "g": "k",
+        "e": "i",
+        "h": "l"
+      },
+      "parasites": [
+        "harmonique",
+        "spectre",
+        "court-jus"
+      ],
+      "boss": {
+        "nom": "Le Déphaseur",
+        "exemples": [
+          "ch04.td-ex2"
+        ],
+        "serie": 0
+      },
       "equipement": "oscilloscope"
     },
     {
-      "chapitre": "ch05", "portail": "e", "nom": "Forge des Impédances", "gabarit": "forteresse",
+      "chapitre": "ch05",
+      "portail": "e",
+      "nom": "Forge des Impédances",
+      "gabarit": "forteresse",
       "couleur": "tension",
-      "theme": { "n": "u", "o": "v", "m": "a", "+": "c" },
-      "parasites": ["ohmlette", "harmonique", "fuite"],
-      "boss": { "nom": "Le Golem du Four", "exemples": ["ch05.ex-four", "ch05.td-ex2"], "serie": 0 },
+      "theme": {
+        "n": "v",
+        "o": "b",
+        "m": "u",
+        "f": "q",
+        "g": "c",
+        "e": "p",
+        "h": "d"
+      },
+      "parasites": [
+        "ohmlette",
+        "harmonique",
+        "fuite"
+      ],
+      "boss": {
+        "nom": "Le Golem du Four",
+        "exemples": [
+          "ch05.ex-four",
+          "ch05.td-ex2"
+        ],
+        "serie": 0
+      },
       "equipement": "calculatrice"
     },
     {
-      "chapitre": "ch06", "portail": "f", "nom": "Citadelle de Boucherot", "gabarit": "forteresse",
+      "chapitre": "ch06",
+      "portail": "f",
+      "nom": "Citadelle de Boucherot",
+      "gabarit": "forteresse",
       "couleur": "puissance",
-      "theme": { "n": "j", "o": "k", "m": "i", "+": "l" },
-      "parasites": ["spectre", "ohmlette", "court-jus", "harmonique"],
-      "boss": { "nom": "Le Baron Réactif", "exemples": ["ch06.td-ex1", "ch06.td-ex2"], "serie": 0 },
+      "theme": {
+        "n": "4",
+        "o": "5",
+        "m": "3",
+        "f": "j",
+        "g": "k",
+        "e": "i",
+        "h": "l"
+      },
+      "parasites": [
+        "spectre",
+        "ohmlette",
+        "court-jus",
+        "harmonique"
+      ],
+      "boss": {
+        "nom": "Le Baron Réactif",
+        "exemples": [
+          "ch06.td-ex1",
+          "ch06.td-ex2"
+        ],
+        "serie": 0
+      },
       "equipement": "cle"
     }
   ],
   "chantiers": [
-    { "nom": "Citadelle Triphasée", "texte": "Chantier en cours : cette région s'ouvrira quand le cours sur le triphasé sera ajouté." },
-    { "nom": "Usine des Machines", "texte": "Chantier en cours : cette région s'ouvrira avec les cours sur les machines électriques." }
+    {
+      "nom": "Citadelle Triphasée",
+      "texte": "Chantier en cours : cette région s'ouvrira quand le cours sur le triphasé sera ajouté."
+    },
+    {
+      "nom": "Usine des Machines",
+      "texte": "Chantier en cours : cette région s'ouvrira avec les cours sur les machines électriques."
+    }
   ]
 }
