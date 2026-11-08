@@ -57,4 +57,54 @@
     allumage: function () { note(60, 0.6, 'sawtooth', 0.05, 0, 120); bruit(0.2, 0.06, 0.1); }
   };
   A.jouer = function (nom) { if (actif() && SONS[nom]) { try { SONS[nom](); } catch (e) { /* son indisponible */ } } };
+
+  // ---------- Musique d'ambiance (générée, une par lieu) ----------
+  // Chaque morceau : une note de base, une gamme pentatonique, un tempo, et une mélodie tirée d'une graine fixe.
+  const MORCEAUX = {
+    village: { base: 261.6, gamme: [0, 2, 4, 7, 9, 12], tempo: 92, graine: 1, forme: 'triangle' },
+    combat: { base: 220, gamme: [0, 3, 5, 7, 10, 12], tempo: 150, graine: 7, forme: 'square' },
+    boss: { base: 196, gamme: [0, 1, 5, 7, 8, 12], tempo: 132, graine: 9, forme: 'sawtooth' }
+  };
+  const BASES = [220, 196, 246.9, 174.6, 207.6, 233.1, 185, 164.8];
+  let piste = null, minuteurMusique = null, prochaine = 0, pas = 0;
+
+  function morceau(nom) {
+    if (MORCEAUX[nom]) return MORCEAUX[nom];
+    const i = Math.abs(AMP.hacher(String(nom))) % BASES.length;
+    return { base: BASES[i], gamme: [0, 3, 5, 7, 10, 12], tempo: 100 + (i % 3) * 8, graine: i + 3, forme: 'triangle' };
+  }
+  function programmer() {
+    const c = contexte();
+    if (!c || !piste) return;
+    const m = piste.m, croche = 60 / m.tempo / 2;
+    while (prochaine < c.currentTime + 0.25) {
+      const t = prochaine - c.currentTime;
+      const motif = piste.motif[pas % piste.motif.length];
+      if (motif != null) note(m.base * Math.pow(2, m.gamme[motif] / 12), croche * 0.9, m.forme, 0.018, Math.max(0, t));
+      if (pas % 4 === 0) note(m.base / 2 * (pas % 16 < 8 ? 1 : 1.5), croche * 3.5, 'triangle', 0.03, Math.max(0, t));
+      pas++;
+      prochaine += croche;
+    }
+  }
+  // nom : 'village', 'combat', 'boss' ou id de chapitre ; null = silence.
+  A.musique = function (nom) {
+    const voulu = nom && AMP.etat && AMP.etat.options.musique ? nom : null;
+    if (piste && piste.nom === voulu) return;
+    if (minuteurMusique) { clearInterval(minuteurMusique); minuteurMusique = null; }
+    piste = null;
+    if (!voulu) return;
+    const c = contexte();
+    if (!c) return;
+    const m = morceau(voulu), rnd = AMP.hasard(m.graine * 101);
+    const motif = [];
+    for (let i = 0; i < 32; i++) motif.push(rnd() < 0.25 ? null : Math.floor(rnd() * m.gamme.length));
+    piste = { nom: voulu, m: m, motif: motif };
+    prochaine = c.currentTime + 0.1; pas = 0;
+    minuteurMusique = setInterval(programmer, 100);
+  };
+  A.lieuCourant = null;
+  // Le navigateur n'autorise le son qu'après un geste de l'utilisateur : on (re)lance la musique à ce moment-là.
+  ['pointerdown', 'keydown'].forEach(function (t) {
+    window.addEventListener(t, function () { if (A.lieuCourant && !piste) A.musique(A.lieuCourant); }, { passive: true });
+  });
 })();

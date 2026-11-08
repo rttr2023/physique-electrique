@@ -11,6 +11,8 @@
   UI.majHud = function () {
     const e = AMP.etat;
     if (!e) return;
+    const obj = document.getElementById('objectif');
+    if (obj) { const t = AMP.monde.objectif ? AMP.monde.objectif() : ''; obj.textContent = t ? '➤ ' + t : ''; obj.hidden = !t || AMP.scene !== 'monde'; }
     const max = AMP.prog.chargeMax(), emax = AMP.prog.energieMax();
     const lieu = AMP.monde.regionCourante ? AMP.monde.regionCourante() : null;
     $('#hud').innerHTML =
@@ -202,7 +204,7 @@
     const coche = function (k, label, aide) {
       return '<label class="option"><input type="checkbox" data-o="' + k + '"' + (o[k] ? ' checked' : '') + '> <span>' + label + (aide ? '<small>' + aide + '</small>' : '') + '</span></label>';
     };
-    let h = coche('sons', 'Sons') + coche('animations', 'Animations', 'Désactive les éclairs et clignotements si tu y es sensible.') +
+    let h = coche('sons', 'Sons') + coche('musique', 'Musique') + coche('animations', 'Animations', 'Désactive les éclairs et clignotements si tu y es sensible.') +
       coche('horsCours', 'Inclure les éléments « hors cours »', 'Formules ajoutées hors des polycopiés (badge « hors cours »), comme V = V<sub>max</sub>/√2.') +
       coche('chrono', 'Mode chrono', '30 s par question (60 s pour un calcul), dégâts doublés. Pour s\'entraîner aux conditions d\'examen.') +
       '<label class="option"><span>Taille du texte</span><select data-o="texte"><option value="petit">Petite</option><option value="normal">Normale</option><option value="grand">Grande</option></select></label>' +
@@ -218,6 +220,7 @@
       o[k] = ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value;
       if (k === 'horsCours') { AMP.options.horsCours = o.horsCours; AMP.indexer(); AMP.monde.recharger(); }
       if (k === 'texte') document.documentElement.dataset.texte = o.texte;
+      if (k === 'musique') { AMP.audio.musique(null); if (o.musique) AMP.audio.musique(AMP.audio.lieuCourant); }
       if (k === 'animations') document.documentElement.classList.toggle('sans-anim', !o.animations);
       AMP.sauvegarde.sauver();
       if (k === 'test') UI.options();

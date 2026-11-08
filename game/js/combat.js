@@ -27,10 +27,12 @@
       st.ennemi = { nom: r.boss.nom, boss: true, pv: st.etapes.length, pvMax: st.etapes.length, sprite: SP.gardien() };
     } else {
       const def = SP.PARASITES[opts.espece] || SP.PARASITES['court-jus'];
-      const pv = 8 + 2 * r.index + (opts.type === 'corruption' ? 3 : 0);
+      // Équilibrage : 2 à 3 bonnes réponses pour un Parasite, un peu plus dans les régions avancées.
+      const pv = 10 + r.index + (opts.type === 'corruption' ? 2 : 0);
       st.ennemi = { nom: def.nom + (opts.type === 'corruption' ? ' (zone corrompue)' : ''), espece: opts.espece, pv: pv, pvMax: pv, faiblesse: def.faiblesse, sprite: SP.parasite(opts.espece) };
     }
     e.stats.combats++;
+    AMP.audio.musique(opts.type === 'boss' ? 'boss' : 'combat');
     C.actif = true;
     AMP.scene = 'combat';
     document.body.classList.add('mode-combat');
@@ -143,11 +145,29 @@
     }).join('') + '<button data-outil="codex">📖 Grimoire</button>' + (st.ennemi.boss ? '' : '<button data-outil="fuir">🏃 Fuir</button>');
     panneau.innerHTML = tete() + '<div class="c-type">' + etiquette + '</div>' + (q.contexte || '') +
       '<div class="c-question">' + (q.type === 'etape' ? '' : '<h3>' + AMP.esc(q.titre) + '</h3>') + q.enonceHtml + '</div>' +
-      '<div class="c-aide"></div><div class="c-reponse">' + rep + '</div><div class="c-outils">' + outils + '</div>';
+      '<div class="c-aide">' + tutoriel(q) + '</div><div class="c-reponse">' + rep + '</div><div class="c-outils">' + outils + '</div>';
     panneau.scrollTop = 0;
     const champ = panneau.querySelector('.c-valeur');
     if (champ && !document.body.classList.contains('tactile')) champ.focus();
     else { const b = panneau.querySelector('.choix, .valider'); if (b && !document.body.classList.contains('tactile')) b.focus({ preventScroll: true }); }
+  }
+
+  // Explication affichée la première fois qu'on rencontre chaque type d'attaque.
+  const TUTOS = {
+    premier: 'Réponds juste pour attaquer. Une erreur ? Le Parasite riposte (tu perds de la ⚡ Charge), puis la correction s’affiche. Rien n’est perdu : la question reviendra plus tard.',
+    eclair: 'Éclair : choisis la bonne définition ou la bonne notion (touches 1 à 4 au clavier).',
+    soudure: 'Soudure : la case encadrée cache un symbole. Choisis celui qui complète la formule.',
+    arc: 'Arc calculé : écris la valeur (virgule acceptée), choisis le préfixe (m, k…) et l’unité, puis Valider. Tolérance : 2 %. Bonne valeur avec la mauvaise unité = demi-réussite.',
+    diagnostic: 'Diagnostic : retrouve l’unité d’une grandeur, ou la relation qui correspond à une situation.',
+    contre: 'Contre-piège : cette affirmation est-elle vraie ou fausse ? Méfie-toi, les pièges du cours sont là.',
+    etape: 'Étape du Gardien : c’est l’exercice du TD, étape par étape. Les résultats trouvés s’affichent sous l’énoncé pour la suite.',
+    competences: 'Les compétences en bas coûtent de l’Énergie ◆ (rechargée à chaque bonne réponse). Le Grimoire est consultable à tout moment.'
+  };
+  function tutoriel(q) {
+    const t = AMP.etat.tutos || (AMP.etat.tutos = {});
+    const l = [];
+    ['premier', q.type, 'competences'].forEach(function (k) { if (!t[k] && TUTOS[k]) { t[k] = true; l.push(TUTOS[k]); } });
+    return l.map(function (x) { return '<div class="memo tuto">💡 ' + AMP.esc(x) + '</div>'; }).join('');
   }
 
   function competenceUtilisable(k) {
@@ -251,7 +271,7 @@
       let dmg;
       if (st.ennemi.boss) { dmg = 1; if (res === 'demi') st.erreurs++; }
       else {
-        dmg = { 1: 3, 2: 4, 3: 6 }[q.etoiles] || 3;
+        dmg = { 1: 4, 2: 5, 3: 7 }[q.etoiles] || 4;
         if (st.ennemi.faiblesse === q.type) dmg *= 1.5;
         if (P.a('oscilloscope') && (q.type === 'soudure' || q.type === 'diagnostic')) dmg *= 1.3;
         if (P.a('cle') && q.type === 'arc') dmg *= 1.2;
@@ -265,6 +285,7 @@
       st.xp += xp;
       niveaux.push.apply(niveaux, P.gagnerXp(xp));
       st.effets.push({ type: 'eclair', t: 0, duree: 0.45 });
+      for (let k = 0; k < 14; k++) st.effets.push({ type: 'etincelle', t: 0, duree: 0.5 + Math.random() * 0.4, vx: (Math.random() - 0.5) * 140, vy: -Math.random() * 120, c: AMP.choisir(['#ffc65c', '#ffffff', '#3fd2d6']) });
       st.effets.push({ type: 'nombre', t: 0, duree: 1, texte: st.ennemi.boss ? '−1 étape' : '−' + dmg, cote: 'ennemi' });
       st.coup = 0.4;
       AMP.audio.jouer(res === 'juste' ? 'juste' : 'demi');
@@ -379,6 +400,7 @@
     AMP.jeu.redimensionner();
     const fin = st.fin;
     st = null;
+    AMP.audio.musique(AMP.audio.lieuCourant);
     AMP.entree.vider();
     AMP.jeu.flash(0.25, function () { fin(res || {}); });
   }
@@ -415,6 +437,9 @@
     z.innerHTML = '<div class="correction">' + st.q.correctionHtml + '</div><p>Avais-tu trouvé ?</p><div class="choix-liste vf"><button class="choix" data-auto="oui">✔ J\'avais juste</button><button class="choix" data-auto="non">✘ Je m\'étais trompé·e</button></div>';
     st.q.correctionHtml = '';
   }
+
+  // Lecture de l'état (tests automatiques uniquement).
+  C.debug = function () { return st; };
 
   C.retourCodex = function () { /* le panneau de combat reste en place sous la fenêtre */ };
 
@@ -491,6 +516,10 @@
         const x0 = W * 0.25 + 10, y0 = H * 0.9 - 40, x1 = W * 0.72, y1 = H * 0.62 - sh / 2;
         for (let k = 0; k < (anim ? 3 : 1); k++) AMP.monde.arc(ctx, x0, y0, x1, y1, k ? '#ffc65c' : '#ffffff', k ? 1 : 2);
         if (anim) { ctx.fillStyle = 'rgba(255,255,255,' + (0.25 * (1 - f.t / 0.3)) + ')'; ctx.fillRect(0, 0, W, H); }
+      }
+      if (f.type === 'etincelle' && anim) {
+        ctx.fillStyle = f.c;
+        ctx.fillRect(Math.round(W * 0.72 + f.vx * f.t), Math.round(H * 0.62 - sh / 2 + f.vy * f.t + 160 * f.t * f.t), 2, 2);
       }
       if (f.type === 'riposte' && anim) { ctx.fillStyle = 'rgba(184,38,59,' + (0.3 * (1 - f.t / f.duree)) + ')'; ctx.fillRect(-10, -10, W + 20, H + 20); }
       if (f.type === 'nombre') {

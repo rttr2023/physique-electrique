@@ -57,6 +57,9 @@ a { color: var(--courant); }
 .boutons .appui { transform: scale(.92); filter: brightness(1.3); }
 
 /* ---------- Bannières et messages ---------- */
+#objectif { position: absolute; top: 6px; left: 6px; max-width: calc(100% - 12px); background: rgba(11,14,26,.78); border-left: 3px solid var(--tension); border-radius: 0 4px 4px 0; padding: 3px 8px; font-size: .8em; color: var(--creme); pointer-events: none; z-index: 4; }
+.mode-combat #objectif { display: none; }
+.tuto { border-color: var(--tension-2) !important; }
 #banniere { position: absolute; top: 12%; left: 50%; transform: translateX(-50%); text-align: center; pointer-events: none; opacity: 0; background: rgba(11,14,26,.85); border: 1px solid var(--tension-2); border-radius: 6px; padding: 6px 16px; max-width: 90%; }
 #banniere strong { display: block; color: var(--tension); font: 700 1.15em ui-monospace, monospace; letter-spacing: .05em; }
 #banniere span { color: var(--acier-3); font-size: .85em; }

@@ -11,13 +11,18 @@
   const TOUCHES_ACTION = { ' ': 'A', Enter: 'A', e: 'A', Escape: 'menu', Backspace: 'B', x: 'B', c: 'codex', m: 'menu' };
 
   // Direction tenue : la dernière pressée gagne.
-  // E.tape garde un appui bref (touche relâchée avant l'image suivante) pour qu'il fasse quand même un pas.
-  function appuyer(d) { E.pile = E.pile.filter(function (x) { return x !== d; }); E.pile.push(d); E.dir = d; E.tape = d; }
-  E.direction = function () { const d = E.dir || E.tape; E.tape = null; return d; };
+  // Chaque appui (même très bref) fait un pas : les appuis sont mis en file (3 au plus).
+  // Une touche maintenue continue ensuite le déplacement.
+  E.taps = [];
+  function appuyer(d, repete) {
+    E.pile = E.pile.filter(function (x) { return x !== d; }); E.pile.push(d); E.dir = d;
+    if (!repete && E.taps.length < 3) E.taps.push(d);
+  }
+  E.direction = function () { return E.taps.length ? E.taps.shift() : E.dir; };
   function relacher(d) { E.pile = E.pile.filter(function (x) { return x !== d; }); E.dir = E.pile[E.pile.length - 1] || null; }
   E.action = function (a) { E.actions.push(a); };
   E.prendre = function () { const a = E.actions.slice(); E.actions.length = 0; return a; };
-  E.vider = function () { E.pile = []; E.dir = null; E.tape = null; E.actions.length = 0; };
+  E.vider = function () { E.pile = []; E.dir = null; E.taps = []; E.actions.length = 0; };
 
   // Le clavier ne pilote le personnage que quand aucune fenêtre HTML (question, codex) n'a le focus.
   function saisieActive(ev) {
@@ -28,7 +33,7 @@
     if (saisieActive(ev)) return;
     const k = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key;
     if (AMP.ui && AMP.ui.clavier && AMP.ui.clavier(ev, k)) { ev.preventDefault(); return; } // fenêtre ouverte
-    if (TOUCHES_DIR[k]) { appuyer(TOUCHES_DIR[k]); ev.preventDefault(); }
+    if (TOUCHES_DIR[k]) { appuyer(TOUCHES_DIR[k], ev.repeat); ev.preventDefault(); }
     else if (TOUCHES_ACTION[k] && !ev.repeat) { E.action(TOUCHES_ACTION[k]); ev.preventDefault(); }
   });
   window.addEventListener('keyup', function (ev) {
@@ -49,7 +54,7 @@
       E.pile = [d]; E.dir = d;
       croix.dataset.dir = d;
     }
-    croix.addEventListener('pointerdown', function (ev) { doigt = ev.pointerId; croix.setPointerCapture(doigt); viser(ev); ev.preventDefault(); });
+    croix.addEventListener('pointerdown', function (ev) { doigt = ev.pointerId; croix.setPointerCapture(doigt); viser(ev); if (E.dir && E.taps.length < 3) E.taps.push(E.dir); ev.preventDefault(); });
     croix.addEventListener('pointermove', function (ev) { if (ev.pointerId === doigt) viser(ev); });
     const fin = function (ev) { if (ev.pointerId !== doigt) return; doigt = null; E.pile = []; E.dir = null; croix.dataset.dir = ''; };
     croix.addEventListener('pointerup', fin); croix.addEventListener('pointercancel', fin);

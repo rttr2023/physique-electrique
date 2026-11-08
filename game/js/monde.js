@@ -17,6 +17,7 @@
   let zonesFinies = 0;
   let temps = 0;
   let pasDepuisCombat = 0;
+  let restauration = null;     // animation de remise sous tension : { t, x, y, anciens }
   const J = { x: 0, y: 0, px: 0, py: 0, dir: 'bas', mouv: null, pas: 0 };
 
   M.regionCourante = function () { return lieu && lieu.region; };
@@ -52,6 +53,8 @@
     J.x = p.x; J.y = p.y; J.dir = (pos && pos.dir) || 'bas'; J.mouv = null;
     J.px = J.x * T; J.py = J.y * T;
     AMP.etat.lieu = { carte: id, x: J.x, y: J.y, dir: J.dir };
+    AMP.audio.lieuCourant = region ? region.ch.id : 'village';
+    AMP.audio.musique(AMP.audio.lieuCourant);
     if (!region) {
       AMP.prog.soigner();
       AMP.ui.banniere(D.village.nom, 'Batteries rechargées');
@@ -123,6 +126,28 @@
     return n;
   }
   M.zonesFinies = function () { return zonesFinies; };
+  // Lecture des objets de la carte (tests automatiques uniquement).
+  M.debug = function () { return { lieu: lieu, carte: carte, pnjs: pnjs, corruption: corruption, portails: portails }; };
+
+  // Objectif affiché en haut de l'écran : ce qu'il faut faire maintenant.
+  M.objectif = function () {
+    if (!lieu || !carte) return '';
+    const D = AMP.donnees;
+    if (!lieu.region) {
+      const suivante = D.regions.find(function (r) { return !M.restauree(r.ch.id); });
+      let reviser = 0; D.regions.forEach(function (r) { reviser += AMP.srs.aReviser(r.ch.id).length; });
+      if (!suivante) return reviser ? 'Ampéria est rallumé ! ' + reviser + ' élément(s) à réviser dans les régions.' : 'Ampéria est rallumé ! Reviens réviser de temps en temps.';
+      return M.debloquee(suivante) ? 'Prends le portail de ' + suivante.nom + '.' : 'Renforce ta maîtrise pour ouvrir ' + suivante.nom + '.';
+    }
+    if (zonesFinies < carte.nbZones) {
+      const z = pnjs.filter(function (p) { return p.zone === zonesFinies; });
+      const faits = z.filter(function (p) { return p.ids.every(AMP.srs.decouvert); }).length;
+      return 'Écoute les habitants marqués « ! » (zone ' + (zonesFinies + 1) + '/' + carte.nbZones + ' : ' + faits + '/' + z.length + ').';
+    }
+    if (!M.restauree(lieu.region.ch.id)) return 'La porte du poste est ouverte : affronte ' + lieu.region.boss.nom + ' !';
+    if (corruption.length) return 'Purifie les zones corrompues (' + corruption.length + ') : marche sur les taches rouges.';
+    return 'Région restaurée ✓ Entraîne-toi dans les herbes hautes, ou rejoins le village (sortie à l’ouest).';
+  };
 
   // ---------- Zones corrompues ----------
   function majCorruption() {
@@ -240,7 +265,11 @@
       return;
     }
     if (res.boss) {
+      // La région reprend ses couleurs depuis le poste, en cercle qui s'agrandit.
+      const anciens = caches;
       AMP.monde.recharger();
+      if (AMP.etat.options.animations && carte.boss) restauration = { t: 0, x: carte.boss.x * T + 8, y: carte.boss.y * T + 8, anciens: anciens };
+      AMP.audio.jouer('allumage');
       AMP.ui.banniere(lieu.region.nom, 'Région restaurée !');
     }
     majCorruption();
@@ -357,7 +386,21 @@
     const camY = Math.round(Math.max(0, Math.min(carte.h * T - H, J.py + 8 - H / 2)));
     ctx.fillStyle = '#0b0e1a';
     ctx.fillRect(0, 0, W, H);
-    ctx.drawImage(caches[Math.floor(temps * 1.6) % 2], camX, camY, W, H, 0, 0, W, H);
+    const image = Math.floor(temps * 1.6) % 2;
+    if (restauration) {
+      restauration.t += 1 / 60;
+      const rayon = restauration.t * 260;
+      ctx.drawImage(restauration.anciens[image], camX, camY, W, H, 0, 0, W, H);
+      ctx.save();
+      ctx.beginPath(); ctx.arc(restauration.x - camX, restauration.y - camY, rayon, 0, Math.PI * 2); ctx.clip();
+      ctx.drawImage(caches[image], camX, camY, W, H, 0, 0, W, H);
+      ctx.restore();
+      ctx.strokeStyle = 'rgba(255,198,92,.8)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(restauration.x - camX, restauration.y - camY, rayon, 0, Math.PI * 2); ctx.stroke();
+      if (rayon > 900) restauration = null;
+    } else {
+      ctx.drawImage(caches[image], camX, camY, W, H, 0, 0, W, H);
+    }
     ctx.save();
     ctx.translate(-camX, -camY);
     const objets = [];

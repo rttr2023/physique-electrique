@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Test automatique d'Ampéria</title>
+<style>body{font:14px monospace;background:#111;color:#ddd;padding:12px} iframe{width:960px;height:540px;border:1px solid #444} .ok{color:#6c4} .ko{color:#f66}</style>
+</head>
+<body>
+<h1>Partie automatique d'Ampéria</h1>
+<p>Joue une partie complète (les 6 régions) dans le cadre ci-dessous et vérifie chaque étape.
+Ta propre sauvegarde est mise de côté pendant le test puis restaurée.</p>
+<pre id="resultat">En cours…</pre>
+<iframe id="jeu"></iframe>
+<script>
+// Parcours scripté : utilise les fonctions du jeu (AMP) comme le ferait un joueur qui répond toujours juste,
+// sauf pour tester les erreurs et la défaite.
+(async function () {
+  'use strict';
+  const CLE = 'amperia-sauvegarde';
+  const lignes = [];
+  let echecs = 0;
+  const out = document.getElementById('resultat');
+  const ok = (c, m) => { lignes.push((c ? 'OK     ' : 'ÉCHEC  ') + m); if (!c) echecs++; out.textContent = lignes.join('\n'); };
+  const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
+  async function attendre(f, ms) { const t0 = Date.now(); while (Date.now() - t0 < (ms || 8000)) { try { if (f()) return true; } catch (e) { /* pas prêt */ } await dormir(50); } return false; }
+
+  const sauvegardeJoueur = localStorage.getItem(CLE);
+  localStorage.removeItem(CLE);
+  const ifr = document.getElementById('jeu');
+  ifr.src = '../index.html';
+  await attendre(() => ifr.contentWindow.AMP && ifr.contentWindow.AMP.scene === 'titre', 15000);
+  const w = ifr.contentWindow, AMP = w.AMP, doc = w.document;
+  const erreurs = [];
+  w.addEventListener('error', (e) => erreurs.push(e.message + ' @' + (e.filename || '').split('/').pop() + ':' + e.lineno));
+  ok(AMP.scene === 'titre', 'écran titre affiché');
+
+  try {
+    // ---------- Début de partie ----------
+    doc.querySelector('.nom').value = 'Robot';
+    doc.querySelector('.go').click();
+    ok(await attendre(() => AMP.scene === 'monde'), 'partie lancée, village');
+    await attendre(() => AMP.ui.dialogueActif, 3000);
+    await finirDialogues();
+    ok(AMP.etat.introVue, 'dialogue d\'introduction du mentor');
+
+    for (const region of AMP.donnees.regions) {
+      // ---------- Entrer par le portail (déplacement réel d'une case) ----------
+      if (AMP.monde.regionCourante()) { AMP.monde.entrer('village'); await dormir(100); }
+      const portail = AMP.monde.debug().portails.find((p) => p.region === region);
+      ok(portail && portail.ouvert, region.nom + ' : portail ouvert');
+      if (!portail || !portail.ouvert) break;
+      await marcherVers(portail.x, portail.y);
+      ok(await attendre(() => AMP.monde.regionCourante() === region, 4000), region.nom + ' : entrée par le portail');
+
+      // ---------- Habitants ----------
+      const dbg = AMP.monde.debug();
+      const pnjs = dbg.pnjs.slice().sort((a, b) => a.zone - b.zone);
+      for (const p of pnjs) await parlerA(p);
+      ok(AMP.monde.zonesFinies() === dbg.carte.nbZones, region.nom + ' : toutes les zones ouvertes (' + AMP.monde.zonesFinies() + '/' + dbg.carte.nbZones + ')');
+      const nbItems = AMP.donnees.parChapitre[region.ch.id].length;
+      const decouverts = AMP.donnees.parChapitre[region.ch.id].filter((it) => AMP.srs.decouvert(it.id)).length;
+      ok(decouverts === nbItems, region.nom + ' : ' + decouverts + '/' + nbItems + ' éléments découverts');
+
+      // ---------- Un combat ordinaire, tout juste ----------
+      AMP.combat.lancer({ type: 'rencontre', region: region, espece: region.parasites[0], focus: [] }, AMP.monde.apresCombat);
+      const r1 = await jouerCombat(() => true);
+      ok(r1.victoire, region.nom + ' : victoire contre un Parasite (' + r1.questions + ' questions : ' + r1.types.join(', ') + ')');
+
+      // ---------- Boss (une erreur volontaire à la 2e étape) ----------
+      const boss = dbg.carte.boss;
+      await seTenirFace(boss.x, boss.y);
+      AMP.entree.action('A');
+      await attendre(() => AMP.ui.dialogueActif, 2000);
+      await finirDialogues();
+      const go = await attendre(() => doc.querySelector('[data-g="go"]'), 2000);
+      ok(go, region.nom + ' : proposition de combat contre le Gardien');
+      doc.querySelector('[data-g="go"]').click();
+      await attendre(() => AMP.combat.actif, 3000);
+      let n = 0;
+      const rb = await jouerCombat(() => ++n !== 2);
+      ok(rb.victoire, region.nom + ' : Gardien vaincu en ' + rb.questions + ' questions (dont 1 ratée et rejouée)');
+      await dormir(300);
+      ok(AMP.monde.restauree(region.ch.id), region.nom + ' : région restaurée (rang ' + (AMP.etat.regions[region.ch.id] || {}).boss + ')');
+      ok(!region.equipement || AMP.prog.a(region.equipement), region.nom + ' : équipement reçu (' + region.equipement + ')');
+    }
+
+    // ---------- Zones corrompues ----------
+    const v = AMP.donnees.regions[0];
+    AMP.monde.entrer(v.ch.id); await dormir(100);
+    AMP.etat.decalageJours = 20; AMP.decalageJours = 20; AMP.monde.recharger();
+    const cor = AMP.monde.debug().corruption;
+    ok(cor.length > 0, 'zones corrompues après 20 jours : ' + cor.length);
+    if (cor.length) {
+      await marcherVers(cor[0].x, cor[0].y);
+      ok(await attendre(() => AMP.combat.actif, 3000), 'marcher sur une zone corrompue lance un combat');
+      const rc = await jouerCombat(() => true);
+      ok(rc.victoire, 'zone corrompue purifiée');
+      await dormir(200);
+      ok(AMP.monde.debug().corruption.length < cor.length, 'il reste ' + AMP.monde.debug().corruption.length + ' zone(s) corrompue(s)');
+    }
+
+    // ---------- Défaite ----------
+    AMP.combat.lancer({ type: 'rencontre', region: v, espece: 'spectre', focus: [] }, AMP.monde.apresCombat);
+    const rd = await jouerCombat(() => false);
+    await dormir(400);
+    ok(rd.defaite && !AMP.monde.regionCourante() && AMP.etat.charge === AMP.prog.chargeMax(), 'défaite : retour au village, Charge rechargée');
+    await finirDialogues();
+
+    // ---------- Options, menus, grimoire ----------
+    AMP.etat.options.horsCours = false; AMP.options.horsCours = false; AMP.indexer(); AMP.monde.recharger();
+    ok(!Object.values(AMP.donnees.items).some((it) => it.el.origine === 'hors_cours'), 'option « hors cours » désactivée : éléments retirés');
+    AMP.etat.options.horsCours = true; AMP.options.horsCours = true; AMP.indexer(); AMP.monde.recharger();
+    for (const f of ['menu', 'carnet', 'equipement', 'options', 'sauvegarde', 'aide']) {
+      AMP.ui[f](); ok(!doc.getElementById('fenetre').hidden, 'fenêtre « ' + f + ' »'); AMP.ui.fermer();
+    }
+    AMP.codex.ouvrir();
+    for (const o of ['formule', 'notion', 'piege', 'fiche']) { doc.querySelector('[data-onglet="' + o + '"]').click(); ok(doc.querySelectorAll('.codex-carte, .fiche-table').length > 0, 'grimoire, onglet ' + o); }
+    AMP.ui.fermer();
+    AMP.sauvegarde.sauver(true);
+    const s = JSON.parse(localStorage.getItem(CLE));
+    ok(s && s.nom === 'Robot' && Object.keys(s.regions).length === 6, 'sauvegarde écrite (niveau ' + s.niveau + ', ' + Object.keys(s.elements).length + ' éléments)');
+  } catch (e) {
+    ok(false, 'exception : ' + e.message + '\n' + e.stack);
+  }
+  ok(erreurs.length === 0, 'aucune erreur JavaScript' + (erreurs.length ? ' : ' + erreurs.join(' | ') : ''));
+
+  // Restauration de la sauvegarde du joueur.
+  if (sauvegardeJoueur) localStorage.setItem(CLE, sauvegardeJoueur); else localStorage.removeItem(CLE);
+  lignes.push('', echecs ? 'RÉSULTAT : ' + echecs + ' échec(s)' : 'RÉSULTAT : tout est OK');
+  out.textContent = lignes.join('\n');
+  document.title = 'FINI';
+
+  // ---------- Outils du parcours ----------
+  async function finirDialogues() {
+    for (let i = 0; i < 80 && AMP.ui.dialogueActif; i++) { AMP.ui.dialogueSuite(); await dormir(10); }
+  }
+  // Place le joueur sur une case voisine libre, puis fait un vrai pas vers (x, y).
+  async function marcherVers(x, y) {
+    const c = AMP.monde.debug().carte;
+    const z = AMP.monde.zonesFinies();
+    const dirs = [['droite', -1, 0], ['gauche', 1, 0], ['bas', 0, -1], ['haut', 0, 1]];
+    for (const [d, dx, dy] of dirs) {
+      const vx = x + dx, vy = y + dy;
+      if (!c.solide(vx, vy, z) && !AMP.monde.debug().pnjs.some((p) => p.x === vx && p.y === vy)) {
+        const J = AMP.monde.joueur; J.x = vx; J.y = vy; J.px = vx * 16; J.py = vy * 16; J.mouv = null; J.dir = d;
+        AMP.entree.vider(); AMP.entree.taps.push(d);
+        await dormir(400);
+        return;
+      }
+    }
+    throw new Error('aucune case libre à côté de (' + x + ',' + y + ')');
+  }
+  async function seTenirFace(x, y) {
+    const c = AMP.monde.debug().carte, z = AMP.monde.zonesFinies();
+    const vu = c.atteignables(z);
+    for (const [d, dx, dy] of [['haut', 0, 1], ['bas', 0, -1], ['gauche', 1, 0], ['droite', -1, 0]]) {
+      const vx = x + dx, vy = y + dy;
+      if (vu[vy * c.w + vx] && !AMP.monde.debug().pnjs.some((p) => p.x === vx && p.y === vy)) {
+        const J = AMP.monde.joueur; J.x = vx; J.y = vy; J.px = vx * 16; J.py = vy * 16; J.mouv = null; J.dir = d;
+        return;
+      }
+    }
+    throw new Error('impossible d\'atteindre (' + x + ',' + y + ')');
+  }
+  async function parlerA(p) {
+    await seTenirFace(p.x, p.y);
+    AMP.entree.vider(); AMP.entree.action('A');
+    await attendre(() => AMP.ui.dialogueActif, 2000);
+    await finirDialogues();
+  }
+  // Joue un combat. juste() : faut-il répondre juste à cette question ?
+  async function jouerCombat(juste) {
+    const res = { questions: 0, types: [], victoire: false, defaite: false };
+    for (let tour = 0; tour < 80 && AMP.combat.actif; tour++) {
+      const st = AMP.combat.debug();
+      if (!st) break;
+      if (st.phase === 'fin') {
+        res.victoire = !!st.resultatFinal.victoire; res.defaite = !!st.resultatFinal.defaite;
+        doc.querySelector('#panneau .continuer').click();
+        await attendre(() => !AMP.combat.actif, 2000);
+        await dormir(300);
+        return res;
+      }
+      if (st.phase === 'question') {
+        const q = st.q, bien = juste();
+        res.questions++; if (res.types.indexOf(q.type) < 0) res.types.push(q.type);
+        const P = doc.getElementById('panneau');
+        if (q.mode === 'choix') {
+          const i = q.choix.findIndex((c) => c.juste === bien);
+          P.querySelector('.choix[data-i="' + i + '"]').click();
+        } else if (q.mode === 'saisie') {
+          const val = bien ? q.attendu.valeur : q.attendu.valeur * 3 + 1;
+          P.querySelector('.c-valeur').value = String(val).replace('.', ',');
+          const u = [...P.querySelectorAll('[data-unite]')].find((b) => b.dataset.unite === q.attendu.unite);
+          u.click();
+          P.querySelector('.saisie ~ .valider, .c-reponse > .valider').click();
+        } else {
+          P.querySelector('[data-voir]').click();
+          P.querySelector('[data-auto="' + (bien ? 'oui' : 'non') + '"]').click();
+        }
+        await dormir(20);
+        if (st.phase !== 'retour' && st.phase !== 'fin') throw new Error('réponse non prise en compte (' + q.type + ', mode ' + q.mode + ')');
+        P.querySelector('.continuer').click();
+        await dormir(20);
+      }
+    }
+    return res;
+  }
+})();
+</script>
+</body>
+</html>
