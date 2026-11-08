@@ -25,7 +25,7 @@ directement d'un scan est signalé (voir « Traçabilité »).
 | Champ | Contenu |
 |---|---|
 | `source` | `{ "fichier": "A1-Ch01-p02.pdf", "page": 1, "zone": "§ 4" }` (chaque PDF fait une page) |
-| `origine` | `"scan"` : texte imprimé du polycopié · `"manuscrit"` : annotation à la main sur le scan · `"déduit"` : reformulation ou rapprochement fait à partir du scan, sans connaissance extérieure |
+| `origine` | `"scan"` : texte imprimé du polycopié · `"manuscrit"` : annotation à la main sur le scan · `"déduit"` : reformulation, rapprochement ou calcul fait à partir du scan, sans connaissance extérieure · `"hors_cours"` : absent des scans, ajouté avec des connaissances générales (expliqué dans `ajouts`) |
 | `ajouts` | liste (souvent vide) de ce qui a été complété **hors scan**, avec des connaissances générales. Ex. : `"unités : non écrites sur le scan"` |
 | `à_vérifier` | `true` si le passage est illisible, ambigu ou contradictoire ; la raison est dans `note` |
 | `note` | facultatif : précision, doute, écart avec le polycopié |

@@ -1,0 +1,697 @@
+{
+  "id": "ch05",
+  "annee": 1,
+  "numero": 5,
+  "titre": "Modélisation des systèmes électriques",
+  "sources": ["A1-Ch05-p01.pdf", "A1-Ch05-p02.pdf", "A1-Ch05-p03.pdf", "A1-Ch05-p04.pdf", "A1-Ch05-p05.pdf", "A1-Ch05-p06.pdf", "A1-Ch05-p07.pdf"],
+  "objectifs": [
+    "7.1 Savoir ce que modélise une résistance dans un schéma équivalent",
+    "7.2 Savoir calculer la valeur efficace du courant traversant un dipôle, connaissant son impédance et la valeur efficace de la tension à ses bornes",
+    "7.3 Connaître la valeur du déphasage et l'expression de l'impédance pour une résistance, une inductance pure (bobine idéale) et un condensateur idéal",
+    "7.4 Connaître l'expression de l'impédance et du déphasage pour une association R, L série",
+    "7.5 Savoir tracer la représentation de Fresnel correspondant à une relation"
+  ],
+
+  "notions": [
+    {
+      "id": "ch05.effet-resistif",
+      "nom": "Effet résistif (effet Joule)",
+      "definition": "Tout conducteur parcouru par un courant dégage une chaleur proportionnelle au carré de l'intensité. Ce dégagement de chaleur est modélisé par une résistance R : plus le système chauffe pour un courant donné, plus R est grande.",
+      "source": { "fichier": "A1-Ch05-p02.pdf", "page": 1, "zone": "annexe, § 1" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.effet-inductif",
+      "nom": "Effet inductif",
+      "definition": "Un conducteur parcouru par un courant émet un champ magnétique. Quand il n'est pas négligeable (transformateur, machine tournante, câble à forte intensité…), l'induction crée un retard du courant sur la tension. Modélisé par une bobine idéale d'inductance L.",
+      "source": { "fichier": "A1-Ch05-p02.pdf", "page": 1, "zone": "annexe, § 2" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.effet-capacitif",
+      "nom": "Effet capacitif",
+      "definition": "Phénomènes électrostatiques : accumulation momentanée d'électrons. En sinusoïdal, avance du courant sur la tension. Cas des condensateurs, mais aussi de deux câbles proches séparés par leurs gaines (« une sorte de condensateur »). Modélisé par un condensateur idéal de capacité C.",
+      "source": { "fichier": "A1-Ch05-p02.pdf", "page": 1, "zone": "annexe, § 3" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.modele-cable",
+      "nom": "Modèle d'un câble",
+      "definition": "Un long câble (≈ 300 m) parcouru par un fort courant : pertes Joule → résistance R ; phénomènes magnétiques → inductance L. Si l'électrostatique est négligeable : R en série avec L. R et L se déterminent par une mesure de puissance en amont et en aval.",
+      "source": { "fichier": "A1-Ch05-p02.pdf", "page": 1, "zone": "annexe, § 4 ; suite sur A1-Ch05-p03.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.impedance",
+      "nom": "Impédance Z",
+      "definition": "Pour un dipôle soumis à une tension sinusoïdale de valeur efficace V et traversé par un courant de valeur efficace I : Z = V/I, en ohms (Ω).",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 5" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.resistance-phase",
+      "nom": "Résistance : en phase",
+      "definition": "Pour une résistance, courant et tension sont en phase (φ = 0) : c'est le cas idéal au niveau du déphasage.",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 6, cas de la résistance" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.inductance-retard",
+      "nom": "Inductance pure : courant en retard de 90°",
+      "definition": "Pour une inductance pure (bobine idéale), le courant est en retard sur la tension : φ = 90° = π/2 rad.",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 6, cas de l'inductance pure" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.condensateur-avance",
+      "nom": "Condensateur : courant en avance de 90°",
+      "definition": "Pour un condensateur, le courant est en avance sur la tension : φ = −90° = −π/2 rad.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 6, cas du condensateur" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.role-j",
+      "nom": "Rôle de j en notation complexe",
+      "definition": "Multiplier par j représente un angle de 90° entre I et V ; diviser par j représente un angle de −90°.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 6, remarques" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.bobine-reelle",
+      "nom": "Bobine réelle",
+      "definition": "Une bobine réelle n'est pas idéale : ses pertes Joule sont modélisées par une résistance r en série avec l'inductance pure L (ex. bobines de TP : L = 1,1 H, r = 12 Ω).",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 7" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.methode-fresnel",
+      "nom": "Méthode : déphasage et impédance d'un modèle",
+      "definition": "On écrit la relation complexe (V = V_r + V_L = rI + jLωI), on trace la représentation de Fresnel (I origine des phases), puis trigonométrie (tan φ) et Pythagore (Z) dans le triangle rectangle.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 7 ; triangle sur A1-Ch05-p05.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.etats-limites",
+      "nom": "Condensateur et bobine à t = 0⁺ et t → ∞",
+      "definition": "Juste après la fermeture (t = 0⁺), un condensateur déchargé se comporte comme un fil et une bobine sans courant comme un interrupteur ouvert. En régime permanent (t → ∞), c'est l'inverse : condensateur = circuit ouvert, bobine = fil.",
+      "source": { "fichier": "A1-Ch05-p07.pdf", "page": 1, "zone": "exercices supplémentaires A et B (énoncés seulement)" },
+      "origine": "hors_cours", "ajouts": ["méthode absente des scans (les exercices A et B n'ont ni cours ni corrigé) ; l'état t → ∞ rejoint le ch01 (condensateur = circuit ouvert, bobine = court-circuit en continu)"], "à_vérifier": true,
+      "note": "Hors cours : à valider par Romain (ou par le professeur) avant utilisation dans le jeu."
+    }
+  ],
+
+  "formules": [
+    {
+      "id": "ch05.impedance-def", "site_id": null,
+      "nom": "Définition de l'impédance",
+      "latex": "Z = \\dfrac{V}{I}",
+      "variables": [
+        { "symbole": "Z", "code": "Z", "signification": "impédance du dipôle", "unite": "Ω" },
+        { "symbole": "V", "code": "V", "signification": "tension efficace aux bornes", "unite": "V" },
+        { "symbole": "I", "code": "I", "signification": "courant efficace", "unite": "A" }
+      ],
+      "conditions": "Régime sinusoïdal, valeurs efficaces.",
+      "calcul": { "cible": "Z", "expression": "V/I" },
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 5" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.ohm-sinus", "site_id": "ohm",
+      "nom": "Loi d'Ohm en sinusoïdal",
+      "latex": "V = Z I",
+      "variables": [
+        { "symbole": "V", "code": "V", "signification": "tension efficace aux bornes", "unite": "V" },
+        { "symbole": "Z", "code": "Z", "signification": "impédance", "unite": "Ω" },
+        { "symbole": "I", "code": "I", "signification": "courant efficace", "unite": "A" }
+      ],
+      "conditions": "Régime sinusoïdal, valeurs efficaces, pour n'importe quel dipôle.",
+      "calcul": { "cible": "V", "expression": "Z*I" },
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 5, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.zr", "site_id": "ZR",
+      "nom": "Impédance d'une résistance",
+      "latex": "Z = R \\quad ; \\quad \\varphi = 0",
+      "variables": [
+        { "symbole": "Z", "code": "Z", "signification": "impédance", "unite": "Ω" },
+        { "symbole": "R", "code": "R", "signification": "résistance", "unite": "Ω" }
+      ],
+      "conditions": "Résistance : courant et tension en phase. V = RI.",
+      "calcul": { "cible": "Z", "expression": "R" },
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 6, encadrés" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.zl", "site_id": "ZL",
+      "nom": "Impédance d'une inductance pure",
+      "latex": "Z = L\\omega \\quad ; \\quad \\varphi = +90^\\circ",
+      "variables": [
+        { "symbole": "Z", "code": "Z", "signification": "impédance", "unite": "Ω" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" }
+      ],
+      "conditions": "Bobine idéale : courant en retard de 90° sur la tension. V = LωI.",
+      "calcul": { "cible": "Z", "expression": "L*w" },
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 6, encadrés" },
+      "origine": "scan", "ajouts": ["unités H et rad/s : non écrites sur le scan"], "à_vérifier": false
+    },
+    {
+      "id": "ch05.zc", "site_id": "ZC",
+      "nom": "Impédance d'un condensateur",
+      "latex": "Z = \\dfrac{1}{C\\omega} \\quad ; \\quad \\varphi = -90^\\circ",
+      "variables": [
+        { "symbole": "Z", "code": "Z", "signification": "impédance", "unite": "Ω" },
+        { "symbole": "C", "code": "C", "signification": "capacité", "unite": "F" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" }
+      ],
+      "conditions": "Condensateur idéal : courant en avance de 90° sur la tension. V = I/(Cω).",
+      "calcul": { "cible": "Z", "expression": "1/(C*w)" },
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 6, cas du condensateur" },
+      "origine": "scan", "ajouts": ["unités F et rad/s : non écrites sur le scan"], "à_vérifier": false
+    },
+    {
+      "id": "ch05.cx-r", "site_id": null,
+      "nom": "Résistance en notation complexe",
+      "latex": "\\underline{V} = R\\,\\underline{I}",
+      "variables": [
+        { "symbole": "\\underline{V}", "code": "V", "signification": "tension complexe", "unite": "V" },
+        { "symbole": "R", "code": "R", "signification": "résistance", "unite": "Ω" },
+        { "symbole": "\\underline{I}", "code": "I", "signification": "courant complexe", "unite": "A" }
+      ],
+      "conditions": "Notation complexe.",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 6, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.cx-l", "site_id": null,
+      "nom": "Inductance pure en notation complexe",
+      "latex": "\\underline{V} = jL\\omega\\,\\underline{I}",
+      "variables": [
+        { "symbole": "\\underline{V}", "code": "V", "signification": "tension complexe", "unite": "V" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" },
+        { "symbole": "\\underline{I}", "code": "I", "signification": "courant complexe", "unite": "A" }
+      ],
+      "conditions": "La multiplication par j représente l'angle de 90° entre I et V.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 6, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.cx-c", "site_id": null,
+      "nom": "Condensateur en notation complexe",
+      "latex": "\\underline{V} = \\dfrac{\\underline{I}}{jC\\omega}",
+      "variables": [
+        { "symbole": "\\underline{V}", "code": "V", "signification": "tension complexe", "unite": "V" },
+        { "symbole": "\\underline{I}", "code": "I", "signification": "courant complexe", "unite": "A" },
+        { "symbole": "C", "code": "C", "signification": "capacité", "unite": "F" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" }
+      ],
+      "conditions": "La division par j représente l'angle de −90° entre I et V.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 6, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.cx-rl", "site_id": null,
+      "nom": "R, L série en notation complexe",
+      "latex": "\\underline{V} = \\underline{V_r} + \\underline{V_L} = r\\,\\underline{I} + jL\\omega\\,\\underline{I}",
+      "variables": [
+        { "symbole": "\\underline{V}", "code": "V", "signification": "tension complexe totale", "unite": "V" },
+        { "symbole": "r", "code": "r", "signification": "résistance (pertes Joule)", "unite": "Ω" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "\\underline{I}", "code": "I", "signification": "courant complexe (origine des phases)", "unite": "A" }
+      ],
+      "conditions": "Association série : les tensions complexes s'ajoutent.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 7, dernière ligne" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.tan-rl", "site_id": "tanphi",
+      "nom": "Déphasage d'une association R, L série",
+      "latex": "\\tan\\varphi = \\dfrac{L\\omega}{r}",
+      "variables": [
+        { "symbole": "\\varphi", "code": "phi", "signification": "déphasage", "unite": "rad" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" },
+        { "symbole": "r", "code": "r", "signification": "résistance série", "unite": "Ω" }
+      ],
+      "conditions": "R et L en série. Trigonométrie dans le triangle de Fresnel (côté opposé / côté adjacent).",
+      "calcul": { "cible": "phi", "expression": "Math.atan(L*w/r)" },
+      "source": { "fichier": "A1-Ch05-p05.pdf", "page": 1, "zone": "annexe, § 7, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.z-rl", "site_id": "Zserie",
+      "nom": "Impédance d'une association R, L série",
+      "latex": "Z = \\sqrt{r^2 + (L\\omega)^2}",
+      "variables": [
+        { "symbole": "Z", "code": "Z", "signification": "impédance", "unite": "Ω" },
+        { "symbole": "r", "code": "r", "signification": "résistance série", "unite": "Ω" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "\\omega", "code": "w", "signification": "pulsation", "unite": "rad/s" }
+      ],
+      "conditions": "R et L en série. Pythagore dans le triangle de Fresnel.",
+      "calcul": { "cible": "Z", "expression": "Math.sqrt(r*r+(L*w)*(L*w))" },
+      "source": { "fichier": "A1-Ch05-p05.pdf", "page": 1, "zone": "annexe, § 7, encadré" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.fresnel-rlc", "site_id": "fresnelSerie",
+      "nom": "Tension totale d'un circuit R, L, C série",
+      "latex": "V = \\sqrt{V_R^2 + (V_L - V_C)^2}",
+      "variables": [
+        { "symbole": "V", "code": "V", "signification": "tension efficace totale", "unite": "V" },
+        { "symbole": "V_R", "code": "VR", "signification": "tension efficace aux bornes de R", "unite": "V" },
+        { "symbole": "V_L", "code": "VL", "signification": "tension efficace aux bornes de L", "unite": "V" },
+        { "symbole": "V_C", "code": "VC", "signification": "tension efficace aux bornes de C", "unite": "V" }
+      ],
+      "conditions": "R, L, C en série, I origine des phases : V_R à 0°, V_L à +90°, V_C à −90°.",
+      "calcul": { "cible": "V", "expression": "Math.sqrt(VR*VR+(VL-VC)*(VL-VC))" },
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 4, questions 2 à 4" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false,
+      "note": "Non écrite dans le polycopié : Pythagore sur le diagramme de Fresnel demandé à l'exercice 4 (même méthode que le § 7). Retrouve le corrigé (12 V)."
+    },
+    {
+      "id": "ch05.tan-rlc", "site_id": null,
+      "nom": "Déphasage d'un circuit R, L, C série",
+      "latex": "\\tan\\varphi = \\dfrac{V_L - V_C}{V_R}",
+      "variables": [
+        { "symbole": "\\varphi", "code": "phi", "signification": "déphasage", "unite": "rad" },
+        { "symbole": "V_R", "code": "VR", "signification": "tension efficace aux bornes de R", "unite": "V" },
+        { "symbole": "V_L", "code": "VL", "signification": "tension efficace aux bornes de L", "unite": "V" },
+        { "symbole": "V_C", "code": "VC", "signification": "tension efficace aux bornes de C", "unite": "V" }
+      ],
+      "conditions": "R, L, C en série ; φ > 0 si V_L > V_C.",
+      "calcul": { "cible": "phi", "expression": "Math.atan((VL-VC)/VR)" },
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 4, question 4" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false,
+      "note": "Non écrite dans le polycopié : trigonométrie sur le diagramme de Fresnel de l'exercice 4. Retrouve le corrigé (71°)."
+    },
+    {
+      "id": "ch05.charge-q", "site_id": "charge",
+      "nom": "Charge d'un condensateur",
+      "latex": "Q = C\\,V_C",
+      "variables": [
+        { "symbole": "Q", "code": "Q", "signification": "charge", "unite": "C" },
+        { "symbole": "C", "code": "Cap", "signification": "capacité", "unite": "F" },
+        { "symbole": "V_C", "code": "VC", "signification": "tension aux bornes du condensateur", "unite": "V" }
+      ],
+      "conditions": "Exercice supplémentaire A.",
+      "calcul": { "cible": "Q", "expression": "Cap*VC" },
+      "source": { "fichier": "A1-Ch05-p07.pdf", "page": 1, "zone": "exercice A, question 4 (énoncé seulement)" },
+      "origine": "hors_cours", "ajouts": ["formule absente des scans, nécessaire à l'exercice A"], "à_vérifier": true,
+      "note": "Hors cours : à valider avant utilisation dans le jeu."
+    },
+    {
+      "id": "ch05.energie-c", "site_id": "WC",
+      "nom": "Énergie stockée dans un condensateur",
+      "latex": "W_C = \\dfrac{1}{2} C V_C^2",
+      "variables": [
+        { "symbole": "W_C", "code": "WC", "signification": "énergie stockée", "unite": "J" },
+        { "symbole": "C", "code": "Cap", "signification": "capacité", "unite": "F" },
+        { "symbole": "V_C", "code": "VC", "signification": "tension aux bornes du condensateur", "unite": "V" }
+      ],
+      "conditions": "Exercice supplémentaire A.",
+      "calcul": { "cible": "WC", "expression": "0.5*Cap*VC*VC" },
+      "source": { "fichier": "A1-Ch05-p07.pdf", "page": 1, "zone": "exercice A, question 4 (énoncé seulement)" },
+      "origine": "hors_cours", "ajouts": ["formule absente des scans, nécessaire à l'exercice A"], "à_vérifier": true,
+      "note": "Hors cours : à valider avant utilisation dans le jeu."
+    },
+    {
+      "id": "ch05.energie-l", "site_id": "WL",
+      "nom": "Énergie stockée dans une bobine",
+      "latex": "W_L = \\dfrac{1}{2} L I_L^2",
+      "variables": [
+        { "symbole": "W_L", "code": "WL", "signification": "énergie stockée", "unite": "J" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "I_L", "code": "IL", "signification": "courant dans la bobine", "unite": "A" }
+      ],
+      "conditions": "Exercice supplémentaire B.",
+      "calcul": { "cible": "WL", "expression": "0.5*L*IL*IL" },
+      "source": { "fichier": "A1-Ch05-p07.pdf", "page": 1, "zone": "exercice B (énoncé seulement)" },
+      "origine": "hors_cours", "ajouts": ["formule absente des scans, nécessaire à l'exercice B"], "à_vérifier": true,
+      "note": "Hors cours : à valider avant utilisation dans le jeu."
+    },
+    {
+      "id": "ch05.tau-rc", "site_id": "tauRC",
+      "nom": "Constante de temps RC",
+      "latex": "\\tau = R_{th}\\,C",
+      "variables": [
+        { "symbole": "\\tau", "code": "tau", "signification": "constante de temps", "unite": "s" },
+        { "symbole": "R_{th}", "code": "Rth", "signification": "résistance vue par le condensateur, source éteinte", "unite": "Ω" },
+        { "symbole": "C", "code": "Cap", "signification": "capacité", "unite": "F" }
+      ],
+      "conditions": "Exercice supplémentaire A.",
+      "calcul": { "cible": "tau", "expression": "Rth*Cap" },
+      "source": { "fichier": "A1-Ch05-p07.pdf", "page": 1, "zone": "exercice A, question 5 (énoncé seulement)" },
+      "origine": "hors_cours", "ajouts": ["formule absente des scans ; R_th se calcule comme au ch01 (MET, sources éteintes)"], "à_vérifier": true,
+      "note": "Hors cours : à valider avant utilisation dans le jeu."
+    },
+    {
+      "id": "ch05.tau-rl", "site_id": "tauRL",
+      "nom": "Constante de temps RL",
+      "latex": "\\tau = \\dfrac{L}{R_{th}}",
+      "variables": [
+        { "symbole": "\\tau", "code": "tau", "signification": "constante de temps", "unite": "s" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "R_{th}", "code": "Rth", "signification": "résistance vue par la bobine, source éteinte", "unite": "Ω" }
+      ],
+      "conditions": "Exercice supplémentaire B.",
+      "calcul": { "cible": "tau", "expression": "L/Rth" },
+      "source": { "fichier": "A1-Ch05-p07.pdf", "page": 1, "zone": "exercice B (énoncé seulement)" },
+      "origine": "hors_cours", "ajouts": ["formule absente des scans ; R_th se calcule comme au ch01 (MET, sources éteintes)"], "à_vérifier": true,
+      "note": "Hors cours : à valider avant utilisation dans le jeu."
+    }
+  ],
+
+  "relations": [
+    {
+      "de": "ch05.ohm-sinus", "vers": "ch05.impedance-def", "type": "équivalent",
+      "explication": "On retient Z = V/I sous la forme V = ZI.",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 5" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.zl", "vers": "ch04.pulsation", "type": "utilise",
+      "explication": "Lω demande la pulsation ω = 2πf (314 rad/s à 50 Hz dans l'application numérique).",
+      "source": { "fichier": "A1-Ch05-p05.pdf", "page": 1, "zone": "annexe, § 7, application numérique (1,1 × 314)" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.zc", "vers": "ch04.pulsation", "type": "utilise",
+      "explication": "1/(Cω) demande la pulsation ω = 2πf.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 6" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.cx-l", "vers": "ch05.zl", "type": "équivalent",
+      "explication": "Module : V = LωI ; argument : j ↔ +90°.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 6" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.cx-c", "vers": "ch05.zc", "type": "équivalent",
+      "explication": "Module : V = I/(Cω) ; argument : division par j ↔ −90°.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 6" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.cx-r", "vers": "ch05.zr", "type": "équivalent",
+      "explication": "Module : V = RI ; pas de j : φ = 0.",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 6" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.cx-rl", "vers": "ch05.cx-r", "type": "utilise",
+      "explication": "V_r = rI.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 7" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.cx-rl", "vers": "ch05.cx-l", "type": "utilise",
+      "explication": "V_L = jLωI.",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 7" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.tan-rl", "vers": "ch05.cx-rl", "type": "découle_de",
+      "explication": "Triangle de Fresnel de V = rI + jLωI : tan φ = LωI / rI.",
+      "source": { "fichier": "A1-Ch05-p05.pdf", "page": 1, "zone": "annexe, § 7" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.z-rl", "vers": "ch05.cx-rl", "type": "découle_de",
+      "explication": "Pythagore : V² = (rI)² + (LωI)², donc Z² = r² + (Lω)².",
+      "source": { "fichier": "A1-Ch05-p05.pdf", "page": 1, "zone": "annexe, § 7" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.z-rl", "vers": "ch05.impedance-def", "type": "utilise",
+      "explication": "V²/I² = Z².",
+      "source": { "fichier": "A1-Ch05-p05.pdf", "page": 1, "zone": "annexe, § 7" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.fresnel-rlc", "vers": "ch05.z-rl", "type": "découle_de",
+      "explication": "Même méthode (Fresnel + Pythagore) avec un condensateur en plus : V_L et V_C sont opposées.",
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 4" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.zl", "vers": "ch02.bobine", "type": "découle_de",
+      "explication": "Le ch02 annonce que u = L di/dt permet de démontrer Z = Lω en sinusoïdal.",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 6 ; remarque sur A1-Ch02-p01.pdf" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.inductance-retard", "vers": "ch04.signe-phi", "type": "cas_particulier",
+      "explication": "Inductance pure : courant en retard, φ = +90° (cas extrême de φ > 0, inductif).",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 6" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch05.condensateur-avance", "vers": "ch04.signe-phi", "type": "cas_particulier",
+      "explication": "Condensateur : courant en avance, φ = −90° (cas extrême de φ < 0, capacitif).",
+      "source": { "fichier": "A1-Ch05-p04.pdf", "page": 1, "zone": "annexe, § 6" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    }
+  ],
+
+  "pieges": [
+    {
+      "id": "ch05.piege-r-plus-l",
+      "texte": "Z n'est pas R + L ! Pour R et L en série : Z = √(r² + (Lω)²) (on additionne des vecteurs perpendiculaires, pas des nombres).",
+      "lie_a": ["ch05.z-rl"],
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annotation manuscrite barrée « R + L = Z »" },
+      "origine": "manuscrit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.piege-omega",
+      "texte": "Dans Lω et 1/(Cω), ω est la pulsation (2πf), pas la fréquence f : à 50 Hz, ω ≈ 314 rad/s.",
+      "lie_a": ["ch05.zl", "ch05.zc"],
+      "source": { "fichier": "A1-Ch05-p05.pdf", "page": 1, "zone": "application numérique (1,1 × 314)" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.piege-lc-signes",
+      "texte": "Inductance : courant en RETARD (φ = +90°). Condensateur : courant en AVANCE (φ = −90°). Ne pas inverser.",
+      "lie_a": ["ch05.zl", "ch05.zc", "ch05.inductance-retard", "ch05.condensateur-avance"],
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "annexe, § 6 ; annotations « L = +90° » et « C = −90° »" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.piege-zc-frequence",
+      "texte": "Quand f augmente, Z = Lω augmente mais Z = 1/(Cω) diminue (TD ex. 1 : 31,8 kΩ à 50 Hz, 1,59 kΩ à 1 kHz).",
+      "lie_a": ["ch05.zl", "ch05.zc"],
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 1, éléments de réponse" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.piege-prefixes",
+      "texte": "Attention aux préfixes : C = 142 pF = 142 × 10⁻¹² F ; L = 6,8 mH = 6,8 × 10⁻³ H ; f = 200 kHz.",
+      "lie_a": ["ch05.zc", "ch05.zl"],
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 4, données (« rappel : pico = 10⁻¹² »)" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.piege-tensions-rlc",
+      "texte": "En série R, L, C, les tensions efficaces ne s'ajoutent pas : V_L + V_C + V_R = 58,5 V, mais V = 12 V (TD ex. 4).",
+      "lie_a": ["ch05.fresnel-rlc"],
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 4, éléments de réponse" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    }
+  ],
+
+  "exemples": [
+    {
+      "id": "ch05.ex-four",
+      "titre": "Problématique : le four à induction",
+      "type": "exemple_cours",
+      "enonce": "Une phase d'un four à induction est modélisée par une inductance pure $L$ = 60 µH en série avec une résistance $r$ = 50 mΩ, sous $V$ = 230 V et 600 Hz. 1. Calculer l'impédance $Z$. 2. En déduire $I$. 3. Calculer le déphasage. Que faudra-t-il prévoir dans l'installation ?",
+      "donnees": [
+        { "code": "L", "symbole": "L", "valeur": 6e-5, "unite": "H" },
+        { "code": "r", "symbole": "r", "valeur": 0.05, "unite": "Ω" },
+        { "code": "V", "symbole": "V", "valeur": 230, "unite": "V" },
+        { "code": "f", "symbole": "f", "valeur": 600, "unite": "Hz" }
+      ],
+      "etapes": [
+        { "question": "Impédance Z du four ?", "formules": ["ch04.pulsation", "ch05.z-rl"], "calcul": "Math.sqrt(r*r+Math.pow(L*2*Math.PI*f,2))", "reponse": { "valeur": 0.2317, "unite": "Ω", "texte": "Lω = 60 × 10⁻⁶ × 2π × 600 ≈ 0,226 Ω ; Z = √(0,05² + 0,226²) ≈ 0,232 Ω" } },
+        { "question": "Valeur efficace I du courant ?", "formules": ["ch05.ohm-sinus"], "calcul": "V/Math.sqrt(r*r+Math.pow(L*2*Math.PI*f,2))", "reponse": { "valeur": 993, "unite": "A", "texte": "I = 230 / 0,232 ≈ 993 A" } },
+        { "question": "Déphasage ?", "formules": ["ch05.tan-rl"], "calcul": "Math.atan(L*2*Math.PI*f/r)*180/Math.PI", "reponse": { "valeur": 77.5, "unite": "°", "texte": "tan φ = 0,226 / 0,05 → φ ≈ 77,5°" } },
+        { "question": "Que faudra-t-il prévoir ?", "formules": ["ch04.batterie"], "reponse": { "texte": "Déphasage très supérieur à 0,38 rad : prévoir une compensation (batterie de condensateurs, relèvement du facteur de puissance au ch06)." } }
+      ],
+      "source": { "fichier": "A1-Ch05-p01.pdf", "page": 1, "zone": "problématique et travail à effectuer" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false,
+      "note": "Le polycopié pose les questions sans donner de corrigé : résultats calculés avec les formules du cours (et ω = 2πf, manuscrite au ch04)."
+    },
+    {
+      "id": "ch05.ex-bobine-tp",
+      "titre": "Application numérique : la bobine de TP",
+      "type": "exemple_cours",
+      "enonce": "Bobine de TP : $L$ = 1,1 H, $r$ = 12 Ω, sous le réseau 230 V, 50 Hz. Calculer $Z$, $φ$ et $I$.",
+      "donnees": [
+        { "code": "L", "symbole": "L", "valeur": 1.1, "unite": "H" },
+        { "code": "r", "symbole": "r", "valeur": 12, "unite": "Ω" },
+        { "code": "V", "symbole": "V", "valeur": 230, "unite": "V" },
+        { "code": "w", "symbole": "\\omega", "valeur": 314, "unite": "rad/s" }
+      ],
+      "etapes": [
+        { "question": "Impédance Z ?", "formules": ["ch05.z-rl"], "calcul": "Math.sqrt(r*r+(L*w)*(L*w))", "reponse": { "valeur": 346, "unite": "Ω", "texte": "Z = √(12² + (1,1 × 314)²) = 346 Ω" } },
+        { "question": "Déphasage φ ?", "formules": ["ch05.tan-rl"], "calcul": "Math.atan(L*w/r)*180/Math.PI", "reponse": { "valeur": 88, "unite": "°", "texte": "φ = arctan(1,1 × 314 / 12) = 88°" } },
+        { "question": "Courant I ?", "formules": ["ch05.ohm-sinus"], "calcul": "V/Math.sqrt(r*r+(L*w)*(L*w))", "reponse": { "valeur": 0.667, "unite": "A", "texte": "I = V/Z = 230/346 = 0,667 A" } }
+      ],
+      "source": { "fichier": "A1-Ch05-p05.pdf", "page": 1, "zone": "annexe, § 7, application numérique" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.td-ex1",
+      "titre": "TD exercice 1 — Impédances d'une bobine et d'un condensateur",
+      "type": "td",
+      "enonce": "Une bobine parfaite $L$ = 12 mH, puis un condensateur $C$ = 100 nF, sont soumis à 24 V efficaces. Calculer l'impédance et le courant efficace à 50 Hz puis à 1 kHz.",
+      "donnees": [
+        { "code": "L", "symbole": "L", "valeur": 0.012, "unite": "H" },
+        { "code": "C", "symbole": "C", "valeur": 1e-7, "unite": "F" },
+        { "code": "V", "symbole": "V", "valeur": 24, "unite": "V" }
+      ],
+      "etapes": [
+        { "question": "1.1 Bobine à 50 Hz : impédance ?", "formules": ["ch05.zl"], "calcul": "L*2*Math.PI*50", "reponse": { "valeur": 3.77, "unite": "Ω", "texte": "Z = 3,77 Ω" } },
+        { "question": "1.1 Bobine à 50 Hz : courant ?", "formules": ["ch05.ohm-sinus"], "calcul": "V/(L*2*Math.PI*50)", "reponse": { "valeur": 6.37, "unite": "A", "texte": "I = 6,37 A" } },
+        { "question": "1.2 Bobine à 1 kHz : impédance ?", "formules": ["ch05.zl"], "calcul": "L*2*Math.PI*1000", "reponse": { "valeur": 75.4, "unite": "Ω", "texte": "Z = 75,4 Ω" } },
+        { "question": "1.2 Bobine à 1 kHz : courant ?", "formules": ["ch05.ohm-sinus"], "calcul": "V/(L*2*Math.PI*1000)", "reponse": { "valeur": 0.318, "unite": "A", "texte": "I = 0,318 A" } },
+        { "question": "2.1 Condensateur à 50 Hz : impédance ?", "formules": ["ch05.zc"], "calcul": "1/(C*2*Math.PI*50)", "reponse": { "valeur": 31800, "unite": "Ω", "texte": "Z = 31,8 kΩ" } },
+        { "question": "2.1 Condensateur à 50 Hz : courant ?", "formules": ["ch05.ohm-sinus"], "calcul": "V*C*2*Math.PI*50", "reponse": { "valeur": 0.000754, "unite": "A", "texte": "I = 0,754 mA" } },
+        { "question": "2.2 Condensateur à 1 kHz : impédance ?", "formules": ["ch05.zc"], "calcul": "1/(C*2*Math.PI*1000)", "reponse": { "valeur": 1590, "unite": "Ω", "texte": "Z = 1,59 kΩ" } },
+        { "question": "2.2 Condensateur à 1 kHz : courant ?", "formules": ["ch05.ohm-sinus"], "calcul": "V*C*2*Math.PI*1000", "reponse": { "valeur": 0.0151, "unite": "A", "texte": "I = 15,1 mA" } }
+      ],
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 1 et éléments de réponse" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.td-ex2",
+      "titre": "TD exercice 2 — Retrouver l'inductance",
+      "type": "td",
+      "enonce": "Une bobine parfaite sous 230 V, 50 Hz est parcourue par 4,88 A. Calculer l'impédance puis l'inductance.",
+      "donnees": [
+        { "code": "V", "symbole": "V", "valeur": 230, "unite": "V" },
+        { "code": "I", "symbole": "I", "valeur": 4.88, "unite": "A" },
+        { "code": "f", "symbole": "f", "valeur": 50, "unite": "Hz" }
+      ],
+      "etapes": [
+        { "question": "Impédance ?", "formules": ["ch05.impedance-def"], "calcul": "V/I", "reponse": { "valeur": 47.1, "unite": "Ω", "texte": "Z = 230/4,88 = 47,1 Ω" } },
+        { "question": "Inductance ?", "formules": ["ch05.zl"], "calcul": "V/I/(2*Math.PI*f)", "reponse": { "valeur": 0.15, "unite": "H", "texte": "L = Z/ω = 150 mH" } }
+      ],
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 2 et éléments de réponse" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.td-ex3",
+      "titre": "TD exercice 3 — Bobine réelle sur le 24 V",
+      "type": "td",
+      "enonce": "Bobine de TP : $L$ = 0,1 H, $R$ = 11 Ω, $I_{max}$ = 1 A, branchée sur le réseau monophasé 24 V de la table (modèle : $r$ en série avec $L$).",
+      "donnees": [
+        { "code": "L", "symbole": "L", "valeur": 0.1, "unite": "H" },
+        { "code": "r", "symbole": "r", "valeur": 11, "unite": "Ω" },
+        { "code": "V", "symbole": "V", "valeur": 24, "unite": "V" },
+        { "code": "f", "symbole": "f", "valeur": 50, "unite": "Hz" }
+      ],
+      "etapes": [
+        { "question": "Que modélise r ?", "formules": [], "reponse": { "texte": "Les pertes Joule de la bobine (effet résistif)." }, "note": "Réponse non donnée dans le corrigé : tirée du § 1 et du § 7 de l'annexe." },
+        { "question": "Impédance Z ?", "formules": ["ch05.z-rl"], "calcul": "Math.sqrt(r*r+Math.pow(L*2*Math.PI*f,2))", "reponse": { "valeur": 33.3, "unite": "Ω", "texte": "Z = 33,3 Ω" } },
+        { "question": "Courant I ?", "formules": ["ch05.ohm-sinus"], "calcul": "V/Math.sqrt(r*r+Math.pow(L*2*Math.PI*f,2))", "reponse": { "valeur": 0.72, "unite": "A", "texte": "I = 0,720 A" } },
+        {
+          "question": "Peut-on réaliser l'expérience sans endommager la bobine ?", "formules": [],
+          "reponse": { "texte": "Oui : 0,720 A < 1 A." },
+          "à_vérifier": true,
+          "note": "Réponse non donnée dans le corrigé. Ambiguïté : « I_max = 1 A » inscrit sur la bobine est-il un courant maximal admissible en valeur efficace, ou une valeur crête (à comparer à 0,72 × √2 ≈ 1,02 A) ?"
+        },
+        { "question": "Déphasage ?", "formules": ["ch05.tan-rl"], "calcul": "Math.atan(L*2*Math.PI*f/r)*180/Math.PI", "reponse": { "valeur": 70.7, "unite": "°", "texte": "φ = 70,7°" } }
+      ],
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 3 et éléments de réponse" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false,
+      "note": "Fréquence non écrite dans l'énoncé : 50 Hz (réseau), confirmée par le corrigé (33,3 Ω)."
+    },
+    {
+      "id": "ch05.td-ex4",
+      "titre": "TD exercice 4 — Sélecteur de fréquence radio (R, L, C série)",
+      "type": "td",
+      "enonce": "Circuit $L$, $C$, $R$ série : $L$ = 6,8 mH ; $C$ = 142 pF ; $R$ = 1 kΩ ; $I$ = 3,86 mA ; $f$ = 200 kHz. 1. Calculer $V_L$, $V_C$, $V_R$. 2. Montrer que $\\underline{V} = R\\underline{I} + jL\\omega\\underline{I} + \\underline{I}/(jC\\omega)$. 3. Tracer le Fresnel ($i$ origine des phases). 4. En déduire $V$ et $φ_{i/v}$.",
+      "donnees": [
+        { "code": "L", "symbole": "L", "valeur": 0.0068, "unite": "H" },
+        { "code": "C", "symbole": "C", "valeur": 1.42e-10, "unite": "F" },
+        { "code": "R", "symbole": "R", "valeur": 1000, "unite": "Ω" },
+        { "code": "I", "symbole": "I", "valeur": 0.00386, "unite": "A" },
+        { "code": "f", "symbole": "f", "valeur": 200000, "unite": "Hz" }
+      ],
+      "etapes": [
+        { "question": "V_L ?", "formules": ["ch05.zl", "ch05.ohm-sinus"], "calcul": "L*2*Math.PI*f*I", "reponse": { "valeur": 33, "unite": "V", "texte": "V_L = 33 V" } },
+        { "question": "V_C ?", "formules": ["ch05.zc", "ch05.ohm-sinus"], "calcul": "I/(C*2*Math.PI*f)", "reponse": { "valeur": 21.6, "unite": "V", "texte": "V_C = 21,6 V" } },
+        { "question": "V_R ?", "formules": ["ch05.zr", "ch05.ohm-sinus"], "calcul": "R*I", "reponse": { "valeur": 3.86, "unite": "V", "texte": "V_R = 3,86 V" } },
+        { "question": "Valeur efficace de v ?", "formules": ["ch05.fresnel-rlc"], "calcul": "Math.sqrt(Math.pow(R*I,2)+Math.pow(L*2*Math.PI*f*I-I/(C*2*Math.PI*f),2))", "reponse": { "valeur": 12, "unite": "V", "texte": "V = 12 V" } },
+        { "question": "Déphasage φ_i/v ?", "formules": ["ch05.tan-rlc"], "calcul": "Math.atan((L*2*Math.PI*f*I-I/(C*2*Math.PI*f))/(R*I))*180/Math.PI", "reponse": { "valeur": 71, "unite": "°", "texte": "φ = 71°" } }
+      ],
+      "source": { "fichier": "A1-Ch05-p06.pdf", "page": 1, "zone": "TD, exercice 4 et éléments de réponse" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch05.ex-a-rc",
+      "titre": "Exercice supplémentaire A — Circuit RC en continu",
+      "type": "td",
+      "enonce": "Un générateur $E$ = 24 V alimente en série $R_1$ = 10 Ω et un dipôle parallèle $R_2$ = 20 Ω // $C$ = 1000 µF. Étudier $t = 0^+$ et $t \\to \\infty$.",
+      "donnees": [
+        { "code": "E", "symbole": "E", "valeur": 24, "unite": "V" },
+        { "code": "R1", "symbole": "R_1", "valeur": 10, "unite": "Ω" },
+        { "code": "R2", "symbole": "R_2", "valeur": 20, "unite": "Ω" },
+        { "code": "Cap", "symbole": "C", "valeur": 0.001, "unite": "F" }
+      ],
+      "etapes": [
+        { "question": "R_eq à t = 0⁺ ?", "formules": ["ch05.etats-limites"], "calcul": "R1", "reponse": { "valeur": 10, "unite": "Ω", "texte": "C (déchargé) court-circuite R_2 : R_eq = R_1 = 10 Ω" } },
+        { "question": "R_eq à t → ∞ ?", "formules": ["ch05.etats-limites", "ch01.serie"], "calcul": "R1+R2", "reponse": { "valeur": 30, "unite": "Ω", "texte": "C ouvert : R_eq = R_1 + R_2 = 30 Ω" } },
+        { "question": "I(0⁺) ?", "formules": ["ch01.ohm"], "calcul": "E/R1", "reponse": { "valeur": 2.4, "unite": "A", "texte": "I(0⁺) = 24/10 = 2,4 A" } },
+        { "question": "I(∞) ?", "formules": ["ch01.ohm"], "calcul": "E/(R1+R2)", "reponse": { "valeur": 0.8, "unite": "A", "texte": "I(∞) = 24/30 = 0,8 A" } },
+        { "question": "V_C(0⁺) ?", "formules": ["ch05.etats-limites"], "reponse": { "valeur": 0, "unite": "V", "texte": "V_C(0⁺) = 0 V" } },
+        { "question": "V_C(∞) ?", "formules": ["ch01.diviseur"], "calcul": "R2/(R1+R2)*E", "reponse": { "valeur": 16, "unite": "V", "texte": "V_C(∞) = 20/30 × 24 = 16 V" } },
+        { "question": "Q(∞) ?", "formules": ["ch05.charge-q"], "calcul": "Cap*R2/(R1+R2)*E", "reponse": { "valeur": 0.016, "unite": "C", "texte": "Q = 10⁻³ × 16 = 16 mC" } },
+        { "question": "W_C ?", "formules": ["ch05.energie-c"], "calcul": "0.5*Cap*Math.pow(R2/(R1+R2)*E,2)", "reponse": { "valeur": 0.128, "unite": "J", "texte": "W_C = ½ × 10⁻³ × 16² = 0,128 J" } },
+        { "question": "Constante de temps τ ?", "formules": ["ch05.tau-rc", "ch01.deux-derivation"], "calcul": "R1*R2/(R1+R2)*Cap", "reponse": { "valeur": 0.00667, "unite": "s", "texte": "R_th = R_1 // R_2 = 6,67 Ω ; τ = 6,67 ms" } }
+      ],
+      "source": { "fichier": "A1-Ch05-p07.pdf", "page": 1, "zone": "exercice A (énoncé)" },
+      "origine": "hors_cours", "ajouts": ["résolution complète faite hors polycopié (aucun corrigé)"], "à_vérifier": true,
+      "note": "Pas de corrigé dans le polycopié : résolution proposée, à faire valider avant utilisation dans le jeu."
+    },
+    {
+      "id": "ch05.ex-b-rl",
+      "titre": "Exercice supplémentaire B — Circuit RL en continu",
+      "type": "td",
+      "enonce": "Même schéma que l'exercice A avec $L$ = 0,1 H à la place de $C$ : $E$ = 24 V, $R_1$ = 10 Ω, $R_2$ = 20 Ω. Étudier $t = 0^+$ et $t \\to \\infty$.",
+      "donnees": [
+        { "code": "E", "symbole": "E", "valeur": 24, "unite": "V" },
+        { "code": "R1", "symbole": "R_1", "valeur": 10, "unite": "Ω" },
+        { "code": "R2", "symbole": "R_2", "valeur": 20, "unite": "Ω" },
+        { "code": "L", "symbole": "L", "valeur": 0.1, "unite": "H" }
+      ],
+      "etapes": [
+        { "question": "R_eq et I à t = 0⁺ ?", "formules": ["ch05.etats-limites", "ch01.ohm"], "calcul": "E/(R1+R2)", "reponse": { "valeur": 0.8, "unite": "A", "texte": "L ouverte : R_eq = 30 Ω, I = 0,8 A (I_L = 0, I_R2 = 0,8 A)" } },
+        { "question": "R_eq et I à t → ∞ ?", "formules": ["ch05.etats-limites", "ch01.ohm"], "calcul": "E/R1", "reponse": { "valeur": 2.4, "unite": "A", "texte": "L = fil, court-circuite R_2 : R_eq = 10 Ω, I = I_L = 2,4 A (I_R2 = 0)" } },
+        { "question": "Énergie stockée dans L à t → ∞ ?", "formules": ["ch05.energie-l"], "calcul": "0.5*L*Math.pow(E/R1,2)", "reponse": { "valeur": 0.288, "unite": "J", "texte": "W_L = ½ × 0,1 × 2,4² = 0,288 J" } },
+        { "question": "Constante de temps τ ?", "formules": ["ch05.tau-rl", "ch01.deux-derivation"], "calcul": "L/(R1*R2/(R1+R2))", "reponse": { "valeur": 0.015, "unite": "s", "texte": "R_th = 6,67 Ω ; τ = 0,1/6,67 = 15 ms" } }
+      ],
+      "source": { "fichier": "A1-Ch05-p07.pdf", "page": 1, "zone": "exercice B (énoncé)" },
+      "origine": "hors_cours", "ajouts": ["résolution complète faite hors polycopié (aucun corrigé)"], "à_vérifier": true,
+      "note": "Pas de corrigé dans le polycopié : résolution proposée, à faire valider avant utilisation dans le jeu."
+    }
+  ],
+
+  "annotations_manuscrites": [
+    {
+      "texte": "« R + L = Z » barré, puis « Z = R + jLω ; Z² = R² + (Lω)² ; Z = √(R² + (Lω)²) ».",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "marge droite, § 4 et § 5" },
+      "origine": "manuscrit", "ajouts": [], "à_vérifier": false,
+      "note": "Cohérent avec le § 7 (Z = √(r² + (Lω)²)). Utilisé pour le piège ch05.piege-r-plus-l."
+    },
+    {
+      "texte": "« L = +90° » (sous l'inductance pure) et « C = −90° » (sous le condensateur).",
+      "source": { "fichier": "A1-Ch05-p03.pdf", "page": 1, "zone": "bas de page ; « C = −90° » sur A1-Ch05-p04.pdf" },
+      "origine": "manuscrit", "ajouts": [], "à_vérifier": false
+    }
+  ]
+}

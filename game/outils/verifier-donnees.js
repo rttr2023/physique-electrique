@@ -37,10 +37,11 @@ function tracabilite(ch, quoi, el) {
   const fichiers = s.fichier.split(/\s*;\s*/);
   if (!ch.sources.includes(fichiers[0])) err(quoi + ' : ' + fichiers[0] + ' absent des sources du chapitre');
   if (!fs.existsSync(path.join(COURS, fichiers[0]))) err(quoi + ' : scan introuvable ' + fichiers[0]);
-  if (!['scan', 'manuscrit', 'déduit'].includes(el.origine)) err(quoi + ' : origine invalide « ' + el.origine + ' »');
+  if (!['scan', 'manuscrit', 'déduit', 'hors_cours'].includes(el.origine)) err(quoi + ' : origine invalide « ' + el.origine + ' »');
   if (!Array.isArray(el.ajouts)) err(quoi + ' : « ajouts » doit être une liste');
   if (typeof el['à_vérifier'] !== 'boolean') err(quoi + ' : « à_vérifier » doit valoir true ou false');
   if (el['à_vérifier'] && !el.note) err(quoi + ' : à_vérifier sans note expliquant pourquoi');
+  if (el.origine === 'hors_cours' && !el.ajouts.length) err(quoi + ' : origine hors_cours sans explication dans « ajouts »');
 }
 
 // Évalue une expression de calcul avec des valeurs { code: nombre }.

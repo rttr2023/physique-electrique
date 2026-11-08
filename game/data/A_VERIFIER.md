@@ -3,7 +3,7 @@
 Fichier généré par `node game/outils/verifier-donnees.js` : ne pas le modifier à la main.
 Pour corriger : modifie le JSON du chapitre (texte, valeur), passe `"à_vérifier"` à `false` et relance le script.
 
-## 1. Passages illisibles, ambigus ou contradictoires (10)
+## 1. Passages illisibles, ambigus ou contradictoires (19)
 
 ### ch01
 
@@ -34,7 +34,28 @@ Pour corriger : modifie le JSON du chapitre (texte, valeur), passe `"à_vérifie
 - **ch04 manque 1** (manque) — `A1-Ch04-p01.pdf`, —
   Scanner la page manquante si elle existe, puis relancer l'extraction du chapitre.
 
-## 2. Compléments hors scan (connaissances générales, signalés) (26)
+### ch05
+
+- **ch05.td-ex3 étape 4** (étape d'exemple) — `A1-Ch05-p06.pdf`, TD, exercice 3 et éléments de réponse
+  Réponse non donnée dans le corrigé. Ambiguïté : « I_max = 1 A » inscrit sur la bobine est-il un courant maximal admissible en valeur efficace, ou une valeur crête (à comparer à 0,72 × √2 ≈ 1,02 A) ?
+- **ch05.etats-limites** (notion) — `A1-Ch05-p07.pdf`, exercices supplémentaires A et B (énoncés seulement)
+  Hors cours : à valider par Romain (ou par le professeur) avant utilisation dans le jeu.
+- **ch05.charge-q** (formule) — `A1-Ch05-p07.pdf`, exercice A, question 4 (énoncé seulement)
+  Hors cours : à valider avant utilisation dans le jeu.
+- **ch05.energie-c** (formule) — `A1-Ch05-p07.pdf`, exercice A, question 4 (énoncé seulement)
+  Hors cours : à valider avant utilisation dans le jeu.
+- **ch05.energie-l** (formule) — `A1-Ch05-p07.pdf`, exercice B (énoncé seulement)
+  Hors cours : à valider avant utilisation dans le jeu.
+- **ch05.tau-rc** (formule) — `A1-Ch05-p07.pdf`, exercice A, question 5 (énoncé seulement)
+  Hors cours : à valider avant utilisation dans le jeu.
+- **ch05.tau-rl** (formule) — `A1-Ch05-p07.pdf`, exercice B (énoncé seulement)
+  Hors cours : à valider avant utilisation dans le jeu.
+- **ch05.ex-a-rc** (exemple) — `A1-Ch05-p07.pdf`, exercice A (énoncé)
+  Pas de corrigé dans le polycopié : résolution proposée, à faire valider avant utilisation dans le jeu.
+- **ch05.ex-b-rl** (exemple) — `A1-Ch05-p07.pdf`, exercice B (énoncé)
+  Pas de corrigé dans le polycopié : résolution proposée, à faire valider avant utilisation dans le jeu.
+
+## 2. Compléments hors scan (connaissances générales, signalés) (36)
 
 Ces éléments sont fidèles au scan, mais un détail a été complété (souvent les unités, que le polycopié n'écrit pas).
 
@@ -75,4 +96,17 @@ Ces éléments sont fidèles au scan, mais un détail a été complété (souven
 - **ch04.efficace-sinus** : formule absente des scans : connaissance générale, utilisée implicitement par les éléments de réponse du TD
 - **ch04.oscillo** : méthode non écrite dans les scans : connaissance générale nécessaire au TD
 - **ch04.piege-sonde** : méthode de lecture hors scan
+
+### ch05
+
+- **ch05.etats-limites** : méthode absente des scans (les exercices A et B n'ont ni cours ni corrigé) ; l'état t → ∞ rejoint le ch01 (condensateur = circuit ouvert, bobine = court-circuit en continu)
+- **ch05.zl** : unités H et rad/s : non écrites sur le scan
+- **ch05.zc** : unités F et rad/s : non écrites sur le scan
+- **ch05.charge-q** : formule absente des scans, nécessaire à l'exercice A
+- **ch05.energie-c** : formule absente des scans, nécessaire à l'exercice A
+- **ch05.energie-l** : formule absente des scans, nécessaire à l'exercice B
+- **ch05.tau-rc** : formule absente des scans ; R_th se calcule comme au ch01 (MET, sources éteintes)
+- **ch05.tau-rl** : formule absente des scans ; R_th se calcule comme au ch01 (MET, sources éteintes)
+- **ch05.ex-a-rc** : résolution complète faite hors polycopié (aucun corrigé)
+- **ch05.ex-b-rl** : résolution complète faite hors polycopié (aucun corrigé)
 
