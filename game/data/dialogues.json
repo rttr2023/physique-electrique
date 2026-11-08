@@ -1,0 +1,29 @@
+{
+  "_aide": "Phrases d'ambiance (pas du contenu de cours). {nom} = nom du joueur, {region} = nom de la région.",
+  "prenoms": ["Ampère", "Lina", "Volta", "Nour", "Ohmar", "Jade", "Faraday", "Inès", "Tesla", "Malo", "Joule", "Yasmine", "Kirch", "Léon", "Héloïse", "Watt", "Sacha", "Coulomb"],
+  "salutations": [
+    "Salut {nom} ! Approche, j'ai quelque chose à t'apprendre.",
+    "Ah, l'apprenti·e du Poste Source ! Écoute bien.",
+    "Hé {nom} ! Depuis le Délestage, plus personne ne se souvient de ça…",
+    "Tu tombes bien. Note ça dans ton grimoire.",
+    "Les Parasites ont mangé mes notes, mais ça, je l'ai retenu :"
+  ],
+  "deja_vu": [
+    "Tu as déjà tout noté. Relis ton grimoire si besoin (touche C).",
+    "On a déjà parlé de ça. File combattre quelques Parasites !",
+    "Rien de neuf ici. Les herbes hautes grouillent de Parasites…"
+  ],
+  "mentor": [
+    "Bienvenue au Poste Source, {nom}. Depuis le Grand Délestage, tout Ampéria est dans le noir.",
+    "Les Parasites ont dévoré les formules. Chaque région a gardé quelques habitants qui s'en souviennent : parle-leur, ils t'apprendront le cours.",
+    "Dans les herbes hautes, les Parasites t'attaqueront. Pour riposter, il faut répondre juste. Une erreur ? Pas grave : la correction s'affiche, et la question reviendra plus tard.",
+    "Quand tu auras découvert tout ce que savent les habitants d'une zone, son disjoncteur se fermera et tu pourras avancer. Au bout de chaque région, le Gardien corrompu du poste t'attend.",
+    "Et surveille les zones corrompues : elles apparaissent sur ce que tu dois réviser. Purifie-les pour garder ton savoir sous tension. Allez, en route : le premier portail est à l'ouest !"
+  ],
+  "pupitre": "Pupitre des archives : voici les polycopiés d'origine de cette région.",
+  "porte_fermee": "Ce disjoncteur est ouvert : la zone suivante est hors tension. Parle à tous les habitants de cette zone pour le réarmer.",
+  "porte_boss": "La porte du poste est verrouillée. Le Gardien n'acceptera de combattre qu'un·e apprenti·e qui a écouté tous les habitants de la région.",
+  "portail_ferme": "Ce portail est hors tension. Restaure la région précédente (bats son Gardien) ou atteins 60 % de maîtrise pour l'ouvrir.",
+  "victoire_boss": "Le poste se remet sous tension ! Les couleurs reviennent sur {region}.",
+  "defaite": "Ta Charge est à zéro… Tu te réveilles au Poste Source, batteries rechargées. Rien n'est perdu : ce que tu as appris reste dans ton grimoire."
+}

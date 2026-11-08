@@ -1,0 +1,43 @@
+{
+  "_aide": "Attaque « Contre-piège » (vrai ou faux). Pour chaque piège des JSON de cours : une affirmation vraie (reformulation du piège) et une version fausse écrite pour le jeu. À relire par Romain : passe relu à true une fois vérifié. Un piège absent d'ici n'est pas utilisé en vrai/faux.",
+  "ch01.piege-diviseur-serie": { "vrai": "Le diviseur de tension ne s'applique qu'à des résistances en série.", "faux": "Le diviseur de tension s'applique aussi à des résistances en dérivation.", "relu": false },
+  "ch01.piege-produit-somme": { "vrai": "R₁R₂/(R₁ + R₂) donne la résistance équivalente de 2 résistances en dérivation, et seulement 2.", "faux": "Pour 3 résistances en dérivation, on peut écrire R_eq = R₁R₂R₃/(R₁ + R₂ + R₃).", "relu": false },
+  "ch01.piege-eteindre": { "vrai": "Pour éteindre une source de tension, on la remplace par un court-circuit.", "faux": "Pour éteindre une source de tension, on la remplace par un circuit ouvert.", "relu": false },
+  "ch01.piege-condo-bobine": { "vrai": "En régime continu, un condensateur se comporte comme un circuit ouvert.", "faux": "En régime continu, une bobine se comporte comme un circuit ouvert.", "relu": false },
+  "ch01.piege-convention-signe": { "vrai": "En convention générateur, U = E − rI.", "faux": "En convention générateur, U = E + rI.", "relu": false },
+  "ch01.piege-unite-superposition": { "vrai": "Dans l'exemple de superposition, U′ = 6,25 V.", "faux": "Dans l'exemple de superposition, U′ = 6,25 A, puisque c'est un résultat de diviseur.", "relu": false },
+  "ch01.piege-r2-ouvert": { "vrai": "Une résistance en série avec une source de courant éteinte n'est traversée par aucun courant.", "faux": "Quand on éteint une source de courant, la résistance en série avec elle est court-circuitée et garde son courant.", "relu": false },
+
+  "ch02.piege-signe-p": { "vrai": "En convention générateur, p > 0 signifie que le dipôle fournit de la puissance.", "faux": "Quelle que soit la convention, p > 0 signifie que le dipôle reçoit de la puissance.", "relu": false },
+  "ch02.piege-fresnel": { "vrai": "En régime variable quelconque, on ne peut pas utiliser les vecteurs de Fresnel.", "faux": "En régime variable quelconque, on calcule avec les valeurs efficaces.", "relu": false },
+  "ch02.piege-signes-noeuds": { "vrai": "Dans la loi des nœuds du cours, les courants entrant dans le nœud sont comptés positivement.", "faux": "Dans la loi des mailles, on compte positives les tensions fléchées dans le sens opposé au sens de parcours.", "relu": false },
+  "ch02.piege-noeud-3-fils": { "vrai": "Un nœud relie au moins 3 fils.", "faux": "La jonction de 2 fils est un nœud.", "relu": false },
+
+  "ch03.piege-continu-non-constant": { "vrai": "Un signal dont la valeur instantanée varie peut être continu si sa valeur moyenne est non nulle.", "faux": "Un signal n'est continu que si sa valeur instantanée est constante, en électronique de puissance comme ailleurs.", "relu": false },
+  "ch03.piege-non-rms": { "vrai": "En position AC, un multimètre « non RMS » ne mesure correctement la valeur efficace que d'un signal sinusoïdal.", "faux": "En position AC, un multimètre « non RMS » mesure correctement la valeur efficace de tout signal alternatif.", "relu": false },
+  "ch03.piege-trms-ac": { "vrai": "Sur un TRMS, la position AC+DC donne la valeur efficace du signal complet.", "faux": "Sur un TRMS, la position AC donne la valeur efficace du signal complet.", "relu": false },
+  "ch03.piege-notations": { "vrai": "La valeur efficace d'une tension se note U, en majuscule.", "faux": "La valeur moyenne d'une tension se note U, en majuscule.", "relu": false },
+  "ch03.piege-frequence-multimetre": { "vrai": "Même un multimètre TRMS a une limite de mesure en fréquence.", "faux": "Un multimètre TRMS mesure correctement quelle que soit la fréquence du signal.", "relu": false },
+
+  "ch04.piege-signe": { "vrai": "Si le courant est en retard sur la tension, φ est positif.", "faux": "Si le courant est en avance sur la tension, φ est positif.", "relu": false },
+  "ch04.piege-valeur-absolue": { "vrai": "La relation 360 × Δt / T donne la valeur absolue du déphasage ; le signe se lit sur les courbes.", "faux": "La relation 360 × Δt / T donne directement le signe du déphasage.", "relu": false },
+  "ch04.piege-rad-deg": { "vrai": "|φ| = 2π × Δt / T donne un déphasage en radians.", "faux": "|φ| = 2π × Δt / T donne un déphasage en degrés.", "relu": false },
+  "ch04.piege-zero-meme-nature": { "vrai": "On mesure Δt entre deux passages par zéro de même nature.", "faux": "On peut mesurer Δt entre un passage par zéro montant de v et un passage par zéro descendant de i.", "relu": false },
+  "ch04.piege-surcompensation": { "vrai": "Avec trop de condensateurs, le déphasage d'une installation peut devenir négatif.", "faux": "Ajouter des condensateurs ne peut jamais rendre le déphasage négatif.", "relu": false },
+  "ch04.piege-sonde": { "vrai": "Avec une sonde 100 mV/A, une tension lue de 70 mV correspond à un courant de 0,7 A.", "faux": "Avec une sonde 100 mV/A, une tension lue de 70 mV correspond à un courant de 7 A.", "relu": false },
+
+  "ch05.piege-r-plus-l": { "vrai": "Pour R et L en série, Z = √(R² + (Lω)²).", "faux": "Pour R et L en série, Z = R + Lω.", "relu": false },
+  "ch05.piege-omega": { "vrai": "Dans Z = Lω, ω est la pulsation, égale à 2πf.", "faux": "Dans Z = Lω, ω est la fréquence en hertz.", "relu": false },
+  "ch05.piege-lc-signes": { "vrai": "Pour une inductance pure, le courant est en retard de 90° sur la tension.", "faux": "Pour un condensateur, le courant est en retard de 90° sur la tension.", "relu": false },
+  "ch05.piege-zc-frequence": { "vrai": "L'impédance d'un condensateur diminue quand la fréquence augmente.", "faux": "L'impédance d'un condensateur augmente quand la fréquence augmente.", "relu": false },
+  "ch05.piege-prefixes": { "vrai": "142 pF = 142 × 10⁻¹² F.", "faux": "142 pF = 142 × 10⁻⁹ F.", "relu": false },
+  "ch05.piege-tensions-rlc": { "vrai": "En série R, L, C, la tension efficace totale n'est pas la somme des tensions efficaces V_R + V_L + V_C.", "faux": "En série R, L, C, la tension efficace totale est la somme V_R + V_L + V_C.", "relu": false },
+
+  "ch06.piege-boucherot-s": { "vrai": "Le théorème de Boucherot ne s'applique pas aux puissances apparentes.", "faux": "D'après Boucherot, la puissance apparente totale est la somme des puissances apparentes.", "relu": false },
+  "ch06.piege-unites": { "vrai": "La puissance réactive s'exprime en VAR.", "faux": "La puissance apparente s'exprime en watts.", "relu": false },
+  "ch06.piege-k-cos": { "vrai": "k = cos φ n'est valable qu'en régime sinusoïdal.", "faux": "k = cos φ est valable dans tous les régimes.", "relu": false },
+  "ch06.piege-qc-negatif": { "vrai": "La puissance réactive d'un condensateur est négative.", "faux": "La puissance réactive d'un condensateur est positive, comme celle d'une bobine.", "relu": false },
+  "ch06.piege-i-ou-v": { "vrai": "Pour des dipôles en dérivation, on utilise plutôt les expressions de P et Q en fonction de V.", "faux": "Pour des dipôles en série, on utilise plutôt les expressions de P et Q en fonction de V.", "relu": false },
+  "ch06.piege-p-constante": { "vrai": "Une batterie de condensateurs de relèvement ne modifie pas la puissance active.", "faux": "Une batterie de condensateurs de relèvement diminue la puissance active de l'installation.", "relu": false },
+  "ch06.piege-tan-prime": { "vrai": "Dans C = P(tan φ − tan φ′)/(2πfV²), φ′ est le déphasage après relèvement.", "faux": "Dans C = P(tan φ − tan φ′)/(2πfV²), V est la tension maximale et non la tension efficace.", "relu": false }
+}
