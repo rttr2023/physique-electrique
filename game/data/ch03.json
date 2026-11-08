@@ -1,0 +1,670 @@
+{
+  "id": "ch03",
+  "annee": 1,
+  "numero": 3,
+  "titre": "Mesure de tension",
+  "sources": [
+    "A1-Ch03-p01.pdf",
+    "A1-Ch03-p02.pdf",
+    "A1-Ch03-p03.pdf"
+  ],
+  "notions": [
+    {
+      "id": "ch03.familles",
+      "nom": "Les 2 familles de signaux",
+      "definition": "Les signaux électriques (courant ou tension) se classent en signaux continus et signaux alternatifs.",
+      "source": {
+        "fichier": "A1-Ch03-p01.pdf",
+        "page": 1,
+        "zone": "document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.alternatif",
+      "nom": "Signal alternatif",
+      "definition": "Signal de valeur moyenne nulle : aires égales sous les alternances positives et négatives.",
+      "source": {
+        "fichier": "A1-Ch03-p01.pdf",
+        "page": 1,
+        "zone": "document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.sinusoidal",
+      "nom": "Signal sinusoïdal",
+      "definition": "L'idéal du signal alternatif, recherché dans de nombreuses applications de l'électrotechnique.",
+      "source": {
+        "fichier": "A1-Ch03-p01.pdf",
+        "page": 1,
+        "zone": "document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.continu",
+      "nom": "Signal continu",
+      "definition": "Signal de valeur moyenne non nulle, même si sa valeur instantanée n'est pas constante.",
+      "source": {
+        "fichier": "A1-Ch03-p01.pdf",
+        "page": 1,
+        "zone": "document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.continu-lisse",
+      "nom": "Signal continu parfaitement lissé",
+      "definition": "L'idéal du signal continu : sa valeur instantanée est constante.",
+      "source": {
+        "fichier": "A1-Ch03-p01.pdf",
+        "page": 1,
+        "zone": "document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.continu-puissance",
+      "nom": "Continu : électronique de puissance / classique",
+      "definition": "En électronique de puissance, tout signal de valeur moyenne non nulle est continu ; en électronique classique, seuls les signaux parfaitement lissés le sont.",
+      "source": {
+        "fichier": "A1-Ch03-p01.pdf",
+        "page": 1,
+        "zone": "document 1, remarque"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.periodique",
+      "nom": "Grandeur périodique",
+      "definition": "Grandeur qui se reproduit à l'identique à intervalle de temps régulier : répétition de motifs identiques. Le plus petit est le motif élémentaire.",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 2"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.periode",
+      "nom": "Période T",
+      "definition": "Durée d'un motif élémentaire, notée T, en secondes (s).",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 2"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.def-frequence",
+      "nom": "Fréquence f",
+      "definition": "Nombre de périodes se produisant en une seconde, notée f, en hertz (Hz).",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 2"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.valeur-moyenne",
+      "nom": "Valeur moyenne",
+      "definition": "Grandeur mesurée pour un signal continu. Notée par une minuscule entre crochets : <u>, <i>.",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.valeur-efficace",
+      "nom": "Valeur efficace",
+      "definition": "Grandeur mesurée pour un signal alternatif (valeur moyenne nulle). Notée par une majuscule : U, I. Définition physique : l'équivalent du continu parfaitement lissé du point de vue de la puissance.",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.multimetre-non-rms",
+      "nom": "Multimètre « non RMS »",
+      "definition": "DC : valeur moyenne correcte pour tout signal périodique. AC : valeur efficace correcte seulement si le signal est sinusoïdal.",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.multimetre-rms",
+      "nom": "Multimètre « RMS »",
+      "definition": "DC : valeur moyenne correcte pour tout signal périodique. AC : valeur efficace correcte seulement si le signal est alternatif.",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.multimetre-trms",
+      "nom": "Multimètre TRMS (True RMS, valeur efficace vraie)",
+      "definition": "Mesure correctement valeur moyenne et valeur efficace de tout signal périodique. DC : valeur moyenne ; AC : valeur efficace de la composante alternative (rarement utilisée) ; AC+DC : valeur efficace du signal complet (celle qui nous intéresse).",
+      "source": {
+        "fichier": "A1-Ch03-p03.pdf",
+        "page": 1,
+        "zone": "document 5"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.composantes",
+      "nom": "Composantes continue et alternative",
+      "definition": "Tout signal périodique u se décompose en une composante continue égale à sa valeur moyenne <u> et une composante alternative (ondulation) de valeur moyenne nulle.",
+      "source": {
+        "fichier": "A1-Ch03-p03.pdf",
+        "page": 1,
+        "zone": "document 5"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.limite-frequence",
+      "nom": "Limite en fréquence des multimètres",
+      "definition": "Tous les multimètres (non RMS, RMS, TRMS) ont une limite de mesure en fréquence, donnée par la notice du constructeur.",
+      "source": {
+        "fichier": "A1-Ch03-p03.pdf",
+        "page": 1,
+        "zone": "document 5, remarque"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.notations",
+      "nom": "Écriture normalisée des grandeurs",
+      "definition": "Instantanée : u ou u(t), i ou i(t). Efficace : U, I. Maximale : Û, Î. Minimale : Ǔ, Ǐ. Moyenne : <u> ou <u(t)>, <i> ou <i(t)>.",
+      "source": {
+        "fichier": "A1-Ch03-p03.pdf",
+        "page": 1,
+        "zone": "document 6"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "formules": [
+    {
+      "id": "ch03.frequence",
+      "site_id": "ch03Frequence",
+      "nom": "Fréquence et période",
+      "latex": "f = \\dfrac{1}{T}",
+      "variables": [
+        {
+          "symbole": "f",
+          "code": "f",
+          "signification": "fréquence",
+          "unite": "Hz"
+        },
+        {
+          "symbole": "T",
+          "code": "T",
+          "signification": "période (durée d'un motif élémentaire)",
+          "unite": "s"
+        }
+      ],
+      "conditions": "Grandeur périodique. f en Hz, T en s.",
+      "calcul": {
+        "cible": "f",
+        "expression": "1/T"
+      },
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 2, encadré"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.efficace",
+      "site_id": "ch03Efficace",
+      "nom": "Valeur efficace (définition mathématique)",
+      "latex": "U = \\sqrt{\\langle u^2 \\rangle}",
+      "variables": [
+        {
+          "symbole": "U",
+          "code": "U",
+          "signification": "valeur efficace",
+          "unite": "V"
+        },
+        {
+          "symbole": "\\langle u^2 \\rangle",
+          "code": "moyU2",
+          "signification": "valeur moyenne du carré de la tension instantanée",
+          "unite": "V²"
+        }
+      ],
+      "conditions": "Définition mathématique ; la définition physique à retenir : équivalent du continu parfaitement lissé du point de vue de la puissance.",
+      "calcul": {
+        "cible": "U",
+        "expression": "Math.sqrt(moyU2)"
+      },
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 3"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unités (V, V²) : non écrites sur le scan"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.decomposition",
+      "site_id": "ch03Decomposition",
+      "nom": "Composantes continue et alternative",
+      "latex": "u = \\langle u \\rangle + u_{ond}",
+      "variables": [
+        {
+          "symbole": "u",
+          "code": "u",
+          "signification": "valeur instantanée du signal complet",
+          "unite": "V"
+        },
+        {
+          "symbole": "\\langle u \\rangle",
+          "code": "moyU",
+          "signification": "composante continue (valeur moyenne)",
+          "unite": "V"
+        },
+        {
+          "symbole": "u_{ond}",
+          "code": "uond",
+          "signification": "composante alternative (ondulation), de valeur moyenne nulle",
+          "unite": "V"
+        }
+      ],
+      "conditions": "Tout signal périodique.",
+      "calcul": {
+        "cible": "u",
+        "expression": "moyU+uond"
+      },
+      "source": {
+        "fichier": "A1-Ch03-p03.pdf",
+        "page": 1,
+        "zone": "document 5, figure"
+      },
+      "origine": "déduit",
+      "ajouts": [
+        "unité V : non écrite sur le scan"
+      ],
+      "à_vérifier": false,
+      "note": "L'égalité n'est pas écrite telle quelle : c'est la mise en équation de la figure « signal complet = composante continue + composante alternative »."
+    }
+  ],
+  "relations": [
+    {
+      "de": "ch03.multimetre-trms",
+      "vers": "ch03.decomposition",
+      "type": "utilise",
+      "explication": "En position DC le TRMS mesure <u>, en AC la valeur efficace de u_ond, en AC+DC la valeur efficace de u.",
+      "source": {
+        "fichier": "A1-Ch03-p03.pdf",
+        "page": 1,
+        "zone": "document 5"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch03.valeur-moyenne",
+      "vers": "ch03.continu",
+      "type": "utilise",
+      "explication": "Pour un signal continu, on mesure la valeur moyenne.",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch03.valeur-efficace",
+      "vers": "ch03.alternatif",
+      "type": "utilise",
+      "explication": "Pour un signal alternatif (moyenne nulle), on mesure la valeur efficace.",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch03.continu-lisse",
+      "vers": "ch03.continu",
+      "type": "cas_particulier",
+      "explication": "Le continu parfaitement lissé est l'idéal du signal continu.",
+      "source": {
+        "fichier": "A1-Ch03-p01.pdf",
+        "page": 1,
+        "zone": "document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch03.sinusoidal",
+      "vers": "ch03.alternatif",
+      "type": "cas_particulier",
+      "explication": "Le sinusoïdal est l'idéal du signal alternatif.",
+      "source": {
+        "fichier": "A1-Ch03-p01.pdf",
+        "page": 1,
+        "zone": "document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch03.frequence",
+      "vers": "ch03.periode",
+      "type": "utilise",
+      "explication": "f = 1/T relie la fréquence à la période.",
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 2"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "pieges": [
+    {
+      "id": "ch03.piege-continu-non-constant",
+      "texte": "Un signal continu n'est pas forcément constant : il suffit que sa valeur moyenne soit non nulle (en électronique de puissance).",
+      "lie_a": [
+        "ch03.continu",
+        "ch03.continu-puissance"
+      ],
+      "source": {
+        "fichier": "A1-Ch03-p01.pdf",
+        "page": 1,
+        "zone": "document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.piege-non-rms",
+      "texte": "Un multimètre « non RMS » en position AC ne donne la bonne valeur efficace que pour un signal sinusoïdal ; un « RMS » seulement pour un signal alternatif.",
+      "lie_a": [
+        "ch03.multimetre-non-rms",
+        "ch03.multimetre-rms"
+      ],
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.piege-trms-ac",
+      "texte": "Sur un TRMS, la position AC donne seulement l'efficace de l'ondulation : pour l'efficace du signal complet, c'est AC+DC.",
+      "lie_a": [
+        "ch03.multimetre-trms",
+        "ch03.decomposition"
+      ],
+      "source": {
+        "fichier": "A1-Ch03-p03.pdf",
+        "page": 1,
+        "zone": "document 5"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.piege-notations",
+      "texte": "Minuscule = instantanée (u), majuscule = efficace (U), crochets = moyenne (<u>), chapeau = maximale (Û).",
+      "lie_a": [
+        "ch03.notations"
+      ],
+      "source": {
+        "fichier": "A1-Ch03-p03.pdf",
+        "page": 1,
+        "zone": "document 6"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch03.piege-frequence-multimetre",
+      "texte": "Tous les multimètres, même TRMS, ont une limite en fréquence (voir la notice).",
+      "lie_a": [
+        "ch03.limite-frequence"
+      ],
+      "source": {
+        "fichier": "A1-Ch03-p03.pdf",
+        "page": 1,
+        "zone": "document 5, remarque"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "exemples": [
+    {
+      "id": "ch03.ex-periodes",
+      "titre": "Périodes de trois signaux",
+      "type": "exemple_cours",
+      "enonce": "Trois signaux périodiques : tension $v$ en créneaux (axe en µs), tension $u$ en impulsions de 24 V (axe en ms), courant $i$ triangulaire jusqu'à 2 mA (axe en s). Les motifs élémentaires sont surlignés.",
+      "donnees": [],
+      "etapes": [
+        {
+          "question": "Période de v ?",
+          "formules": [],
+          "reponse": {
+            "valeur": 8e-07,
+            "unite": "s",
+            "texte": "T = 0,8 µs"
+          }
+        },
+        {
+          "question": "Période de u ?",
+          "formules": [],
+          "reponse": {
+            "valeur": 0.05,
+            "unite": "s",
+            "texte": "T = 50 ms"
+          }
+        },
+        {
+          "question": "Période de i ?",
+          "formules": [],
+          "reponse": {
+            "valeur": 30,
+            "unite": "s",
+            "texte": "T = 30 s"
+          }
+        }
+      ],
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 2, exemples"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false,
+      "note": "Les formes d'onde ne sont pas redessinées ; seules les périodes écrites sous chaque graphique sont reprises."
+    },
+    {
+      "id": "ch03.ex-frequences",
+      "titre": "Fréquences des trois signaux du document 2",
+      "type": "exemple_cours",
+      "enonce": "À partir des périodes du document 2, calculer les fréquences.",
+      "donnees": [
+        {
+          "code": "Tv",
+          "symbole": "T_v",
+          "valeur": 8e-07,
+          "unite": "s"
+        },
+        {
+          "code": "Tu",
+          "symbole": "T_u",
+          "valeur": 0.05,
+          "unite": "s"
+        },
+        {
+          "code": "Ti",
+          "symbole": "T_i",
+          "valeur": 30,
+          "unite": "s"
+        }
+      ],
+      "etapes": [
+        {
+          "question": "Fréquence de v ?",
+          "formules": [
+            "ch03.frequence"
+          ],
+          "calcul": "1/Tv",
+          "reponse": {
+            "valeur": 1250000,
+            "unite": "Hz",
+            "texte": "f = 1/0,8 µs = 1,25 MHz"
+          }
+        },
+        {
+          "question": "Fréquence de u ?",
+          "formules": [
+            "ch03.frequence"
+          ],
+          "calcul": "1/Tu",
+          "reponse": {
+            "valeur": 20,
+            "unite": "Hz",
+            "texte": "f = 1/50 ms = 20 Hz"
+          }
+        },
+        {
+          "question": "Fréquence de i ?",
+          "formules": [
+            "ch03.frequence"
+          ],
+          "calcul": "1/Ti",
+          "reponse": {
+            "valeur": 0.0333,
+            "unite": "Hz",
+            "texte": "f = 1/30 s ≈ 0,033 Hz"
+          }
+        }
+      ],
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 2"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false,
+      "note": "Les fréquences ne sont pas calculées dans le polycopié : application directe de f = 1/T aux périodes données."
+    },
+    {
+      "id": "ch03.ex-efficace",
+      "titre": "Sens physique de la valeur efficace",
+      "type": "exemple_cours",
+      "enonce": "Un courant sinusoïdal a une valeur maximale de 2 A. Quelle est sa valeur efficace, et que signifie-t-elle ?",
+      "donnees": [
+        {
+          "code": "Imax",
+          "symbole": "\\hat{I}",
+          "valeur": 2,
+          "unite": "A"
+        }
+      ],
+      "etapes": [
+        {
+          "question": "Valeur efficace mesurée ?",
+          "formules": [
+            "ch03.efficace"
+          ],
+          "calcul": "Imax/Math.sqrt(2)",
+          "reponse": {
+            "valeur": 1.41,
+            "unite": "A",
+            "texte": "I = 1,41 A : ce courant fournirait à une résistance la même puissance qu'un continu parfaitement lissé de 1,41 A."
+          }
+        }
+      ],
+      "source": {
+        "fichier": "A1-Ch03-p02.pdf",
+        "page": 1,
+        "zone": "document 3"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "calcul Î/√2 : la relation n'est pas écrite dans ce chapitre (rappel ajouté hors polycopié au ch04)"
+      ],
+      "à_vérifier": false
+    }
+  ]
+}

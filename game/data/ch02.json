@@ -1,0 +1,267 @@
+{
+  "id": "ch02",
+  "annee": 1,
+  "numero": 2,
+  "titre": "Les régimes variables quelconques",
+  "sources": ["A1-Ch02-p01.pdf", "A1-Ch02-p02.pdf", "A1-Ch02-p03.pdf", "A1-Ch02-p04.pdf"],
+
+  "notions": [
+    {
+      "id": "ch02.regime-variable",
+      "nom": "Régime variable quelconque",
+      "definition": "Régime variable de manière non périodique, par exemple un régime transitoire (charge d'un condensateur). Il n'est ni continu, ni sinusoïdal, ni périodique.",
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "introduction et § 1" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.outils-invalides",
+      "nom": "Outils non valables en régime quelconque",
+      "definition": "Vecteurs de Fresnel, nombres complexes et série de Fourier (définie pour une fonction périodique) ne s'appliquent pas. Valeurs moyennes et efficaces n'y ont aucun sens.",
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "§ 1" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.valeurs-instantanees",
+      "nom": "Calcul en valeurs instantanées",
+      "definition": "En régime variable quelconque, tous les calculs s'effectuent directement avec les valeurs instantanées (notées en minuscules : u, i).",
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "§ 1, dernière ligne" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.relations-tout-regime",
+      "nom": "Relations valables dans tous les régimes",
+      "definition": "u = Ri, i = C du/dt et u = L di/dt sont valables quel que soit le régime. Elles permettent de démontrer que Z = Lω en sinusoïdal et qu'une inductance est un fil en continu.",
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "§ 2, remarque" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.convention-generateur",
+      "nom": "Convention générateur",
+      "definition": "Tension et courant fléchés dans le même sens. Avec p = v × i : p > 0, le dipôle fournit de la puissance ; p < 0, il en reçoit.",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 3" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.convention-recepteur",
+      "nom": "Convention récepteur",
+      "definition": "Tension et courant fléchés en sens contraire. Avec p = v × i : p > 0, le dipôle reçoit de la puissance ; p < 0, il en fournit.",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 3" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.noeud",
+      "nom": "Nœud",
+      "definition": "Connexion qui relie au moins 3 fils.",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4, définitions" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.branche",
+      "nom": "Branche",
+      "definition": "Portion de circuit comprise entre 2 nœuds consécutifs.",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4, définitions" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.maille",
+      "nom": "Maille",
+      "definition": "Association de branches en série composant un circuit fermé.",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4, définitions" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.resistance-energie",
+      "nom": "Résistance et énergie",
+      "definition": "Une résistance ne peut pas emmagasiner d'énergie : toute l'énergie électrique reçue est dissipée instantanément en chaleur par effet Joule.",
+      "source": { "fichier": "A1-Ch02-p03.pdf", "page": 1, "zone": "§ 5" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.condensateur-energie",
+      "nom": "Condensateur et stockage d'énergie",
+      "definition": "Question 6 du cours, étudiée avec l'expérience 1 (source, voltmètre et condensateur en dérivation ; lampe à part). La réponse n'est pas rédigée dans le polycopié (vidéo n°1).",
+      "source": { "fichier": "A1-Ch02-p03.pdf", "page": 1, "zone": "§ 6, expérience 1" },
+      "origine": "scan", "ajouts": [], "à_vérifier": true,
+      "note": "Réponse absente du scan (donnée par la vidéo n°1). À compléter par Romain ; non utilisée dans le jeu tant qu'elle n'est pas validée."
+    },
+    {
+      "id": "ch02.bobine-energie",
+      "nom": "Bobine et stockage d'énergie",
+      "definition": "Questions 7, 9 et 10 du cours, étudiées avec les expériences 2, 3 et 4. Les réponses ne sont pas rédigées dans le polycopié (vidéos n°2 à 4).",
+      "source": { "fichier": "A1-Ch02-p03.pdf", "page": 1, "zone": "§ 7 et § 9 ; § 10 sur A1-Ch02-p04.pdf" },
+      "origine": "scan", "ajouts": [], "à_vérifier": true,
+      "note": "Réponses absentes des scans (vidéos n°2, 3 et 4). À compléter par Romain ; non utilisées dans le jeu tant qu'elles ne sont pas validées."
+    },
+    {
+      "id": "ch02.condensateur-duree",
+      "nom": "Condensateur : stockage dans la durée",
+      "definition": "Question 8 : « Un condensateur peut-il stocker de l'énergie dans la durée ? » Réponse manuscrite sur le scan : « Oui mais il se vide instantanément ».",
+      "source": { "fichier": "A1-Ch02-p03.pdf", "page": 1, "zone": "§ 8, annotation manuscrite" },
+      "origine": "manuscrit", "ajouts": [], "à_vérifier": true,
+      "note": "Réponse manuscrite ambiguë (« se vide instantanément » : dans quelles conditions ? à travers la lampe ?). Le polycopié renvoie à la vidéo n°1. À confirmer avant de l'utiliser dans le jeu."
+    }
+  ],
+
+  "formules": [
+    {
+      "id": "ch02.resistance", "site_id": "ch02UR",
+      "nom": "Résistance (valeurs instantanées)",
+      "latex": "u = R\\,i",
+      "variables": [
+        { "symbole": "u", "code": "u", "signification": "tension instantanée aux bornes de la résistance", "unite": "V" },
+        { "symbole": "R", "code": "R", "signification": "résistance", "unite": "Ω" },
+        { "symbole": "i", "code": "i", "signification": "courant instantané", "unite": "A" }
+      ],
+      "conditions": "Valable quel que soit le régime ; convention récepteur.",
+      "calcul": { "cible": "u", "expression": "R*i" },
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "§ 2, tableau" },
+      "origine": "scan", "ajouts": ["unités : non écrites sur le scan"], "à_vérifier": false,
+      "note": "Le polycopié écrit u = ri pour une résistance notée R sur le schéma."
+    },
+    {
+      "id": "ch02.condensateur", "site_id": "ch02IC",
+      "nom": "Condensateur (valeurs instantanées)",
+      "latex": "i = C\\,\\dfrac{du}{dt}",
+      "variables": [
+        { "symbole": "i", "code": "i", "signification": "courant instantané", "unite": "A" },
+        { "symbole": "C", "code": "C", "signification": "capacité du condensateur", "unite": "F" },
+        { "symbole": "\\dfrac{du}{dt}", "code": "dudt", "signification": "dérivée de la tension par rapport au temps", "unite": "V/s" }
+      ],
+      "conditions": "Valable quel que soit le régime ; convention récepteur.",
+      "calcul": { "cible": "i", "expression": "C*dudt" },
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "§ 2, tableau" },
+      "origine": "scan", "ajouts": ["unités (A, F, V/s) : non écrites sur le scan"], "à_vérifier": false
+    },
+    {
+      "id": "ch02.bobine", "site_id": "ch02UL",
+      "nom": "Inductance pure (valeurs instantanées)",
+      "latex": "u = L\\,\\dfrac{di}{dt}",
+      "variables": [
+        { "symbole": "u", "code": "u", "signification": "tension instantanée", "unite": "V" },
+        { "symbole": "L", "code": "L", "signification": "inductance", "unite": "H" },
+        { "symbole": "\\dfrac{di}{dt}", "code": "didt", "signification": "dérivée du courant par rapport au temps", "unite": "A/s" }
+      ],
+      "conditions": "Valable quel que soit le régime ; convention récepteur.",
+      "calcul": { "cible": "u", "expression": "L*didt" },
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "§ 2, tableau" },
+      "origine": "scan", "ajouts": ["unités (V, H, A/s) : non écrites sur le scan"], "à_vérifier": false
+    },
+    {
+      "id": "ch02.puissance-instantanee", "site_id": "ch02Pinst",
+      "nom": "Puissance instantanée",
+      "latex": "p = v \\times i",
+      "variables": [
+        { "symbole": "p", "code": "p", "signification": "puissance instantanée associée au dipôle", "unite": "W" },
+        { "symbole": "v", "code": "v", "signification": "tension instantanée", "unite": "V" },
+        { "symbole": "i", "code": "i", "signification": "courant instantané", "unite": "A" }
+      ],
+      "conditions": "Le sens de l'échange dépend de la convention : en récepteur, p > 0 → le dipôle reçoit ; en générateur, p > 0 → il fournit.",
+      "calcul": { "cible": "p", "expression": "v*i" },
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 3" },
+      "origine": "scan", "ajouts": ["unités (W, V, A) : non écrites sur le scan"], "à_vérifier": false
+    },
+    {
+      "id": "ch02.loi-noeuds", "site_id": "ch02Noeuds",
+      "nom": "Loi des nœuds",
+      "latex": "\\sum_k i_k = 0",
+      "variables": [
+        { "symbole": "i_k", "code": "ik", "signification": "courants entrant (comptés positifs) et sortant (comptés négatifs) du nœud", "unite": "A" }
+      ],
+      "conditions": "Courants entrant dans le nœud positifs, courants sortant négatifs.",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4, encadré" },
+      "origine": "scan", "ajouts": ["unité A : non écrite sur le scan"], "à_vérifier": false
+    },
+    {
+      "id": "ch02.loi-mailles", "site_id": "ch02Mailles",
+      "nom": "Loi des mailles",
+      "latex": "\\sum_k v_k = 0",
+      "variables": [
+        { "symbole": "v_k", "code": "vk", "signification": "tensions de la maille : positives si fléchées dans le sens de parcours (S), négatives sinon", "unite": "V" }
+      ],
+      "conditions": "Sens de parcours (S) choisi arbitrairement.",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4, encadré" },
+      "origine": "scan", "ajouts": ["unité V : non écrite sur le scan"], "à_vérifier": false
+    }
+  ],
+
+  "relations": [
+    {
+      "de": "ch02.relations-tout-regime", "vers": "ch01.bob-continu", "type": "utilise",
+      "explication": "La remarque du § 2 : u = L di/dt montre qu'une inductance est équivalente à un fil en continu.",
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "§ 2, remarque" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch02.relations-tout-regime", "vers": "ch05.zl", "type": "utilise",
+      "explication": "La même remarque : u = L di/dt permet de démontrer Z = Lω en sinusoïdal.",
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "§ 2, remarque" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch02.puissance-instantanee", "vers": "ch02.convention-recepteur", "type": "utilise",
+      "explication": "Le signe de p s'interprète selon la convention choisie (tableau récapitulatif).",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 3, récapitulatif" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch02.puissance-instantanee", "vers": "ch02.convention-generateur", "type": "utilise",
+      "explication": "Le signe de p s'interprète selon la convention choisie (tableau récapitulatif).",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 3, récapitulatif" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch02.loi-noeuds", "vers": "ch02.noeud", "type": "utilise",
+      "explication": "La loi des nœuds s'applique à un nœud (au moins 3 fils).",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "de": "ch02.loi-mailles", "vers": "ch02.maille", "type": "utilise",
+      "explication": "La loi des mailles s'applique aux tensions d'une maille.",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    }
+  ],
+
+  "pieges": [
+    {
+      "id": "ch02.piege-signe-p",
+      "texte": "p > 0 ne veut pas toujours dire « reçoit » : c'est vrai en convention récepteur, mais en convention générateur p > 0 signifie que le dipôle fournit.",
+      "lie_a": ["ch02.puissance-instantanee", "ch02.convention-recepteur", "ch02.convention-generateur"],
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 3, récapitulatif" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.piege-fresnel",
+      "texte": "En régime variable quelconque, pas de Fresnel, pas de complexes, pas de Fourier, pas de valeur moyenne ni efficace : on calcule en valeurs instantanées.",
+      "lie_a": ["ch02.outils-invalides", "ch02.valeurs-instantanees"],
+      "source": { "fichier": "A1-Ch02-p01.pdf", "page": 1, "zone": "§ 1" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.piege-signes-noeuds",
+      "texte": "Loi des nœuds : courants entrant comptés positifs, sortant négatifs. Loi des mailles : tensions dans le sens de (S) positives, les autres négatives.",
+      "lie_a": ["ch02.loi-noeuds", "ch02.loi-mailles"],
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4" },
+      "origine": "scan", "ajouts": [], "à_vérifier": false
+    },
+    {
+      "id": "ch02.piege-noeud-3-fils",
+      "texte": "Un nœud relie au moins 3 fils : une simple jonction de 2 fils n'est pas un nœud.",
+      "lie_a": ["ch02.noeud"],
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4, définitions" },
+      "origine": "déduit", "ajouts": [], "à_vérifier": false
+    }
+  ],
+
+  "exemples": [],
+
+  "annotations_manuscrites": [
+    {
+      "texte": "À côté de la loi des nœuds : « Sommes = à 0 » au-dessus du Σ, et « A_t = A1 + A2 + A3… » (avec un cœur dessiné en marge).",
+      "source": { "fichier": "A1-Ch02-p02.pdf", "page": 1, "zone": "§ 4, loi des nœuds" },
+      "origine": "manuscrit", "ajouts": [], "à_vérifier": true,
+      "note": "« A_t = A1 + A2 + A3 » semble signifier « courant total = somme des courants des branches » (A pour ampères ?). Ce n'est pas la même écriture que Σ i_k = 0. Sens à confirmer ; non utilisé dans le jeu."
+    }
+  ]
+}
