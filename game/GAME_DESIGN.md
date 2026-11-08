@@ -352,24 +352,20 @@ une raison de revenir. C peut s'y ajouter en phase 4 comme clin d'œil.
 
 ---
 
-## 14. Prototype (phase 3) et suite (phase 4)
+## 14. Décisions (validées par Romain le 08/11/2026)
 
-**Phase 3, une région** : **Vallée du Continu** (ch01) recommandée : chapitre de départ, données
-propres, 10 formules avec calcul, boss naturel (superposition en 3 étapes).
+| Question | Décision |
+|---|---|
+| Entrée vers le jeu | **A. Le disjoncteur** dans l'en-tête du site |
+| Périmètre | pas de prototype à une seule région : **toutes les régions**, construites **chapitre par chapitre** |
+| Éléments `hors_cours` | **inclus par défaut**, avec badge, désactivables dans les options |
+| Nom | **Ampéria** |
 
-Contenu du prototype : page `game/index.html`, village minimal + 1 région (3 ou 4 écrans), PNJ du
-savoir, 5 types d'attaques, 2 Parasites, boss, codex, répétition espacée et zones corrompues, XP et
-niveaux (sans arbre de compétences complet), sauvegarde localStorage + export, contrôles clavier et
-tactiles, l'entrée choisie.
+## 15. Plan de construction
 
-**Phase 4** : les 5 autres régions, équipement et compétences au complet, statistiques, sons, animations
-et effets de lumière, mode chrono, réglage de la difficulté après tes essais.
-
----
-
-## 15. Questions ouvertes
-
-1. Quelle entrée : A, B ou C ?
-2. Prototype sur la Vallée du Continu (ch01), ou une autre région ?
-3. Inclure par défaut les éléments `hors_cours` (ex. V = V_max/√2), avec leur badge ?
-4. Nom du jeu : « Ampéria » te convient ?
+1. **Moteur + Vallée du Continu (ch01)** : page `game/index.html`, village, carte, PNJ, 5 attaques,
+   boss, codex, répétition espacée, zones corrompues, XP, sauvegarde + export, contrôles clavier et
+   tactiles, disjoncteur sur le site. Commit.
+2. **Une région par chapitre, dans l'ordre** (ch02 → ch06) : entrée dans `regions.json`, gabarit de carte,
+   Parasites, boss, affirmations fausses. Vérification et commit après chaque région.
+3. **Finitions** : équipement et compétences au complet, statistiques, sons, animations, équilibrage.
