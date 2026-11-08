@@ -3,7 +3,7 @@
 Fichier généré par `node game/outils/verifier-donnees.js` : ne pas le modifier à la main.
 Pour corriger : modifie le JSON du chapitre (texte, valeur), passe `"à_vérifier"` à `false` et relance le script.
 
-## 1. Passages illisibles, ambigus ou contradictoires (5)
+## 1. Passages illisibles, ambigus ou contradictoires (10)
 
 ### ch01
 
@@ -21,7 +21,20 @@ Pour corriger : modifie le JSON du chapitre (texte, valeur), passe `"à_vérifie
 - **ch02 annotation 1** (annotation) — `A1-Ch02-p02.pdf`, § 4, loi des nœuds
   « A_t = A1 + A2 + A3 » semble signifier « courant total = somme des courants des branches » (A pour ampères ?). Ce n'est pas la même écriture que Σ i_k = 0. Sens à confirmer ; non utilisé dans le jeu.
 
-## 2. Compléments hors scan (connaissances générales, signalés) (20)
+### ch04
+
+- **ch04.td-ex3 étape 9** (étape d'exemple) — `A1-Ch04-p02.pdf`, exercice 3 et éléments de réponse
+  Erreur probable du corrigé : 85 mA / √2 ≈ 60 mA, pas 49 mA (et la lecture de l'oscillogramme confirme bien I_max ≈ 85 mA).
+- **ch04.seuil** (formule) — `A1-Ch04-p03.pdf`, annexe 1, document 2, dernière phrase
+  Incohérence du polycopié : 0,38 rad × 180/π ≈ 21,8°, et non 21,5°. Quelle valeur retenir ?
+- **ch04.ecriture-temporelle** (formule) — `A1-Ch04-p04.pdf`, annotation manuscrite en bas à droite
+  Les deux expressions manuscrites portent le même « + φ » : u et i seraient alors en phase. Il manque l'origine des phases (u ou i) et le signe. Le site a choisi v = V√2 sin(ωt) et i = I√2 sin(ωt − φ) (rappel hors polycopié). À confirmer.
+- **ch04 annotation 1** (annotation) — `A1-Ch04-p03.pdf`, bas de page, sous le document 2
+  Fraction illisible (peut-être tan φ = Q/P, vue au chapitre 6 ?). Non utilisée dans le jeu.
+- **ch04 manque 1** (manque) — `A1-Ch04-p01.pdf`, —
+  Scanner la page manquante si elle existe, puis relancer l'extraction du chapitre.
+
+## 2. Compléments hors scan (connaissances générales, signalés) (26)
 
 Ces éléments sont fidèles au scan, mais un détail a été complété (souvent les unités, que le polycopié n'écrit pas).
 
@@ -53,4 +66,13 @@ Ces éléments sont fidèles au scan, mais un détail a été complété (souven
 - **ch03.efficace** : unités (V, V²) : non écrites sur le scan
 - **ch03.decomposition** : unité V : non écrite sur le scan
 - **ch03.ex-efficace** : calcul Î/√2 : la relation n'est pas écrite dans ce chapitre (rappel ajouté hors polycopié au ch04)
+
+### ch04
+
+- **ch04.pulsation** : unités (rad/s, Hz) : non écrites
+- **ch04.puissance-manuscrit** : unités : non écrites
+- **ch04.courant-manuscrit** : unités : non écrites
+- **ch04.efficace-sinus** : formule absente des scans : connaissance générale, utilisée implicitement par les éléments de réponse du TD
+- **ch04.oscillo** : méthode non écrite dans les scans : connaissance générale nécessaire au TD
+- **ch04.piege-sonde** : méthode de lecture hors scan
 

@@ -103,6 +103,7 @@ for (const ch of chapitres) {
     });
   });
   (ch.annotations_manuscrites || []).forEach((a, i) => tout.push(['annotation', ch.id + ' annotation ' + (i + 1), a]));
+  (ch.manques || []).forEach((a, i) => tout.push(['manque', ch.id + ' manque ' + (i + 1), a]));
   ch.relations.forEach((r, i) => tout.push(['relation', ch.id + ' relation ' + (i + 1) + ' (' + r.de + ' → ' + r.vers + ')', r]));
 
   tout.forEach(([genre, quoi, el]) => {

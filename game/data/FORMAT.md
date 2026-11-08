@@ -18,6 +18,7 @@ directement d'un scan est signalé (voir « Traçabilité »).
 | `pieges` | pièges classiques |
 | `exemples` | exemples et exercices du cours ou du TD, avec leur résolution |
 | `annotations_manuscrites` | facultatif : notes à la main du scan qui ne trouvent pas leur place ailleurs (`{ texte, ...traçabilité }`) |
+| `manques` | facultatif : parties du cours absentes des scans (même forme) |
 
 ## Traçabilité (présente sur **chaque** élément)
 

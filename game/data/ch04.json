@@ -1,0 +1,1065 @@
+{
+  "id": "ch04",
+  "annee": 1,
+  "numero": 4,
+  "titre": "Le déphasage courant/tension en régime sinusoïdal",
+  "sources": [
+    "A1-Ch04-p01.pdf",
+    "A1-Ch04-p02.pdf",
+    "A1-Ch04-p03.pdf",
+    "A1-Ch04-p04.pdf"
+  ],
+  "notions": [
+    {
+      "id": "ch04.dephasage",
+      "nom": "Déphasage φ",
+      "definition": "Sans autre précision, φ est le déphasage du courant par rapport à la tension. On peut aussi l'appeler retard du courant sur la tension.",
+      "source": {
+        "fichier": "A1-Ch04-p03.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.signe-phi",
+      "nom": "Signe du déphasage",
+      "definition": "φ > 0 si i est en retard sur v (inductif) ; φ < 0 si i est en avance sur v (capacitif) ; φ = 0 si i et v sont en phase (purement résistif).",
+      "source": {
+        "fichier": "A1-Ch04-p03.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 1, oscillogrammes"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.phi-nul-ideal",
+      "nom": "φ = 0 : le cas idéal",
+      "definition": "φ = 0 correspond à un minimum de courant en ligne pour une puissance reçue donnée. C'est le cas d'un chauffage résistif.",
+      "source": {
+        "fichier": "A1-Ch04-p03.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.moteurs",
+      "nom": "Systèmes avec moteurs",
+      "definition": "Dès que les systèmes contiennent par exemple des moteurs, φ est supérieur à zéro.",
+      "source": {
+        "fichier": "A1-Ch04-p03.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.industrie-inductive",
+      "nom": "Installations industrielles inductives",
+      "definition": "Les installations industrielles sont de type inductif : le déphasage du courant par rapport à la tension y est positif (courant en retard).",
+      "source": {
+        "fichier": "A1-Ch04-p03.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 2"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.effet-dephasage",
+      "nom": "Effet d'un déphasage",
+      "definition": "Augmentation du courant en ligne pour un même apport d'énergie. Double surcoût : installation surdimensionnée (câbles plus gros…) et taxe du fournisseur d'énergie, qui supporte plus de pertes en ligne.",
+      "source": {
+        "fichier": "A1-Ch04-p03.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 2"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.def-batterie",
+      "nom": "Batterie de condensateurs",
+      "definition": "Plusieurs condensateurs en parallèle ; sa capacité (F) est la somme des capacités. Seuls, ils feraient avancer le courant ; en parallèle sur une installation inductive, ils compensent tout ou partie du retard : φ se rapproche de zéro (mais peut devenir négatif).",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.compensation-souplesse",
+      "nom": "Limites de la batterie fixe",
+      "definition": "La batterie est calculée pour une utilisation donnée et manque de souplesse face aux variations d'activité. Solutions : corriger chaque système, ou compensations sophistiquées qui réagissent instantanément (plus coûteuses mais vite amorties).",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.decalage",
+      "nom": "Décalage temporel Δt",
+      "definition": "Décalage entre les 2 courbes v et i (entre 2 maxima, entre 2 passages par zéro de même nature…), en secondes. Mesuré avec les curseurs de Psim ou de l'oscilloscope.",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.produit-croix",
+      "nom": "Du décalage au déphasage",
+      "definition": "Produit en croix : une période T correspond à 2π rad (ou 360°), le décalage Δt correspond à |φ|. Le signe se lit ensuite : + si i est en retard sur v.",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "formules": [
+    {
+      "id": "ch04.phi-rad",
+      "site_id": "ch04PhiRad",
+      "nom": "Déphasage en radians",
+      "latex": "|\\varphi| = \\dfrac{2\\pi \\times \\Delta t}{T}",
+      "variables": [
+        {
+          "symbole": "|\\varphi|",
+          "code": "phi",
+          "signification": "valeur absolue du déphasage",
+          "unite": "rad"
+        },
+        {
+          "symbole": "\\Delta t",
+          "code": "dt",
+          "signification": "décalage temporel entre v et i",
+          "unite": "s"
+        },
+        {
+          "symbole": "T",
+          "code": "T",
+          "signification": "période",
+          "unite": "s"
+        }
+      ],
+      "conditions": "Δt mesuré entre 2 maxima ou 2 passages par zéro de même nature. Signe : + si i en retard sur v.",
+      "calcul": {
+        "cible": "phi",
+        "expression": "2*Math.PI*dt/T"
+      },
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 4, encadré"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.phi-deg",
+      "site_id": "ch04PhiDeg",
+      "nom": "Déphasage en degrés",
+      "latex": "|\\varphi| = \\dfrac{360 \\times \\Delta t}{T}",
+      "variables": [
+        {
+          "symbole": "|\\varphi|",
+          "code": "phi",
+          "signification": "valeur absolue du déphasage",
+          "unite": "°"
+        },
+        {
+          "symbole": "\\Delta t",
+          "code": "dt",
+          "signification": "décalage temporel entre v et i",
+          "unite": "s"
+        },
+        {
+          "symbole": "T",
+          "code": "T",
+          "signification": "période",
+          "unite": "s"
+        }
+      ],
+      "conditions": "Même Δt et même T, en secondes.",
+      "calcul": {
+        "cible": "phi",
+        "expression": "360*dt/T"
+      },
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 4, encadré"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.seuil",
+      "site_id": "ch04Seuil",
+      "nom": "Déphasage toléré par le fournisseur",
+      "latex": "\\varphi < 0{,}38\\ \\text{rad}\\ (21{,}5^\\circ)",
+      "variables": [
+        {
+          "symbole": "\\varphi",
+          "code": "phi",
+          "signification": "déphasage de l'installation",
+          "unite": "rad"
+        }
+      ],
+      "conditions": "En dessous, pas de surtaxe du fournisseur d'électricité.",
+      "source": {
+        "fichier": "A1-Ch04-p03.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 2, dernière phrase"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": true,
+      "note": "Incohérence du polycopié : 0,38 rad × 180/π ≈ 21,8°, et non 21,5°. Quelle valeur retenir ?"
+    },
+    {
+      "id": "ch04.batterie",
+      "site_id": "ch04Batterie",
+      "nom": "Capacité d'une batterie de condensateurs",
+      "latex": "C = C_1 + C_2 + C_3 + \\cdots",
+      "variables": [
+        {
+          "symbole": "C",
+          "code": "C",
+          "signification": "capacité de la batterie",
+          "unite": "F"
+        },
+        {
+          "symbole": "C_1",
+          "code": "C1",
+          "signification": "capacité d'un condensateur",
+          "unite": "F"
+        },
+        {
+          "symbole": "C_2",
+          "code": "C2",
+          "signification": "capacité d'un condensateur",
+          "unite": "F"
+        },
+        {
+          "symbole": "C_3",
+          "code": "C3",
+          "signification": "capacité d'un condensateur",
+          "unite": "F"
+        }
+      ],
+      "conditions": "Condensateurs connectés en parallèle.",
+      "calcul": {
+        "cible": "C",
+        "expression": "C1+C2+C3"
+      },
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 3"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false,
+      "note": "Le polycopié l'écrit en phrase (« égale à la somme des capacités ») ; la formule en est la mise en équation."
+    },
+    {
+      "id": "ch04.pulsation",
+      "site_id": "ch04Freq",
+      "nom": "Pulsation",
+      "latex": "\\omega = 2\\pi f = \\dfrac{2\\pi}{T}",
+      "variables": [
+        {
+          "symbole": "\\omega",
+          "code": "w",
+          "signification": "pulsation",
+          "unite": "rad/s"
+        },
+        {
+          "symbole": "f",
+          "code": "f",
+          "signification": "fréquence",
+          "unite": "Hz"
+        }
+      ],
+      "conditions": "Grandeurs sinusoïdales.",
+      "calcul": {
+        "cible": "w",
+        "expression": "2*Math.PI*f"
+      },
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annotation manuscrite en bas de page"
+      },
+      "origine": "manuscrit",
+      "ajouts": [
+        "unités (rad/s, Hz) : non écrites"
+      ],
+      "à_vérifier": false,
+      "note": "Le site la classait en « rappel hors polycopié » : elle figure en fait à la main sur le scan."
+    },
+    {
+      "id": "ch04.puissance-manuscrit",
+      "site_id": null,
+      "nom": "Puissance active (annotation)",
+      "latex": "P = U I \\cos\\varphi",
+      "variables": [
+        {
+          "symbole": "P",
+          "code": "P",
+          "signification": "puissance active",
+          "unite": "W"
+        },
+        {
+          "symbole": "U",
+          "code": "U",
+          "signification": "tension efficace",
+          "unite": "V"
+        },
+        {
+          "symbole": "I",
+          "code": "I",
+          "signification": "courant efficace",
+          "unite": "A"
+        },
+        {
+          "symbole": "\\varphi",
+          "code": "phi",
+          "signification": "déphasage",
+          "unite": "rad"
+        }
+      ],
+      "conditions": "Régime sinusoïdal (vue au chapitre 6).",
+      "calcul": {
+        "cible": "P",
+        "expression": "U*I*Math.cos(phi)"
+      },
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annotation manuscrite en bas de page"
+      },
+      "origine": "manuscrit",
+      "ajouts": [
+        "unités : non écrites"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.courant-manuscrit",
+      "site_id": null,
+      "nom": "Courant en ligne (annotation)",
+      "latex": "I = \\dfrac{P}{U \\cos\\varphi}",
+      "variables": [
+        {
+          "symbole": "I",
+          "code": "I",
+          "signification": "courant efficace en ligne",
+          "unite": "A"
+        },
+        {
+          "symbole": "P",
+          "code": "P",
+          "signification": "puissance active",
+          "unite": "W"
+        },
+        {
+          "symbole": "U",
+          "code": "U",
+          "signification": "tension efficace",
+          "unite": "V"
+        },
+        {
+          "symbole": "\\varphi",
+          "code": "phi",
+          "signification": "déphasage",
+          "unite": "rad"
+        }
+      ],
+      "conditions": "À P et U fixés, I augmente quand cos φ diminue (φ s'éloigne de 0) : c'est l'effet du document 2.",
+      "calcul": {
+        "cible": "I",
+        "expression": "P/(U*Math.cos(phi))"
+      },
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annotation manuscrite en bas de page (« I = P / U·cos PHI »)"
+      },
+      "origine": "manuscrit",
+      "ajouts": [
+        "unités : non écrites"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.ecriture-temporelle",
+      "site_id": "ch04Ecriture",
+      "nom": "Représentation temporelle (annotation)",
+      "latex": "i(t) = I\\sqrt{2}\\,\\sin(\\omega t + \\varphi) \\quad u(t) = U\\sqrt{2}\\,\\sin(\\omega t + \\varphi)",
+      "variables": [
+        {
+          "symbole": "I, U",
+          "code": "I",
+          "signification": "valeurs efficaces",
+          "unite": "A, V"
+        },
+        {
+          "symbole": "\\omega",
+          "code": "w",
+          "signification": "pulsation",
+          "unite": "rad/s"
+        },
+        {
+          "symbole": "\\varphi",
+          "code": "phi",
+          "signification": "phase",
+          "unite": "rad"
+        }
+      ],
+      "conditions": "Notée « représentation temporelle » à la main.",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annotation manuscrite en bas à droite"
+      },
+      "origine": "manuscrit",
+      "ajouts": [],
+      "à_vérifier": true,
+      "note": "Les deux expressions manuscrites portent le même « + φ » : u et i seraient alors en phase. Il manque l'origine des phases (u ou i) et le signe. Le site a choisi v = V√2 sin(ωt) et i = I√2 sin(ωt − φ) (rappel hors polycopié). À confirmer."
+    },
+    {
+      "id": "ch04.efficace-sinus",
+      "site_id": "ch04Eff",
+      "nom": "Valeur efficace d'une sinusoïde",
+      "latex": "V = \\dfrac{V_{max}}{\\sqrt{2}}",
+      "variables": [
+        {
+          "symbole": "V",
+          "code": "V",
+          "signification": "valeur efficace",
+          "unite": "V"
+        },
+        {
+          "symbole": "V_{max}",
+          "code": "Vmax",
+          "signification": "valeur maximale",
+          "unite": "V"
+        }
+      ],
+      "conditions": "Signal sinusoïdal uniquement. De même I = I_max/√2.",
+      "calcul": {
+        "cible": "V",
+        "expression": "Vmax/Math.sqrt(2)"
+      },
+      "source": {
+        "fichier": "A1-Ch04-p02.pdf",
+        "page": 1,
+        "zone": "éléments de réponse (72 V → 50,9 V ; 0,7 A → 0,495 A)"
+      },
+      "origine": "déduit",
+      "ajouts": [
+        "formule absente des scans : connaissance générale, utilisée implicitement par les éléments de réponse du TD"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.oscillo",
+      "site_id": "ch04Oscillo",
+      "nom": "Lecture d'un oscillogramme",
+      "latex": "\\text{grandeur} = \\text{nombre de divisions} \\times \\text{calibre}",
+      "variables": [
+        {
+          "symbole": "n",
+          "code": "n",
+          "signification": "nombre de divisions lues",
+          "unite": ""
+        },
+        {
+          "symbole": "k",
+          "code": "k",
+          "signification": "calibre (par division)",
+          "unite": ""
+        }
+      ],
+      "conditions": "Puis tenir compte de la sonde : diviser par sa sensibilité (ex. 100 mV/A) ou multiplier par son rapport (sonde 1/20).",
+      "source": {
+        "fichier": "A1-Ch04-p01.pdf",
+        "page": 1,
+        "zone": "exercice 2, données (calibres, sondes)"
+      },
+      "origine": "déduit",
+      "ajouts": [
+        "méthode non écrite dans les scans : connaissance générale nécessaire au TD"
+      ],
+      "à_vérifier": false
+    }
+  ],
+  "relations": [
+    {
+      "de": "ch04.phi-deg",
+      "vers": "ch04.phi-rad",
+      "type": "équivalent",
+      "explication": "Même produit en croix : 2π rad ↔ 360° pour une période.",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch04.pulsation",
+      "vers": "ch03.frequence",
+      "type": "utilise",
+      "explication": "ω = 2πf = 2π/T utilise f = 1/T.",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annotation manuscrite"
+      },
+      "origine": "manuscrit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch04.courant-manuscrit",
+      "vers": "ch04.puissance-manuscrit",
+      "type": "découle_de",
+      "explication": "I = P/(U cos φ) est P = UI cos φ résolue en I.",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annotation manuscrite"
+      },
+      "origine": "manuscrit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch04.puissance-manuscrit",
+      "vers": "ch06.p",
+      "type": "équivalent",
+      "explication": "Même relation que la puissance active du chapitre 6 (P = VI cos φ).",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annotation manuscrite"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch04.courant-manuscrit",
+      "vers": "ch04.effet-dephasage",
+      "type": "utilise",
+      "explication": "Explique l'augmentation du courant en ligne quand φ s'éloigne de 0.",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annotation manuscrite ; document 2 sur A1-Ch04-p03.pdf"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch04.batterie",
+      "vers": "ch06.relevement",
+      "type": "utilise",
+      "explication": "Le calcul de la capacité nécessaire est vu au chapitre 6 (relèvement du facteur de puissance).",
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 3"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "pieges": [
+    {
+      "id": "ch04.piege-signe",
+      "texte": "φ est le déphasage du COURANT par rapport à la TENSION : i en retard → φ > 0 (inductif) ; i en avance → φ < 0 (capacitif).",
+      "lie_a": [
+        "ch04.dephasage",
+        "ch04.signe-phi"
+      ],
+      "source": {
+        "fichier": "A1-Ch04-p03.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 1"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.piege-valeur-absolue",
+      "texte": "Les formules 2πΔt/T et 360Δt/T donnent seulement |φ| : le signe se déduit ensuite de la position de i par rapport à v.",
+      "lie_a": [
+        "ch04.phi-rad",
+        "ch04.phi-deg"
+      ],
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.piege-rad-deg",
+      "texte": "2π avec un résultat en radians, 360 avec un résultat en degrés : ne pas mélanger.",
+      "lie_a": [
+        "ch04.phi-rad",
+        "ch04.phi-deg"
+      ],
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 4"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.piege-zero-meme-nature",
+      "texte": "Mesurer Δt entre deux passages par zéro DE MÊME NATURE (tous deux montants ou tous deux descendants).",
+      "lie_a": [
+        "ch04.decalage"
+      ],
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.piege-surcompensation",
+      "texte": "Trop de condensateurs : φ peut devenir négatif (installation devenue capacitive).",
+      "lie_a": [
+        "ch04.batterie"
+      ],
+      "source": {
+        "fichier": "A1-Ch04-p04.pdf",
+        "page": 1,
+        "zone": "annexe 1, document 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch04.piege-sonde",
+      "texte": "Sur un oscillogramme, ne pas oublier la sonde : avec une sonde 100 mV/A, 70 mV lus correspondent à 0,7 A ; avec une sonde 1/20, 3,6 V lus correspondent à 72 V.",
+      "lie_a": [
+        "ch04.oscillo"
+      ],
+      "source": {
+        "fichier": "A1-Ch04-p01.pdf",
+        "page": 1,
+        "zone": "exercice 2 ; réponses sur A1-Ch04-p02.pdf"
+      },
+      "origine": "déduit",
+      "ajouts": [
+        "méthode de lecture hors scan"
+      ],
+      "à_vérifier": false
+    }
+  ],
+  "exemples": [
+    {
+      "id": "ch04.td-ex1",
+      "titre": "TD exercice 1 — Représentations de Fresnel",
+      "type": "td",
+      "enonce": "Quatre représentations de Fresnel ($f$ = 50 Hz ; échelles 30 V/cm et 2 A/cm). Pour chacune : indiquer et donner le déphasage, les valeurs efficaces de $v$ et $i$, l'écriture algébrique de $v$ et $i$. (1) $\\vec I$ et $\\vec V$ colinéaires ; (2) $\\vec V$ tourné dans le sens + par rapport à $\\vec I$ ; (3) $\\vec V$ tourné dans le sens − par rapport à $\\vec I$ ; (4) $\\vec I$ tourné dans le sens + par rapport à $\\vec V$.",
+      "donnees": [],
+      "etapes": [
+        {
+          "question": "Représentation 1 : déphasage, V, I ?",
+          "formules": [],
+          "reponse": {
+            "texte": "φ = 0° ; V = 102 V ; I = 4 A"
+          }
+        },
+        {
+          "question": "Représentation 2 : déphasage, V, I ?",
+          "formules": [],
+          "reponse": {
+            "texte": "φ = 30° ; V = 102 V ; I = 4 A"
+          }
+        },
+        {
+          "question": "Représentation 3 : déphasage, valeurs efficaces ?",
+          "formules": [],
+          "reponse": {
+            "texte": "φ = −18° ; 3,4 A ; 87 V"
+          }
+        },
+        {
+          "question": "Représentation 4 : déphasage, valeurs efficaces ?",
+          "formules": [],
+          "reponse": {
+            "texte": "φ = −45° ; 3,4 A ; 87 V"
+          }
+        }
+      ],
+      "source": {
+        "fichier": "A1-Ch04-p01.pdf",
+        "page": 1,
+        "zone": "exercice 1 ; réponses sur A1-Ch04-p02.pdf"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false,
+      "note": "Les écritures algébriques ne figurent pas dans les éléments de réponse. Les longueurs des vecteurs ne sont pas mesurables sur la photo : seules les réponses du corrigé sont reprises."
+    },
+    {
+      "id": "ch04.td-ex2",
+      "titre": "TD exercice 2 — Lecture d'un oscillogramme (50 Hz)",
+      "type": "td",
+      "enonce": "Oscillogramme de $v$ et $i$. Calibre des temps : 5 ms/div. Tension : sonde 1/20 et calibre 2 V/div. Courant : sonde 100 mV/A et calibre 50 mV/div. $v$ passe par son maximum avant $i$.",
+      "donnees": [
+        {
+          "code": "T",
+          "symbole": "T",
+          "valeur": 0.02,
+          "unite": "s"
+        },
+        {
+          "code": "Vmax",
+          "symbole": "V_{max}",
+          "valeur": 72,
+          "unite": "V"
+        },
+        {
+          "code": "Imax",
+          "symbole": "I_{max}",
+          "valeur": 0.7,
+          "unite": "A"
+        }
+      ],
+      "etapes": [
+        {
+          "question": "Période ?",
+          "formules": [
+            "ch04.oscillo"
+          ],
+          "reponse": {
+            "valeur": 0.02,
+            "unite": "s",
+            "texte": "T = 20 ms"
+          }
+        },
+        {
+          "question": "Fréquence ?",
+          "formules": [
+            "ch03.frequence"
+          ],
+          "calcul": "1/T",
+          "reponse": {
+            "valeur": 50,
+            "unite": "Hz",
+            "texte": "f = 50 Hz"
+          }
+        },
+        {
+          "question": "Pulsation ?",
+          "formules": [
+            "ch04.pulsation"
+          ],
+          "calcul": "2*Math.PI/T",
+          "reponse": {
+            "valeur": 314,
+            "unite": "rad/s",
+            "texte": "ω = 314 rad·s⁻¹"
+          }
+        },
+        {
+          "question": "La charge est-elle inductive ou capacitive ? Signe du déphasage ?",
+          "formules": [
+            "ch04.signe-phi"
+          ],
+          "reponse": {
+            "texte": "v passe par son maximum avant i : i est en retard, charge inductive, φ > 0."
+          },
+          "note": "Réponse non donnée dans le corrigé : déduite de l'oscillogramme et du document 1."
+        },
+        {
+          "question": "Déphasage ?",
+          "formules": [
+            "ch04.phi-deg"
+          ],
+          "reponse": {
+            "valeur": 54,
+            "unite": "°",
+            "texte": "φ = 54°"
+          }
+        },
+        {
+          "question": "Valeur maximale de v ?",
+          "formules": [
+            "ch04.oscillo"
+          ],
+          "reponse": {
+            "valeur": 72,
+            "unite": "V",
+            "texte": "V_max = 72 V"
+          }
+        },
+        {
+          "question": "Valeur efficace de v ?",
+          "formules": [
+            "ch04.efficace-sinus"
+          ],
+          "calcul": "Vmax/Math.sqrt(2)",
+          "reponse": {
+            "valeur": 50.9,
+            "unite": "V",
+            "texte": "V = 50,9 V"
+          }
+        },
+        {
+          "question": "Valeur maximale de i ?",
+          "formules": [
+            "ch04.oscillo"
+          ],
+          "reponse": {
+            "valeur": 0.7,
+            "unite": "A",
+            "texte": "I_max = 0,7 A"
+          }
+        },
+        {
+          "question": "Valeur efficace de i ?",
+          "formules": [
+            "ch04.efficace-sinus"
+          ],
+          "calcul": "Imax/Math.sqrt(2)",
+          "reponse": {
+            "valeur": 0.495,
+            "unite": "A",
+            "texte": "I = 0,495 A"
+          }
+        }
+      ],
+      "source": {
+        "fichier": "A1-Ch04-p01.pdf",
+        "page": 1,
+        "zone": "exercice 2 ; questions et réponses sur A1-Ch04-p02.pdf"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false,
+      "note": "Questions 6 et 7 (Fresnel et écriture algébrique) sans éléments de réponse dans le polycopié."
+    },
+    {
+      "id": "ch04.td-ex3",
+      "titre": "TD exercice 3 — Lecture d'un oscillogramme (5 kHz)",
+      "type": "td",
+      "enonce": "Oscillogramme de $v$ et $i$. Calibre des temps : 50 µs/div. Tension : mesurée directement, calibre 2 V/div. Courant : sonde 100 mV/A et calibre 5 mV/div. $i$ passe par son maximum avant $v$.",
+      "donnees": [
+        {
+          "code": "T",
+          "symbole": "T",
+          "valeur": 0.0002,
+          "unite": "s"
+        },
+        {
+          "code": "Vmax",
+          "symbole": "V_{max}",
+          "valeur": 4.6,
+          "unite": "V"
+        },
+        {
+          "code": "Imax",
+          "symbole": "I_{max}",
+          "valeur": 0.085,
+          "unite": "A"
+        }
+      ],
+      "etapes": [
+        {
+          "question": "Période ?",
+          "formules": [
+            "ch04.oscillo"
+          ],
+          "reponse": {
+            "valeur": 0.0002,
+            "unite": "s",
+            "texte": "T = 200 µs"
+          }
+        },
+        {
+          "question": "Fréquence ?",
+          "formules": [
+            "ch03.frequence"
+          ],
+          "calcul": "1/T",
+          "reponse": {
+            "valeur": 5000,
+            "unite": "Hz",
+            "texte": "f = 5 kHz"
+          }
+        },
+        {
+          "question": "Pulsation ?",
+          "formules": [
+            "ch04.pulsation"
+          ],
+          "calcul": "2*Math.PI/T",
+          "reponse": {
+            "valeur": 31400,
+            "unite": "rad/s",
+            "texte": "ω = 31 400 rad·s⁻¹"
+          }
+        },
+        {
+          "question": "La charge est-elle inductive ou capacitive ? Signe du déphasage ?",
+          "formules": [
+            "ch04.signe-phi"
+          ],
+          "reponse": {
+            "texte": "i passe par son maximum avant v : i est en avance, charge capacitive, φ < 0."
+          },
+          "note": "Réponse non donnée dans le corrigé : déduite de l'oscillogramme et du document 1 (cohérente avec φ = −27°)."
+        },
+        {
+          "question": "Déphasage ?",
+          "formules": [
+            "ch04.phi-deg"
+          ],
+          "reponse": {
+            "valeur": -27,
+            "unite": "°",
+            "texte": "φ = −27°"
+          }
+        },
+        {
+          "question": "Valeur maximale de v ?",
+          "formules": [
+            "ch04.oscillo"
+          ],
+          "reponse": {
+            "valeur": 4.6,
+            "unite": "V",
+            "texte": "V_max = 4,6 V"
+          }
+        },
+        {
+          "question": "Valeur efficace de v ?",
+          "formules": [
+            "ch04.efficace-sinus"
+          ],
+          "calcul": "Vmax/Math.sqrt(2)",
+          "reponse": {
+            "valeur": 3.25,
+            "unite": "V",
+            "texte": "V = 3,25 V"
+          }
+        },
+        {
+          "question": "Valeur maximale de i ?",
+          "formules": [
+            "ch04.oscillo"
+          ],
+          "reponse": {
+            "valeur": 0.085,
+            "unite": "A",
+            "texte": "I_max = 85 mA"
+          }
+        },
+        {
+          "question": "Valeur efficace de i ?",
+          "formules": [
+            "ch04.efficace-sinus"
+          ],
+          "calcul": "Imax/Math.sqrt(2)",
+          "reponse": {
+            "valeur": 0.049,
+            "unite": "A",
+            "texte": "I = 49 mA (corrigé du polycopié)"
+          },
+          "à_vérifier": true,
+          "note": "Erreur probable du corrigé : 85 mA / √2 ≈ 60 mA, pas 49 mA (et la lecture de l'oscillogramme confirme bien I_max ≈ 85 mA)."
+        }
+      ],
+      "source": {
+        "fichier": "A1-Ch04-p02.pdf",
+        "page": 1,
+        "zone": "exercice 3 et éléments de réponse"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false,
+      "note": "Questions 6 et 7 (Fresnel et écriture algébrique) sans éléments de réponse dans le polycopié."
+    }
+  ],
+  "annotations_manuscrites": [
+    {
+      "texte": "Sous le document 2 : « Tgφ = … / … » (fraction illisible).",
+      "source": {
+        "fichier": "A1-Ch04-p03.pdf",
+        "page": 1,
+        "zone": "bas de page, sous le document 2"
+      },
+      "origine": "manuscrit",
+      "ajouts": [],
+      "à_vérifier": true,
+      "note": "Fraction illisible (peut-être tan φ = Q/P, vue au chapitre 6 ?). Non utilisée dans le jeu."
+    }
+  ],
+  "manques": [
+    {
+      "texte": "Page d'ouverture du chapitre 4 (problématique, objectifs, cours) non photographiée : le chapitre ne contient que l'annexe 1 et le TD.",
+      "source": {
+        "fichier": "A1-Ch04-p01.pdf",
+        "page": 1,
+        "zone": "—"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": true,
+      "note": "Scanner la page manquante si elle existe, puis relancer l'extraction du chapitre."
+    }
+  ]
+}
