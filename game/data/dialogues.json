@@ -1,6 +1,25 @@
 {
   "_aide": "Phrases d'ambiance (pas du contenu de cours). {nom} = nom du joueur, {region} = nom de la région.",
-  "prenoms": ["Ampère", "Lina", "Volta", "Nour", "Ohmar", "Jade", "Faraday", "Inès", "Tesla", "Malo", "Joule", "Yasmine", "Kirch", "Léon", "Héloïse", "Watt", "Sacha", "Coulomb"],
+  "prenoms": [
+    "Ampère",
+    "Lina",
+    "Volta",
+    "Nour",
+    "Ohmar",
+    "Jade",
+    "Faraday",
+    "Inès",
+    "Tesla",
+    "Malo",
+    "Joule",
+    "Yasmine",
+    "Kirch",
+    "Léon",
+    "Héloïse",
+    "Watt",
+    "Sacha",
+    "Coulomb"
+  ],
   "salutations": [
     "Salut {nom} ! Approche, j'ai quelque chose à t'apprendre.",
     "Ah, l'apprenti·e du Poste Source ! Écoute bien.",
@@ -25,5 +44,10 @@
   "porte_boss": "La porte du poste est verrouillée. Le Gardien n'acceptera de combattre qu'un·e apprenti·e qui a écouté tous les habitants de la région.",
   "portail_ferme": "Ce portail est hors tension. Restaure la région précédente (bats son Gardien) ou atteins 60 % de maîtrise pour l'ouvrir.",
   "victoire_boss": "Le poste se remet sous tension ! Les couleurs reviennent sur {region}.",
-  "defaite": "Ta Charge est à zéro… Tu te réveilles au Poste Source, batteries rechargées. Rien n'est perdu : ce que tu as appris reste dans ton grimoire."
+  "defaite": "Ta Charge est à zéro… Tu te réveilles au Poste Source, batteries rechargées. Rien n'est perdu : ce que tu as appris reste dans ton grimoire.",
+  "libre_ferme": "Ce grand portail mène aux Terres Sauvages, le monde libre d'Ampéria. Il se rallumera quand tu auras restauré la Vallée du Continu.",
+  "libre_entree": "Les Terres Sauvages : ici, pas de leçons, que des Parasites. Ils t'interrogent sur tout ce que tu as appris, et deviennent plus coriaces à chaque région que tu restaures.",
+  "territoire_ferme": "Un brouillard électrique bloque ce territoire. Il se dissipera quand la région correspondante sera restaurée.",
+  "champion": "Le champion de ce territoire te défie ! Plus résistant que les Parasites ordinaires, il frappe plus fort mais rapporte beaucoup d'XP. Il revient chaque jour.",
+  "champion_battu": "Le champion se repose. Reviens demain pour une revanche !"
 }

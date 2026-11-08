@@ -17,6 +17,7 @@
       competences: ['sonde', 'memo'],
       introVue: false,
       tutos: {},
+      champions: {},     // id du champion → jour de sa dernière défaite
       options: { horsCours: true, sons: true, musique: true, texte: 'normal', chrono: false, animations: true, test: false },
       stats: { justes: 0, fautes: 0, parType: {}, tempsJeu: 0, jours: [], combats: 0 },
       decalageJours: 0,

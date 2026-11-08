@@ -6,13 +6,14 @@
   const M = AMP.monde = AMP.monde || {};
 
   // Cases infranchissables (les portes A, B, C, X dépendent de leur état).
-  M.SOLIDES = '#~o|LP012KHhTtng';
+  M.SOLIDES = '#~o|LP012KHhTtng*';
   M.PORTES = { A: 1, B: 2, C: 3 }; // porte → nombre de zones à avoir terminées pour l'ouvrir ; X = toutes
 
   M.analyserCarte = function (json) {
     const lignes = json.lignes;
     const h = lignes.length, w = lignes[0].length;
-    const c = { nom: json.nom, w: w, h: h, lignes: lignes, cases: [], pnj: [], portes: [], portails: {}, chantiers: [], depart: null, sortie: null, pupitre: null, boss: null, mentor: null, maisons: [], transfo: null };
+    const c = { nom: json.nom, w: w, h: h, lignes: lignes, cases: [], pnj: [], portes: [], portails: {}, chantiers: [], depart: null, sortie: null, pupitre: null, boss: null, mentor: null, maisons: [], transfo: null,
+      libre: null, champions: [], biomes: json.biomes || null, ouverts: null };
     for (let y = 0; y < h; y++) {
       for (let x = 0; x < w; x++) {
         const ch = lignes[y][x];
@@ -26,6 +27,8 @@
         else if (ch === 'H') c.maisons.push(t);
         else if (ch === 'T') c.transfo = t;
         else if (ch === 'g') c.chantiers.push(t);
+        else if (ch === 'm' && json.nom === 'village') c.libre = t;
+        else if (ch === '*') c.champions.push(t);
         else if ('012'.indexOf(ch) >= 0) c.pnj.push({ x: x, y: y, zone: Number(ch) });
         else if ('ABCX'.indexOf(ch) >= 0) c.portes.push({ x: x, y: y, lettre: ch });
         else if ('abcdef'.indexOf(ch) >= 0) c.portails[ch] = t;
@@ -34,6 +37,9 @@
     c.nbZones = c.pnj.length ? Math.max.apply(null, c.pnj.map(function (p) { return p.zone; })) + 1 : 0;
 
     c.at = function (x, y) { return (x < 0 || y < 0 || x >= w || y >= h) ? '#' : lignes[y][x]; };
+    // Monde libre : territoire de chaque case (0 = place centrale), et territoires ouverts ({ 0: true, 1: true… }).
+    c.biome = function (x, y) { return c.biomes && y >= 0 && y < h && x >= 0 && x < w ? Number(c.biomes[y][x]) : 0; };
+    c.biomeOuvert = function (x, y) { return !c.biomes || !c.ouverts || !!c.ouverts[c.biome(x, y)]; };
     // Une porte est ouverte quand `zonesFinies` zones sont terminées.
     c.porteOuverte = function (lettre, zonesFinies) {
       if (lettre === 'X') return zonesFinies >= c.nbZones;
@@ -41,6 +47,7 @@
     };
     c.solide = function (x, y, zonesFinies) {
       const ch = c.at(x, y);
+      if (!c.biomeOuvert(x, y)) return true;
       if ('ABCX'.indexOf(ch) >= 0) return !c.porteOuverte(ch, zonesFinies);
       return M.SOLIDES.indexOf(ch) >= 0;
     };

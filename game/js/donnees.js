@@ -25,6 +25,7 @@
     const regions = res[0];
     D.plages = res[1]; D.affirmations = res[2]; D.dialogues = res[3];
     D.village = regions.village;
+    D.libre = regions.libre || null;
     D.chantiers = regions.chantiers || [];
 
     // Une région par chapitre (configuration de regions.json, ou région par défaut).
@@ -38,7 +39,7 @@
       return Object.assign({ index: i, portail: cfg.portail || lettres[i] || null }, cfg, { ch: ch });
     });
 
-    const gabarits = ['village'].concat(D.regions.map(function (r) { return r.gabarit; }));
+    const gabarits = ['village'].concat(D.libre ? [D.libre.gabarit] : []).concat(D.regions.map(function (r) { return r.gabarit; }));
     const uniques = gabarits.filter(function (g, i) { return gabarits.indexOf(g) === i; });
     const cartes = await Promise.all(uniques.map(function (g) { return lire('cartes/' + g + '.json'); }));
     uniques.forEach(function (g, i) { D.cartes[g] = cartes[i]; });

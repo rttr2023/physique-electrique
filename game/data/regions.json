@@ -176,5 +176,11 @@
       "nom": "Usine des Machines",
       "texte": "Chantier en cours : cette région s'ouvrira avec les cours sur les machines électriques."
     }
-  ]
+  ],
+  "libre": {
+    "nom": "Terres Sauvages",
+    "gabarit": "libre",
+    "ouvert_apres": 1,
+    "_aide": "Monde libre : s'ouvre quand `ouvert_apres` région(s) sont restaurées. Le territoire n de la carte s'ouvre avec la région n. Niveau des Parasites = nombre de régions restaurées."
+  }
 }

@@ -45,6 +45,22 @@ const err = (m) => erreurs.push(m);
       'abcdef'.split('').forEach((p) => { if (!carte.portails[p]) err('village : portail ' + p + ' absent'); });
       Object.keys(carte.portails).forEach((p) => { if (!carte.accessible(carte.portails[p], 99)) err('village : portail ' + p + ' inaccessible'); });
       if (!carte.mentor || !carte.accessible(carte.mentor, 99)) err('village : mentor inaccessible');
+      if (D.libre && (!carte.libre || !carte.accessible(carte.libre, 99))) err('village : portail du monde libre (m) absent ou inaccessible');
+      return;
+    }
+    if (c.biomes) {
+      // Monde libre : chaque champion doit être accessible avec seulement la place centrale et son territoire.
+      if (c.biomes.length !== c.lignes.length || c.biomes.some((l) => l.length !== w)) err('carte ' + nom + ' : grille des territoires de mauvaise taille');
+      if (!carte.sortie) err('carte ' + nom + ' : pas de retour au village E');
+      for (let k = 1; k <= D.regions.length; k++) {
+        const ch = carte.champions.filter((t) => carte.biome(t.x, t.y) === k);
+        if (!ch.length) { avert.push('carte ' + nom + ' : territoire ' + k + ' sans champion'); continue; }
+        carte.ouverts = { 0: true }; carte.ouverts[k] = true;
+        if (!carte.accessible(ch[0], 0)) err('carte ' + nom + ' : champion du territoire ' + k + ' inaccessible');
+        const herbes = carte.cases.filter((t) => t.c === ',' && carte.biome(t.x, t.y) === k).length;
+        if (herbes < 30) avert.push('carte ' + nom + ' : territoire ' + k + ' : ' + herbes + ' cases d’herbes hautes');
+      }
+      carte.ouverts = null;
       return;
     }
     // Zones : sans gabarit cohérent, les portes ne servent à rien.

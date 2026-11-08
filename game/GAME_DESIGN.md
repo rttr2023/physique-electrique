@@ -369,3 +369,15 @@ une raison de revenir. C peut s'y ajouter en phase 4 comme clin d'œil.
 2. **Une région par chapitre, dans l'ordre** (ch02 → ch06) : entrée dans `regions.json`, gabarit de carte,
    Parasites, boss, affirmations fausses. Vérification et commit après chaque région.
 3. **Finitions** : équipement et compétences au complet, statistiques, sons, animations, équilibrage.
+
+## 16. Ajouts de la phase 4 (demandés par Romain le 08/11/2026)
+
+- **Monde libre (Terres Sauvages)** : ouvert après la restauration de la première région. Six territoires en
+  étoile autour d'une place, chacun ouvert avec sa région. Niveau des Parasites = nombre de régions restaurées
+  (points de vie 10 + 2 × niveau, riposte 4 + 2 × niveau, calculs plus fréquents, XP +25 % par niveau).
+  Un champion par territoire (×1,6 points de vie, ×1,3 riposte, XP ×2), une fois par jour.
+- **Netteté** : agrandissement toujours entier (en pixels physiques de l'écran), zone de jeu adaptée à l'écran,
+  textes du canvas dessinés avec une police en pixels 5 × 7 (accents compris).
+- Objectif affiché en permanence, tutoriels au premier usage de chaque attaque, rallumage animé des régions,
+  musique 8 bits par lieu (désactivable), étincelles à l'impact, appuis brefs comptés comme des pas,
+  combats raccourcis (2 à 3 bonnes réponses), puissance des coups +8 % par niveau du joueur.

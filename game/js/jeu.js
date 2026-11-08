@@ -8,6 +8,8 @@
   const ctx = toile.getContext('2d');
   ctx.imageSmoothingEnabled = false;
   AMP.scene = 'chargement';
+  // Test automatique (?test-auto) : boucle au minuteur, car le navigateur suspend l'animation d'une fenêtre masquée.
+  const image = /test-auto/.test(location.search) ? function (f) { setTimeout(function () { f(performance.now()); }, 16); } : window.requestAnimationFrame.bind(window);
   let flash = null;                        // { t, duree, milieu, fait }
   let titreT = 0;
 
@@ -28,15 +30,17 @@
     } else if (tactile && !paysage) {
       ah -= 170; // place pour la croix et les boutons sous l'image
     }
-    // Exploration en portrait : vue presque carrée (moins de cases, mais plus grandes).
-    let w = 320, h = 180;
-    if (!paysage && !document.body.classList.contains('mode-combat')) { w = 240; h = Math.max(180, Math.min(320, Math.round(240 * ah / aw / 8) * 8)); }
+    // Netteté : chaque pixel du jeu devient un carré d'exactement k × k pixels physiques de l'écran (k entier).
+    // La zone de jeu s'adapte ensuite à la place disponible (plus ou moins de cases visibles).
+    const combat = document.body.classList.contains('mode-combat');
+    const dpr = window.devicePixelRatio || 1;
+    const dw = Math.max(1, aw * dpr), dh = Math.max(1, ah * dpr);
+    const k = (!paysage && !combat) ? Math.max(1, Math.floor(dw / 200)) : Math.max(1, Math.floor(Math.min(dw / 320, dh / 180)));
+    const w = Math.max(160, Math.min(combat ? 400 : 480, Math.floor(dw / k)));
+    const h = Math.max(100, Math.min(combat ? 240 : 300, Math.floor(dh / k)));
     if (w !== W || h !== H) { W = w; H = h; toile.width = W; toile.height = H; ctx.imageSmoothingEnabled = false; }
-    let s = Math.min(aw / W, ah / H);
-    if (s >= 2) s = Math.floor(s * 2) / 2; // pas de demi-pixels flous sur grand écran
-    s = Math.max(0.5, s);
-    toile.style.width = Math.floor(W * s) + 'px';
-    toile.style.height = Math.floor(H * s) + 'px';
+    toile.style.width = (W * k / dpr) + 'px';
+    toile.style.height = (H * k / dpr) + 'px';
   };
   window.addEventListener('resize', JEU.redimensionner);
   window.addEventListener('orientationchange', function () { setTimeout(JEU.redimensionner, 200); });
@@ -116,13 +120,13 @@
 
     if (!AMP.etat.nom) ecranTitre();
     else lancerMonde();
-    requestAnimationFrame(boucle);
+    image(boucle);
   }
 
   function lancerMonde() {
     AMP.scene = 'monde';
     const l = AMP.etat.lieu;
-    const id = l && (l.carte === 'village' || AMP.region(l.carte)) ? l.carte : 'village';
+    const id = l && (l.carte === 'village' || AMP.region(l.carte) || (l.carte === 'libre' && AMP.monde.libreOuvert())) ? l.carte : 'village';
     AMP.monde.entrer(id, l && l.x != null ? l : null);
     JEU.redimensionner();
     if (!AMP.etat.introVue && id === 'village') setTimeout(function () { AMP.monde.mentor(); }, 600);
@@ -184,7 +188,7 @@
       ctx.fillRect(0, 0, W, H);
       if (flash.t >= flash.duree) flash = null;
     }
-    requestAnimationFrame(boucle);
+    image(boucle);
   }
 
   // Écran titre : nuit, lignes électriques, éclairs.
@@ -195,15 +199,15 @@
       ctx.fillStyle = i % 3 ? '#2d3e63' : '#9aa6bd';
       ctx.fillRect((i * 73 + Math.floor(titreT * 3)) % W, (i * 37) % 90, 1, 1);
     }
+    const b = H - 70; // pylônes et câbles posés en bas de l'écran, quelle que soit sa hauteur
     ctx.fillStyle = '#141a2e';
-    for (let x = 0; x < W; x += 40) { ctx.fillRect(x + 18, 110, 4, 70); ctx.fillRect(x + 8, 112, 24, 2); }
+    for (let x = 0; x < W; x += 40) { ctx.fillRect(x + 18, b, 4, 70); ctx.fillRect(x + 8, b + 2, 24, 2); }
     ctx.strokeStyle = '#2d3e63'; ctx.lineWidth = 1;
-    for (let k = 0; k < 2; k++) { ctx.beginPath(); for (let x = 0; x <= W; x += 40) { if (x) ctx.quadraticCurveTo(x - 20, 120 + k * 4, x + 9, 113 + k * 4); else ctx.moveTo(9, 113 + k * 4); } ctx.stroke(); }
-    ctx.fillStyle = '#1f2a44'; ctx.fillRect(0, 165, W, 15);
-    ctx.font = 'bold 30px monospace'; ctx.textAlign = 'center';
-    ctx.fillStyle = '#5a2e16'; ctx.fillText('AMPÉRIA', W / 2 + 2, 62);
-    ctx.fillStyle = Math.floor(titreT * 6) % 17 === 0 ? '#ffffff' : '#ffc65c'; ctx.fillText('AMPÉRIA', W / 2, 60);
-    ctx.font = '8px monospace'; ctx.fillStyle = '#3fd2d6'; ctx.fillText('RPG de physique électrique — BTS Électrotechnique', W / 2, 78);
+    for (let k = 0; k < 2; k++) { ctx.beginPath(); for (let x = 0; x <= W; x += 40) { if (x) ctx.quadraticCurveTo(x - 20, b + 10 + k * 4, x + 9, b + 3 + k * 4); else ctx.moveTo(9, b + 3 + k * 4); } ctx.stroke(); }
+    ctx.fillStyle = '#1f2a44'; ctx.fillRect(0, H - 15, W, 15);
+    const e = W >= 300 ? 4 : 3;
+    AMP.sprites.texte(ctx, 'AMPÉRIA', Math.floor(W / 2), Math.floor(H * 0.18), { couleur: Math.floor(titreT * 6) % 17 === 0 ? '#ffffff' : '#ffc65c', ombre: '#5a2e16', echelle: e, align: 'centre' });
+    AMP.sprites.texte(ctx, W >= 300 ? 'RPG de physique électrique' : 'Physique électrique', Math.floor(W / 2), Math.floor(H * 0.18) + 12 * e + 4, { couleur: '#3fd2d6', align: 'centre' });
     if (AMP.etat && AMP.etat.options.animations && Math.floor(titreT * 2) % 3 === 0) AMP.monde.arc(ctx, 60 + Math.random() * 200, 0, 60 + Math.random() * 200, 100, '#b5fff6', 1);
   }
 

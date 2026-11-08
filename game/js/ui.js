@@ -20,7 +20,7 @@
       '<div class="jauge xp" title="Expérience"><i style="width:' + Math.round(100 * e.xp / AMP.prog.xpPourNiveau(e.niveau)) + '%"></i></div>' +
       '<div class="jauge charge" title="Charge : ' + e.charge + ' / ' + max + '"><i style="width:' + Math.round(100 * e.charge / max) + '%"></i><b>⚡ ' + e.charge + '/' + max + '</b></div>' +
       '<span class="energie" title="Énergie (compétences)">' + '◆'.repeat(Math.min(e.energie, emax)) + '<s>' + '◆'.repeat(Math.max(0, emax - e.energie)) + '</s></span></div>' +
-      '<div class="hud-d">' + (lieu ? '<span class="hud-lieu">' + AMP.esc(lieu.nom) + ' · ' + Math.round(100 * AMP.srs.maitrise(lieu.ch.id)) + ' %</span>' : '<span class="hud-lieu">' + AMP.esc(AMP.donnees.village.nom) + '</span>') +
+      '<div class="hud-d">' + (AMP.monde.estLibre && AMP.monde.estLibre() ? '<span class="hud-lieu">' + AMP.esc(AMP.donnees.libre.nom) + ' · niv. ' + AMP.monde.niveauLibre() + '</span>' : lieu ? '<span class="hud-lieu">' + AMP.esc(lieu.nom) + ' · ' + Math.round(100 * AMP.srs.maitrise(lieu.ch.id)) + ' %</span>' : '<span class="hud-lieu">' + AMP.esc(AMP.donnees.village.nom) + '</span>') +
       '<button class="hud-btn" data-ui="codex" title="Grimoire (C)">📖</button><button class="hud-btn" data-ui="menu" title="Menu (Échap)">☰</button></div>';
   };
   document.addEventListener('click', function (ev) {

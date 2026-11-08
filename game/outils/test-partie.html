@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8">
 <title>Test automatique d'Ampéria</title>
-<style>body{font:14px monospace;background:#111;color:#ddd;padding:12px} iframe{width:960px;height:540px;border:1px solid #444} .ok{color:#6c4} .ko{color:#f66}</style>
+<style>body{font:14px monospace;background:#111;color:#ddd;padding:12px} iframe{width:640px;height:360px;border:1px solid #444} .ok{color:#6c4} .ko{color:#f66}</style>
 </head>
 <body>
 <h1>Partie automatique d'Ampéria</h1>
 <p>Joue une partie complète (les 6 régions) dans le cadre ci-dessous et vérifie chaque étape.
 Ta propre sauvegarde est mise de côté pendant le test puis restaurée.</p>
-<pre id="resultat">En cours…</pre>
+<!-- Le cadre doit rester visible : Chrome met en pause les animations des cadres hors de l'écran. -->
 <iframe id="jeu"></iframe>
+<pre id="resultat">En cours…</pre>
 <script>
 // Parcours scripté : utilise les fonctions du jeu (AMP) comme le ferait un joueur qui répond toujours juste,
 // sauf pour tester les erreurs et la défaite.
@@ -27,7 +28,7 @@ Ta propre sauvegarde est mise de côté pendant le test puis restaurée.</p>
   const sauvegardeJoueur = localStorage.getItem(CLE);
   localStorage.removeItem(CLE);
   const ifr = document.getElementById('jeu');
-  ifr.src = '../index.html';
+  ifr.src = '../index.html?test-auto';
   await attendre(() => ifr.contentWindow.AMP && ifr.contentWindow.AMP.scene === 'titre', 15000);
   const w = ifr.contentWindow, AMP = w.AMP, doc = w.document;
   const erreurs = [];
@@ -84,6 +85,35 @@ Ta propre sauvegarde est mise de côté pendant le test puis restaurée.</p>
       ok(!region.equipement || AMP.prog.a(region.equipement), region.nom + ' : équipement reçu (' + region.equipement + ')');
     }
 
+    // ---------- Monde libre ----------
+    AMP.monde.entrer('village'); await dormir(100);
+    const porte = AMP.monde.debug().carte.libre;
+    ok(porte && AMP.monde.libreOuvert(), 'portail du monde libre présent et ouvert');
+    await marcherVers(porte.x, porte.y);
+    ok(await attendre(() => AMP.monde.estLibre(), 4000), 'entrée dans le monde libre (niveau ' + AMP.monde.niveauLibre() + ')');
+    await finirDialogues();
+    const champs = AMP.monde.debug().champions;
+    ok(champs.length === AMP.donnees.regions.length, champs.length + ' champions présents');
+    const c0 = champs[0];
+    await seTenirFace(c0.x, c0.y);
+    AMP.entree.action('A');
+    await attendre(() => AMP.ui.dialogueActif, 2000); await finirDialogues();
+    await attendre(() => doc.querySelector('[data-c="go"]'), 2000);
+    doc.querySelector('[data-c="go"]').click();
+    ok(await attendre(() => AMP.combat.actif, 3000), 'combat contre un champion lancé');
+    const pvChampion = AMP.combat.debug().ennemi.pvMax;
+    const rch = await jouerCombat(() => true);
+    ok(rch.victoire, 'champion vaincu (' + pvChampion + ' PV, ' + rch.questions + ' questions)');
+    await dormir(300);
+    ok(AMP.monde.debug().champions[0].battu, 'champion marqué « battu aujourd’hui »');
+    AMP.combat.lancer({ type: 'libre', region: AMP.donnees.regions[2], espece: 'spectre', focus: [], niveau: AMP.monde.niveauLibre(), pool: AMP.monde.poolLibre(), poolPrincipal: AMP.monde.interrogeables('ch03') }, AMP.monde.apresCombat);
+    const rl = await jouerCombat(() => true);
+    ok(rl.victoire, 'Parasite du monde libre vaincu (' + rl.questions + ' questions : ' + rl.types.join(', ') + ')');
+    const sortie = AMP.monde.debug().carte.sortie;
+    await finirDialogues();
+    await marcherVers(sortie.x, sortie.y);
+    ok(await attendre(() => !AMP.monde.estLibre() && !AMP.monde.regionCourante(), 4000), 'retour au village depuis le monde libre');
+
     // ---------- Zones corrompues ----------
     const v = AMP.donnees.regions[0];
     AMP.monde.entrer(v.ch.id); await dormir(100);
@@ -91,6 +121,7 @@ Ta propre sauvegarde est mise de côté pendant le test puis restaurée.</p>
     const cor = AMP.monde.debug().corruption;
     ok(cor.length > 0, 'zones corrompues après 20 jours : ' + cor.length);
     if (cor.length) {
+      await finirDialogues();
       await marcherVers(cor[0].x, cor[0].y);
       ok(await attendre(() => AMP.combat.actif, 3000), 'marcher sur une zone corrompue lance un combat');
       const rc = await jouerCombat(() => true);

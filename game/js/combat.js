@@ -28,8 +28,15 @@
     } else {
       const def = SP.PARASITES[opts.espece] || SP.PARASITES['court-jus'];
       // Équilibrage : 2 à 3 bonnes réponses pour un Parasite, un peu plus dans les régions avancées.
-      const pv = 10 + r.index + (opts.type === 'corruption' ? 2 : 0);
-      st.ennemi = { nom: def.nom + (opts.type === 'corruption' ? ' (zone corrompue)' : ''), espece: opts.espece, pv: pv, pvMax: pv, faiblesse: def.faiblesse, sprite: SP.parasite(opts.espece) };
+      let pv = 10 + r.index + (opts.type === 'corruption' ? 2 : 0);
+      let nom = def.nom + (opts.type === 'corruption' ? ' (zone corrompue)' : '');
+      // Monde libre : plus de points de vie à chaque région restaurée ; un champion en a deux fois plus.
+      if (opts.niveau) {
+        pv = 10 + 2 * opts.niveau;
+        if (opts.champion) pv = Math.round(pv * 1.6);
+        nom = (opts.champion ? 'Champion ' : '') + def.nom + ' · niv. ' + opts.niveau;
+      }
+      st.ennemi = { nom: nom, espece: opts.espece, pv: pv, pvMax: pv, faiblesse: def.faiblesse, sprite: SP.parasite(opts.espece, opts.niveau >= 4 ? { c: 'q', d: 'r', j: 'p', k: 'q', f: 'j', g: 'k', v: 'a' } : null) };
     }
     e.stats.combats++;
     AMP.audio.musique(opts.type === 'boss' ? 'boss' : 'combat');
@@ -68,13 +75,20 @@
     afficherQuestion();
   }
 
+  // XP du monde libre : +25 % par niveau, doublée contre un champion.
+  function multXp() { return st.opts.niveau ? (1 + 0.25 * st.opts.niveau) * (st.opts.champion ? 2 : 1) : 1; }
+
   function questionLibre() {
-    const ids = AMP.monde.interrogeables(st.region.ch.id);
+    // Monde libre : 60 % des questions sur la région du territoire, le reste sur toutes les régions restaurées.
+    const ids = st.opts.pool ? ((st.opts.poolPrincipal || []).length && AMP.alea() < 0.6 ? st.opts.poolPrincipal : st.opts.pool) : AMP.monde.interrogeables(st.region.ch.id);
     const pool = ids.length ? ids : (AMP.donnees.parChapitre[st.region.ch.id] || []).filter(function (it) { return Q.typesPossibles(it).length; }).map(function (it) { return it.id; });
     for (let essai = 0; essai < 6; essai++) {
       const id = st.focus.shift() || AMP.srs.tirer(pool, null, pool.length > 1 ? [st.dernier] : null);
       if (!id) return null;
-      const q = Q.generer(AMP.donnees.items[id]);
+      const it = AMP.donnees.items[id];
+      // Monde libre : plus le niveau monte, plus les calculs sont fréquents.
+      const type = st.opts.niveau && AMP.alea() < 0.1 * st.opts.niveau && Q.typesPossibles(it).indexOf('arc') >= 0 ? 'arc' : undefined;
+      const q = Q.generer(it, type);
       if (q) { st.dernier = id; return q; }
     }
     return null;
@@ -277,11 +291,12 @@
         if (P.a('cle') && q.type === 'arc') dmg *= 1.2;
         if (st.chrono) dmg *= 2;
         if (res === 'demi') dmg *= 0.5;
+        dmg *= 1 + 0.08 * (AMP.etat.niveau - 1); // tes coups gagnent en puissance avec ton niveau
         dmg = Math.round(dmg);
       }
       st.ennemi.pv = Math.max(0, st.ennemi.pv - dmg);
       e.energie = Math.min(P.energieMax(), e.energie + 1);
-      const xp = Math.round((P.XP[q.type] || 10) * (res === 'demi' ? 0.5 : 1));
+      const xp = Math.round((P.XP[q.type] || 10) * (res === 'demi' ? 0.5 : 1) * multXp());
       st.xp += xp;
       niveaux.push.apply(niveaux, P.gagnerXp(xp));
       st.effets.push({ type: 'eclair', t: 0, duree: 0.45 });
@@ -295,6 +310,7 @@
       if (st.ennemi.boss && q.mode === 'saisie') noterResultat(q, rep);
     } else {
       let dmg = (st.ennemi.boss ? 6 : 4) + r.index;
+      if (st.opts.niveau) dmg = Math.round((4 + 2 * st.opts.niveau) * (st.opts.champion ? 1.3 : 1));
       if (P.a('casque')) dmg = Math.round(dmg * 0.75);
       if (st.differentiel) { dmg = 0; st.differentiel = false; }
       e.charge = Math.max(0, e.charge - dmg);
@@ -371,11 +387,12 @@
         '<button class="valider continuer">Continuer ⏎</button></div>';
       st.resultatFinal = { victoire: true, boss: true };
     } else {
-      P.gagnerXp(P.XP.victoire).forEach(function (n) { AMP.ui.toast('⬆ Niveau ' + n + ' !', 'or'); AMP.audio.jouer('niveau'); });
+      P.gagnerXp(Math.round(P.XP.victoire * multXp())).forEach(function (n) { AMP.ui.toast('⬆ Niveau ' + n + ' !', 'or'); AMP.audio.jouer('niveau'); });
       AMP.audio.jouer('victoire');
-      h = '<div class="fin-combat victoire"><h2>' + (st.type === 'corruption' ? '✨ Zone purifiée !' : '⚡ Parasite neutralisé !') + '</h2><p>+' + (st.xp + P.XP.victoire) + ' XP</p>' +
+      h = '<div class="fin-combat victoire"><h2>' + (st.type === 'corruption' ? '✨ Zone purifiée !' : st.opts.champion ? '👑 Champion vaincu ! Il reviendra demain.' : '⚡ Parasite neutralisé !') + '</h2><p>+' + (st.xp + Math.round(P.XP.victoire * multXp())) + ' XP</p>' +
         '<button class="valider continuer">Continuer ⏎</button></div>';
-      st.resultatFinal = { victoire: true };
+      st.resultatFinal = { victoire: true, champion: st.opts.champion || null };
+      if (st.opts.champion) AMP.etat.energie = P.energieMax();
     }
     st.ennemi.pv = 0;
     st.effets.push({ type: 'disparition', t: 0, duree: 1 });
@@ -525,16 +542,13 @@
       if (f.type === 'nombre') {
         const x = f.cote === 'ennemi' ? W * 0.72 : W * 0.25, y = (f.cote === 'ennemi' ? H * 0.62 - sh : H * 0.9 - 50) - f.t * 18;
         ctx.globalAlpha = 1 - f.t / f.duree;
-        ctx.font = 'bold 10px monospace'; ctx.textAlign = 'center';
-        ctx.fillStyle = '#0b0e1a'; ctx.fillText(f.texte, x + 1, y + 1);
-        ctx.fillStyle = f.cote === 'ennemi' ? '#ffc65c' : '#ff6b6b'; ctx.fillText(f.texte, x, y);
+        SP.texte(ctx, f.texte.replace('⚡', '').trim(), x, Math.round(y) - 10, { couleur: f.cote === 'ennemi' ? '#ffc65c' : '#ff6b6b', align: 'centre' });
         ctx.globalAlpha = 1;
       }
     });
     // Nom de l'ennemi.
-    ctx.font = '8px monospace'; ctx.textAlign = 'left';
-    ctx.fillStyle = 'rgba(11,14,26,.7)'; ctx.fillRect(4, 4, ctx.measureText(en.nom).width + 8, 12);
-    ctx.fillStyle = '#f3e6c8'; ctx.fillText(en.nom, 8, 13);
+    ctx.fillStyle = 'rgba(11,14,26,.7)'; ctx.fillRect(4, 4, SP.largeurTexte(en.nom) + 6, 14);
+    SP.texte(ctx, en.nom, 7, 5, { couleur: '#f3e6c8' });
     ctx.restore();
   };
 })();

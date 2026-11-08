@@ -17,6 +17,21 @@ extrait dans `data/`. Design complet : `GAME_DESIGN.md`.
 - **Sur téléphone** (même Wi-Fi que le PC) : lancer `python -m http.server 8000 --bind 0.0.0.0`, puis ouvrir
   `http://<adresse IP du PC>:8000/game/` sur le téléphone.
 
+## Le monde libre (Terres Sauvages)
+
+Le grand portail blanc au sud du village s'ouvre dès que la Vallée du Continu est restaurée.
+
+- Une place centrale et 6 territoires en étoile, un par région. Chaque territoire s'ouvre (le brouillard se
+  dissipe) quand sa région est restaurée.
+- Pas de leçons : seulement des Parasites dans les herbes hautes. Ils interrogent sur tout ce que tu as
+  découvert dans les régions restaurées (60 % sur la région du territoire où tu te trouves).
+- **Niveau des Parasites = nombre de régions restaurées** : plus de points de vie, ripostes plus fortes et
+  calculs plus fréquents à chaque région finie. L'XP augmente d'autant (+25 % par niveau). Tes coups
+  deviennent aussi plus forts avec ton propre niveau.
+- Un **champion** par territoire (couronne dorée) : plus résistant, il frappe plus fort, double l'XP et recharge
+  ton Énergie. Il revient chaque jour.
+- Carte : `data/cartes/libre.json` (lignes + grille `biomes` des territoires) ; réglages dans `data/regions.json` (`libre`).
+
 ## Commandes
 
 | | Clavier | Téléphone |
@@ -32,6 +47,9 @@ extrait dans `data/`. Design complet : `GAME_DESIGN.md`.
 - **Menu → Options → Mode test** : boutons pour avancer la date du jeu (1, 7 ou 30 jours) et voir
   apparaître les zones corrompues (révisions en retard).
 - **`game/?verif`** : rend toutes les formules avec KaTeX et écrit le résultat dans la console du navigateur.
+- **`game/outils/test-partie.html`** (avec le serveur lancé) : joue toute seule une partie complète (6 régions,
+  6 Gardiens, monde libre, champion, zones corrompues, défaite, menus) et affiche OK / ÉCHEC pour chaque étape.
+  Ta sauvegarde est mise de côté puis restaurée.
 - **Vérifications sans navigateur** (depuis le dossier du site) :
   - `node game/outils/verifier-donnees.js` : données de cours (structure, sources, calculs des TD) et
     régénère `data/A_VERIFIER.md` ;

@@ -20,7 +20,23 @@
   let restauration = null;     // animation de remise sous tension : { t, x, y, anciens }
   const J = { x: 0, y: 0, px: 0, py: 0, dir: 'bas', mouv: null, pas: 0 };
 
+  let champions = [];          // monde libre : { x, y, region, battu }
   M.regionCourante = function () { return lieu && lieu.region; };
+  M.estLibre = function () { return !!(lieu && lieu.libre); };
+
+  // ---------- Monde libre ----------
+  // Ouvert quand assez de régions sont restaurées ; niveau des Parasites = nombre de régions restaurées.
+  M.nbRestaurees = function () { return AMP.donnees.regions.filter(function (r) { return M.restauree(r.ch.id); }).length; };
+  M.libreOuvert = function () { const L = AMP.donnees.libre; return !!L && M.nbRestaurees() >= (L.ouvert_apres || 1); };
+  M.niveauLibre = function () { return Math.max(1, M.nbRestaurees()); };
+  // Territoire n de la carte libre = région n (index n − 1).
+  function regionDuBiome(b) { return b > 0 ? AMP.donnees.regions[b - 1] || null : null; }
+  // Toutes les questions possibles du monde libre : régions restaurées (et leurs éléments découverts).
+  M.poolLibre = function () {
+    let l = [];
+    AMP.donnees.regions.forEach(function (r) { if (M.restauree(r.ch.id)) l = l.concat(M.interrogeables(r.ch.id)); });
+    return l;
+  };
   M.joueur = J;
 
   // ---------- Régions débloquées ----------
@@ -43,19 +59,27 @@
   // id : 'village' ou id de chapitre ; pos : { x, y, dir } facultatif.
   M.entrer = function (id, pos) {
     const D = AMP.donnees;
-    const region = id === 'village' ? null : AMP.region(id);
-    lieu = { id: id, region: region };
-    const gabarit = region ? region.gabarit : 'village';
+    const libre = id === 'libre';
+    const region = id === 'village' || libre ? null : AMP.region(id);
+    lieu = { id: id, region: region, libre: libre };
+    const gabarit = region ? region.gabarit : libre ? D.libre.gabarit : 'village';
     carte = M.analyserCarte(D.cartes[gabarit]);
+    if (libre) {
+      carte.ouverts = { 0: true };
+      D.regions.forEach(function (r, i) { if (M.restauree(r.ch.id)) carte.ouverts[i + 1] = true; });
+    }
     construireCaches();
     placerObjets();
     const p = pos && pos.x != null ? pos : carte.depart;
     J.x = p.x; J.y = p.y; J.dir = (pos && pos.dir) || 'bas'; J.mouv = null;
     J.px = J.x * T; J.py = J.y * T;
     AMP.etat.lieu = { carte: id, x: J.x, y: J.y, dir: J.dir };
-    AMP.audio.lieuCourant = region ? region.ch.id : 'village';
+    AMP.audio.lieuCourant = region ? region.ch.id : libre ? 'libre' : 'village';
     AMP.audio.musique(AMP.audio.lieuCourant);
-    if (!region) {
+    if (libre) {
+      AMP.ui.banniere(D.libre.nom, 'Parasites de niveau ' + M.niveauLibre());
+      if (!AMP.etat.tutos.libre) { AMP.etat.tutos.libre = true; AMP.ui.dialogue([{ nom: D.libre.nom, html: AMP.esc(D.dialogues.libre_entree) }]); }
+    } else if (!region) {
       AMP.prog.soigner();
       AMP.ui.banniere(D.village.nom, 'Batteries rechargées');
     } else {
@@ -78,11 +102,24 @@
   function construireCaches() {
     const th = theme(), cle = JSON.stringify(th);
     const w = carte.w * T, h = carte.h * T;
+    const themes = {};   // monde libre : chaque territoire prend les couleurs de sa région
     const images = [0, 1].map(function (frame) {
       const c = SP.canvas(w, h), x = c.getContext('2d');
       carte.cases.forEach(function (t) {
         const variante = AMP.hacher(t.x + ',' + t.y) % 4;
-        x.drawImage(SP.tuile(t.c, variante, th, frame, cle), t.x * T, t.y * T);
+        let tt = th, tc = cle;
+        if (carte.biomes) {
+          const b = carte.biome(t.x, t.y);
+          if (!themes[b]) { const r = regionDuBiome(b); themes[b] = [(r && r.theme) || {}, JSON.stringify((r && r.theme) || {})]; }
+          tt = themes[b][0]; tc = themes[b][1];
+        }
+        x.drawImage(SP.tuile(t.c, variante, tt, frame, tc), t.x * T, t.y * T);
+        // Territoire pas encore ouvert : brouillard électrique.
+        if (carte.biomes && !carte.biomeOuvert(t.x, t.y)) {
+          x.fillStyle = 'rgba(11,14,26,.78)'; x.fillRect(t.x * T, t.y * T, T, T);
+          const hh = AMP.hacher(t.y + ':' + t.x);
+          x.fillStyle = hh % 3 ? '#2d3e63' : '#6a3fa0'; x.fillRect(t.x * T + hh % 14, t.y * T + (hh >> 4) % 14, 1, 1);
+        }
       });
       return c;
     });
@@ -91,8 +128,17 @@
   }
 
   function placerObjets() {
-    pnjs = []; corruption = []; portails = [];
+    pnjs = []; corruption = []; portails = []; champions = [];
     const D = AMP.donnees;
+    if (lieu.libre) {
+      const jour = AMP.aujourdhui();
+      carte.champions.forEach(function (t) {
+        const b = carte.biome(t.x, t.y), r = regionDuBiome(b);
+        if (r && carte.ouverts[b]) champions.push({ x: t.x, y: t.y, region: r, id: 'champion-' + r.ch.id, battu: (AMP.etat.champions || {})['champion-' + r.ch.id] === jour });
+      });
+      zonesFinies = 0;
+      return;
+    }
     if (!lieu.region) {
       D.regions.forEach(function (r, i) {
         let pos = r.portail && carte.portails[r.portail];
@@ -127,12 +173,16 @@
   }
   M.zonesFinies = function () { return zonesFinies; };
   // Lecture des objets de la carte (tests automatiques uniquement).
-  M.debug = function () { return { lieu: lieu, carte: carte, pnjs: pnjs, corruption: corruption, portails: portails }; };
+  M.debug = function () { return { lieu: lieu, carte: carte, pnjs: pnjs, corruption: corruption, portails: portails, champions: champions }; };
 
   // Objectif affiché en haut de l'écran : ce qu'il faut faire maintenant.
   M.objectif = function () {
     if (!lieu || !carte) return '';
     const D = AMP.donnees;
+    if (lieu.libre) {
+      const restants = champions.filter(function (c) { return !c.battu; }).length;
+      return 'Monde libre · Parasites niveau ' + M.niveauLibre() + ' · ' + (restants ? restants + ' champion(s) à défier aujourd’hui.' : 'tous les champions battus aujourd’hui !');
+    }
     if (!lieu.region) {
       const suivante = D.regions.find(function (r) { return !M.restauree(r.ch.id); });
       let reviser = 0; D.regions.forEach(function (r) { reviser += AMP.srs.aReviser(r.ch.id).length; });
@@ -220,6 +270,22 @@
       }
       return;
     }
+    if (carte.libre && J.x === carte.libre.x && J.y === carte.libre.y) {
+      if (M.libreOuvert()) transition(function () { M.entrer('libre'); });
+      else AMP.ui.dialogue([{ nom: AMP.donnees.libre.nom, html: AMP.esc(AMP.donnees.dialogues.libre_ferme) }], function () { reculer(); });
+      return;
+    }
+    if (c === 'E' && lieu.libre) {
+      transition(function () {
+        const v = M.analyserCarte(AMP.donnees.cartes.village).libre;
+        M.entrer('village', v ? { x: v.x, y: v.y - 1, dir: 'haut' } : null);
+      });
+      return;
+    }
+    if (c === ',' && lieu.libre && pasDepuisCombat > 3 && AMP.alea() < 0.15) {
+      const r = regionDuBiome(carte.biome(J.x, J.y));
+      if (r && M.poolLibre().length) { lancerCombatLibre(r, false); return; }
+    }
     if (c === 'E' && lieu.region) {
       const r = lieu.region;
       transition(function () {
@@ -257,7 +323,23 @@
     });
   }
 
+  // Combat du monde libre : questions sur toutes les régions restaurées (surtout celle du territoire), niveau croissant.
+  function lancerCombatLibre(r, champion) {
+    pasDepuisCombat = 0;
+    AMP.entree.vider();
+    AMP.audio.jouer('rencontre');
+    AMP.jeu.flash(0.3, function () {
+      AMP.combat.lancer({ type: champion ? 'champion' : 'libre', region: r, espece: AMP.choisir(r.parasites || ['court-jus']), focus: [],
+        niveau: M.niveauLibre(), pool: M.poolLibre(), poolPrincipal: M.interrogeables(r.ch.id), champion: champion }, M.apresCombat);
+    });
+  }
+
   M.apresCombat = function (res) {
+    if (res.champion) {
+      AMP.etat.champions = AMP.etat.champions || {};
+      AMP.etat.champions[res.champion] = AMP.aujourdhui();
+      placerObjets();
+    }
     if (res.defaite) {
       AMP.prog.soigner();
       M.entrer('village');
@@ -295,6 +377,24 @@
     if (c === 'X' && !carte.porteOuverte('X', zonesFinies)) { AMP.ui.dialogue([{ nom: 'Porte du poste', html: AMP.esc(D.dialogues.porte_boss) }]); return; }
     if (c === 'K' && lieu.region) { gardien(); return; }
     if (c === 'n') { mentor(); return; }
+    if (c === '*' && lieu.libre) {
+      const ch = champions.find(function (q) { return q.x === tx && q.y === ty; });
+      if (!ch) return;
+      if (ch.battu) { AMP.ui.dialogue([{ nom: 'Champion', html: AMP.esc(D.dialogues.champion_battu) }]); return; }
+      AMP.ui.dialogue([{ nom: 'Champion de ' + ch.region.nom, html: AMP.esc(D.dialogues.champion) }], function () {
+        const corps = AMP.ui.fenetre('Champion · niveau ' + M.niveauLibre(), '<p>Questions sur toutes tes régions restaurées. Plus résistant, il frappe plus fort, mais l’XP est doublée.</p>' +
+          '<div class="menu"><button data-c="go">⚔ Combattre</button><button data-c="non">Plus tard</button></div>');
+        corps.addEventListener('click', function (ev) {
+          const b = ev.target.closest('[data-c]');
+          if (!b) return;
+          AMP.ui.fermer();
+          if (b.dataset.c === 'go') lancerCombatLibre(ch.region, ch.id);
+        });
+        corps.querySelector('button').focus();
+      });
+      return;
+    }
+    if (lieu.libre && !carte.biomeOuvert(tx, ty)) { AMP.ui.dialogue([{ nom: 'Brouillard', html: AMP.esc(D.dialogues.territoire_ferme) }]); return; }
     if (c === 'g') {
       const portail = portails.find(function (q) { return q.x === tx && q.y === ty; });
       if (portail) {
@@ -382,24 +482,29 @@
 
   // ---------- Dessin ----------
   M.dessiner = function (ctx, W, H) {
-    const camX = Math.round(Math.max(0, Math.min(carte.w * T - W, J.px + 8 - W / 2)));
-    const camY = Math.round(Math.max(0, Math.min(carte.h * T - H, J.py + 8 - H / 2)));
+    // Caméra centrée sur le joueur ; une carte plus petite que l'écran est centrée.
+    const mw = carte.w * T, mh = carte.h * T;
+    const camX = mw <= W ? Math.round((mw - W) / 2) : Math.round(Math.max(0, Math.min(mw - W, J.px + 8 - W / 2)));
+    const camY = mh <= H ? Math.round((mh - H) / 2) : Math.round(Math.max(0, Math.min(mh - H, J.py + 8 - H / 2)));
+    // Partie de l'image du décor réellement visible (sans déborder de l'image : certains navigateurs n'aiment pas).
+    const sx = Math.max(0, camX), sy = Math.max(0, camY), sw = Math.min(mw, camX + W) - sx, sh = Math.min(mh, camY + H) - sy;
+    const decor = function (img) { ctx.drawImage(img, sx, sy, sw, sh, sx - camX, sy - camY, sw, sh); };
     ctx.fillStyle = '#0b0e1a';
     ctx.fillRect(0, 0, W, H);
     const image = Math.floor(temps * 1.6) % 2;
     if (restauration) {
       restauration.t += 1 / 60;
       const rayon = restauration.t * 260;
-      ctx.drawImage(restauration.anciens[image], camX, camY, W, H, 0, 0, W, H);
+      decor(restauration.anciens[image]);
       ctx.save();
       ctx.beginPath(); ctx.arc(restauration.x - camX, restauration.y - camY, rayon, 0, Math.PI * 2); ctx.clip();
-      ctx.drawImage(caches[image], camX, camY, W, H, 0, 0, W, H);
+      decor(caches[image]);
       ctx.restore();
       ctx.strokeStyle = 'rgba(255,198,92,.8)'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.arc(restauration.x - camX, restauration.y - camY, rayon, 0, Math.PI * 2); ctx.stroke();
       if (rayon > 900) restauration = null;
     } else {
-      ctx.drawImage(caches[image], camX, camY, W, H, 0, 0, W, H);
+      decor(caches[image]);
     }
     ctx.save();
     ctx.translate(-camX, -camY);
@@ -416,6 +521,20 @@
       });
     }
     portails.forEach(function (p) { pousser(p.y * T, function () { dessinerPortail(ctx, p); }); });
+    if (carte.libre) {
+      const L = carte.libre;
+      pousser(L.y * T, function () { dessinerPortail(ctx, { x: L.x, y: L.y, ouvert: M.libreOuvert(), region: { nom: AMP.donnees.libre.nom, couleur: 'libre', ch: { id: '' } } }); });
+    }
+    champions.forEach(function (c) {
+      pousser(c.y * T, function () {
+        const sp = SP.parasite(c.region.parasites[0] || 'court-jus');
+        const dy = c.battu ? 0 : Math.round(Math.sin(temps * 4 + c.x) * 1.5);
+        ctx.globalAlpha = c.battu ? 0.45 : 1;
+        ctx.drawImage(sp, c.x * T, c.y * T - 4 + dy);
+        ctx.globalAlpha = 1;
+        if (!c.battu) { ctx.fillStyle = '#ffc65c'; [[5, 0], [7, -1], [8, 0], [9, -1], [11, 0], [5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [10, 1], [11, 1]].forEach(function (q) { ctx.fillRect(c.x * T + q[0], c.y * T - 8 + dy + q[1], 1, 1); }); }
+      });
+    });
     if (carte.mentor) pousser(carte.mentor.y * T, function () { ctx.drawImage(SP.perso('bas', Math.floor(temps * 2) % 2 && 0, 5), carte.mentor.x * T, carte.mentor.y * T - 4); bulle(ctx, carte.mentor.x * T, carte.mentor.y * T, AMP.etat.introVue ? '…' : '!'); });
     pnjs.forEach(function (p) {
       pousser(p.y * T, function () {
@@ -446,7 +565,8 @@
     const dy = Math.round(Math.sin(temps * 5) * 1.5);
     ctx.fillStyle = '#0b0e1a'; ctx.fillRect(x + 5, y - 15 + dy, 7, 9);
     ctx.fillStyle = txt === '!' ? '#ffc65c' : '#9aa6bd'; ctx.fillRect(x + 6, y - 14 + dy, 5, 7);
-    ctx.fillStyle = '#0b0e1a'; ctx.font = 'bold 7px monospace'; ctx.textAlign = 'center'; ctx.fillText(txt, x + 8.5, y - 8 + dy);
+    if (txt === '!') { ctx.fillStyle = '#0b0e1a'; ctx.fillRect(x + 8, y - 13 + dy, 1, 3); ctx.fillRect(x + 8, y - 9 + dy, 1, 1); }
+    else { ctx.fillStyle = '#0b0e1a'; ctx.fillRect(x + 7, y - 9 + dy, 1, 1); ctx.fillRect(x + 9, y - 9 + dy, 1, 1); }
   }
 
   // Petit arc électrique en zigzag entre deux points.
@@ -484,22 +604,23 @@
   }
 
   function dessinerPortail(ctx, p) {
-    const x = p.x * T + 8, y = p.y * T + 8;
-    const couleur = p.ouvert ? { tension: '#ffc65c', courant: '#3fd2d6', puissance: '#a77de6' }[p.region.couleur] || '#3fd2d6' : '#47597e';
+    let x = p.x * T + 8;
+    const y = p.y * T + 8;
+    const couleur = p.ouvert ? { tension: '#ffc65c', courant: '#3fd2d6', puissance: '#a77de6', libre: '#ffffff' }[p.region.couleur] || '#3fd2d6' : '#47597e';
     ctx.fillStyle = '#0b0e1a'; ctx.beginPath(); ctx.ellipse(x, y + 2, 8, 5, 0, 0, Math.PI * 2); ctx.fill();
     ctx.strokeStyle = couleur; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(x, y + 2, 8, 5, 0, 0, Math.PI * 2); ctx.stroke();
     if (p.ouvert) {
       if (AMP.etat.options.animations) for (let k = 0; k < 2; k++) arc(ctx, x - 6 + Math.random() * 12, y + 2, x - 3 + Math.random() * 6, y - 10, couleur, 1);
-      if (M.restauree(p.region.ch.id)) { ctx.fillStyle = '#ffc65c'; ctx.fillRect(x - 1, y - 14, 3, 3); }
+      if (p.region.ch.id && M.restauree(p.region.ch.id)) { ctx.fillStyle = '#ffc65c'; ctx.fillRect(x - 1, y - 14, 3, 3); }
     } else {
       ctx.strokeStyle = '#ff6b6b'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x - 3, y - 1); ctx.lineTo(x + 3, y + 5); ctx.moveTo(x + 3, y - 1); ctx.lineTo(x - 3, y + 5); ctx.stroke();
     }
     // Nom de la région quand on est tout près.
     if (Math.abs(J.x - p.x) + Math.abs(J.y - p.y) <= 2) {
-      ctx.font = '7px monospace'; ctx.textAlign = 'center';
-      const w = ctx.measureText(p.region.nom).width + 6;
-      ctx.fillStyle = 'rgba(11,14,26,.85)'; ctx.fillRect(x - w / 2, y - 24, w, 10);
-      ctx.fillStyle = p.ouvert ? '#f3e6c8' : '#9aa6bd'; ctx.fillText(p.region.nom, x, y - 16);
+      const w = SP.largeurTexte(p.region.nom) + 4;
+      x = Math.max(w / 2 + 2, Math.min(carte.w * T - w / 2 - 2, x)); // l'étiquette reste sur la carte
+      ctx.fillStyle = 'rgba(11,14,26,.85)'; ctx.fillRect(Math.round(x - w / 2), y - 27, w, 13);
+      SP.texte(ctx, p.region.nom, x, y - 26, { couleur: p.ouvert ? '#f3e6c8' : '#9aa6bd', ombre: null, align: 'centre' });
     }
   }
 

@@ -131,7 +131,7 @@
     }
   };
   // Tuiles posées sur l'herbe (objets dessinés à part, ou sol simple).
-  ['S', 'K', '0', '1', '2', 'n', 'a', 'b', 'c', 'd', 'e', 'f', 'h', 't', 'H', 'T', 'A', 'B', 'C', 'X'].forEach(function (k) {
+  ['S', 'K', '0', '1', '2', 'n', 'a', 'b', 'c', 'd', 'e', 'f', 'h', 't', 'H', 'T', 'A', 'B', 'C', 'X', '*', 'm'].forEach(function (k) {
     if (!GEN[k]) GEN[k] = GEN['.'];
   });
 
@@ -255,6 +255,72 @@
     for (let x = 2; x < 30; x++) p(x, 30, '1');
     return SP.grille(g.map(function (r) { return r.join(''); }));
   };
+
+  // ---------- Police en pixels (5×7) ----------
+  // Tout texte dessiné dans le canvas passe par ici : les lettres sont des carrés de pixels, donc nettes à toute taille.
+  const POLICE = {
+    A: '.###.|#...#|#...#|#####|#...#|#...#|#...#', B: '####.|#...#|#...#|####.|#...#|#...#|####.', C: '.###.|#...#|#....|#....|#....|#...#|.###.',
+    D: '####.|#...#|#...#|#...#|#...#|#...#|####.', E: '#####|#....|#....|####.|#....|#....|#####', F: '#####|#....|#....|####.|#....|#....|#....',
+    G: '.###.|#...#|#....|#.###|#...#|#...#|.###.', H: '#...#|#...#|#...#|#####|#...#|#...#|#...#', I: '.###.|..#..|..#..|..#..|..#..|..#..|.###.',
+    J: '..###|...#.|...#.|...#.|#..#.|#..#.|.##..', K: '#...#|#..#.|#.#..|##...|#.#..|#..#.|#...#', L: '#....|#....|#....|#....|#....|#....|#####',
+    M: '#...#|##.##|#.#.#|#.#.#|#...#|#...#|#...#', N: '#...#|##..#|#.#.#|#..##|#...#|#...#|#...#', O: '.###.|#...#|#...#|#...#|#...#|#...#|.###.',
+    P: '####.|#...#|#...#|####.|#....|#....|#....', Q: '.###.|#...#|#...#|#...#|#.#.#|#..#.|.##.#', R: '####.|#...#|#...#|####.|#.#..|#..#.|#...#',
+    S: '.####|#....|#....|.###.|....#|....#|####.', T: '#####|..#..|..#..|..#..|..#..|..#..|..#..', U: '#...#|#...#|#...#|#...#|#...#|#...#|.###.',
+    V: '#...#|#...#|#...#|#...#|#...#|.#.#.|..#..', W: '#...#|#...#|#...#|#.#.#|#.#.#|#.#.#|.#.#.', X: '#...#|#...#|.#.#.|..#..|.#.#.|#...#|#...#',
+    Y: '#...#|#...#|.#.#.|..#..|..#..|..#..|..#..', Z: '#####|....#|...#.|..#..|.#...|#....|#####',
+    0: '.###.|#...#|#..##|#.#.#|##..#|#...#|.###.', 1: '..#..|.##..|..#..|..#..|..#..|..#..|.###.', 2: '.###.|#...#|....#|...#.|..#..|.#...|#####',
+    3: '####.|....#|....#|.###.|....#|....#|####.', 4: '...#.|..##.|.#.#.|#..#.|#####|...#.|...#.', 5: '#####|#....|####.|....#|....#|#...#|.###.',
+    6: '.###.|#....|#....|####.|#...#|#...#|.###.', 7: '#####|....#|...#.|..#..|.#...|.#...|.#...', 8: '.###.|#...#|#...#|.###.|#...#|#...#|.###.',
+    9: '.###.|#...#|#...#|.####|....#|....#|.###.', ' ': '.....|.....|.....|.....|.....|.....|.....',
+    '!': '..#..|..#..|..#..|..#..|..#..|.....|..#..', '?': '.###.|#...#|....#|...#.|..#..|.....|..#..', '.': '.....|.....|.....|.....|.....|.....|..#..',
+    ',': '.....|.....|.....|.....|.....|..#..|.#...', ':': '.....|..#..|.....|.....|.....|..#..|.....', "'": '..#..|..#..|.....|.....|.....|.....|.....',
+    '-': '.....|.....|.....|#####|.....|.....|.....', '+': '.....|..#..|..#..|#####|..#..|..#..|.....', '(': '...#.|..#..|.#...|.#...|.#...|..#..|...#.',
+    ')': '.#...|..#..|...#.|...#.|...#.|..#..|.#...', '/': '....#|...#.|...#.|..#..|.#...|.#...|#....', '%': '##..#|##.#.|...#.|..#..|.#...|.#.##|#..##',
+    '°': '.##..|#..#.|.##..|.....|.....|.....|.....', '×': '.....|#...#|.#.#.|..#..|.#.#.|#...#|.....', '…': '.....|.....|.....|.....|.....|.....|#.#.#'
+  };
+  // Accents : lettre de base + petit signe au-dessus (ou cédille dessous).
+  const ACCENTS = { 'É': ['E', 'aigu'], 'È': ['E', 'grave'], 'Ê': ['E', 'circ'], 'Ë': ['E', 'trema'], 'À': ['A', 'grave'], 'Â': ['A', 'circ'],
+    'Î': ['I', 'circ'], 'Ï': ['I', 'trema'], 'Ô': ['O', 'circ'], 'Û': ['U', 'circ'], 'Ù': ['U', 'grave'], 'Ü': ['U', 'trema'], 'Ç': ['C', 'cedille'] };
+  const SIGNES = { aigu: ['...#.', '..#..'], grave: ['.#...', '..#..'], circ: ['..#..', '.#.#.'], trema: ['.....', '.#.#.'] };
+  const texteCache = {};
+  function glyphe(ch) {
+    const c = ch.toUpperCase();
+    if (POLICE[c]) return { base: POLICE[c].split('|'), signe: null };
+    if (ACCENTS[c]) return { base: POLICE[ACCENTS[c][0]].split('|'), signe: ACCENTS[c][1] };
+    if (c === '−' || c === '–') return { base: POLICE['-'].split('|'), signe: null };
+    return { base: POLICE['?'].split('|'), signe: null };
+  }
+  // Image d'un texte (hauteur 11 px : 2 lignes d'accents + 7 + 2 de cédille), avec une ombre d'1 pixel.
+  SP.imageTexte = function (texte, couleur, ombre) {
+    const cle = texte + '|' + couleur + '|' + ombre;
+    if (texteCache[cle]) return texteCache[cle];
+    const l = String(texte).split('');
+    const c = canvas(l.length * 6 + 1, 12), x = c.getContext('2d');
+    const pixels = function (dx, dy, coul) {
+      x.fillStyle = coul;
+      l.forEach(function (ch, i) {
+        const g = glyphe(ch), ox = i * 6 + dx;
+        g.base.forEach(function (r, j) { for (let k = 0; k < 5; k++) if (r[k] === '#') x.fillRect(ox + k, 2 + j + dy, 1, 1); });
+        if (g.signe === 'cedille') { x.fillRect(ox + 2, 9 + dy, 1, 1); x.fillRect(ox + 1, 10 + dy, 1, 1); }
+        else if (g.signe) SIGNES[g.signe].forEach(function (r, j) { for (let k = 0; k < 5; k++) if (r[k] === '#') x.fillRect(ox + k, j + dy, 1, 1); });
+      });
+    };
+    if (ombre) pixels(1, 1, ombre);
+    pixels(0, 0, couleur);
+    return (texteCache[cle] = c);
+  };
+  // Dessine un texte. opts : { couleur, ombre, echelle (entier), align: 'gauche'|'centre'|'droite' }.
+  SP.texte = function (ctx, texte, x, y, opts) {
+    opts = opts || {};
+    const im = SP.imageTexte(texte, opts.couleur || '#f3e6c8', opts.ombre === undefined ? '#0b0e1a' : opts.ombre);
+    const e = opts.echelle || 1;
+    let dx = x;
+    if (opts.align === 'centre') dx = x - Math.floor(im.width * e / 2);
+    else if (opts.align === 'droite') dx = x - im.width * e;
+    ctx.drawImage(im, Math.round(dx), Math.round(y), im.width * e, im.height * e);
+    return im.width * e;
+  };
+  SP.largeurTexte = function (texte, echelle) { return (String(texte).length * 6 + 1) * (echelle || 1); };
 
   // ---------- Couleurs utilitaires ----------
   // Version désaturée et assombrie d'un canvas (région hors tension).
