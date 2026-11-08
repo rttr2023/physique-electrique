@@ -1,0 +1,1162 @@
+{
+  "id": "ch01",
+  "annee": 1,
+  "numero": 1,
+  "titre": "Le cas particulier du régime continu",
+  "sources": [
+    "A1-Ch01-p01.pdf",
+    "A1-Ch01-p02.pdf",
+    "A1-Ch01-p03.pdf",
+    "A1-Ch01-p04.pdf"
+  ],
+  "notions": [
+    {
+      "id": "ch01.regime-continu",
+      "nom": "Régime continu",
+      "definition": "Cas particulier des régimes variables quelconques : les valeurs instantanées sont constantes au cours du temps. Toutes les lois du régime variable s'y appliquent.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.majuscules",
+      "nom": "Notation en majuscules",
+      "definition": "En régime continu, seule l'écriture change : on note les grandeurs en majuscules (U, I) pour distinguer ce régime particulier.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.condensateur-continu",
+      "nom": "Condensateur en régime continu",
+      "definition": "Un condensateur est équivalent à un circuit ouvert en régime continu (I = 0).",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 2, tableau"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.bobine-continu",
+      "nom": "Bobine en régime continu",
+      "definition": "Une inductance est équivalente à un court-circuit (un fil) en régime continu (U = 0).",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 2, tableau"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.assoc-serie",
+      "nom": "Association série",
+      "definition": "Des résistances sont associées en série si elles sont traversées par le même courant.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.assoc-derivation",
+      "nom": "Association en dérivation",
+      "definition": "Des résistances sont associées en dérivation si elles sont soumises à la même tension.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.dipole-actif",
+      "nom": "Dipôle actif",
+      "definition": "Dipôle pouvant fonctionner en générateur (panneaux solaires, piles…). Certains sont réversibles : générateur et récepteur (batteries, MCC…).",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.met",
+      "nom": "Modèle équivalent de Thévenin (MET)",
+      "definition": "Vu entre ses bornes A et B, un dipôle actif est équivalent à une source de tension E_TH en série avec une résistance R_TH.",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 4, schéma"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.eth",
+      "nom": "Détermination de E_TH",
+      "definition": "E_TH est égale à la tension entre A et B lorsque le dipôle (D) est déconnecté (tension à vide).",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.rth",
+      "nom": "Détermination de R_TH",
+      "definition": "R_TH est la résistance équivalente vue des points A et B lorsque toutes les sources sont éteintes.",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.eteindre-sources",
+      "nom": "Éteindre une source",
+      "definition": "Source de tension éteinte → remplacée par un court-circuit. Source de courant éteinte → remplacée par un circuit ouvert.",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 4, « En pratique »"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.convention-generateur",
+      "nom": "Convention générateur",
+      "definition": "I et U sont fléchés dans le même sens. Pour le générateur (E, r) : E fléchée dans le sens de U, rI en sens opposé.",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 5, schéma générateur"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.convention-recepteur",
+      "nom": "Convention récepteur",
+      "definition": "I et U sont fléchés en sens opposés. Pour le récepteur (E, r) : E et rI sont fléchées dans le sens de U.",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 5, schéma récepteur"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.principe-diviseur",
+      "nom": "Diviseur de tension",
+      "definition": "Calcul d'une tension exclusivement aux bornes de résistances en série : (somme des résistances de la partie / somme totale des résistances) × tension aux bornes de l'ensemble.",
+      "source": {
+        "fichier": "A1-Ch01-p03.pdf",
+        "page": 1,
+        "zone": "§ 6"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.principe-superposition",
+      "nom": "Principe de superposition",
+      "definition": "Dans un circuit linéaire à plusieurs sources indépendantes, le courant (ou la tension) d'une branche est la somme algébrique des courants (ou tensions) obtenus quand chaque source agit seule, les autres étant éteintes.",
+      "source": {
+        "fichier": "A1-Ch01-p03.pdf",
+        "page": 1,
+        "zone": "§ 7, énoncé encadré"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "formules": [
+    {
+      "id": "ch01.ohm",
+      "site_id": "ch01Ohm",
+      "nom": "Loi d'Ohm (résistance)",
+      "latex": "U = R I",
+      "variables": [
+        {
+          "symbole": "U",
+          "code": "U",
+          "signification": "tension aux bornes de la résistance",
+          "unite": "V"
+        },
+        {
+          "symbole": "R",
+          "code": "R",
+          "signification": "résistance",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "I",
+          "code": "I",
+          "signification": "intensité du courant qui la traverse",
+          "unite": "A"
+        }
+      ],
+      "conditions": "Régime continu, convention récepteur (I et U fléchés en sens opposés).",
+      "calcul": {
+        "cible": "U",
+        "expression": "R*I"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 2, tableau"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unités V, Ω, A : non écrites sur le scan"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.cond-continu",
+      "site_id": "ch01CondDC",
+      "nom": "Condensateur en continu",
+      "latex": "I = 0",
+      "variables": [
+        {
+          "symbole": "I",
+          "code": "I",
+          "signification": "courant traversant le condensateur",
+          "unite": "A"
+        }
+      ],
+      "conditions": "Régime continu : u constante donc du/dt = 0 dans i = C du/dt. Le condensateur est un circuit ouvert.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 2, tableau"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unité A : non écrite sur le scan"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.bob-continu",
+      "site_id": "ch01BobDC",
+      "nom": "Bobine en continu",
+      "latex": "U = 0",
+      "variables": [
+        {
+          "symbole": "U",
+          "code": "U",
+          "signification": "tension aux bornes de la bobine",
+          "unite": "V"
+        }
+      ],
+      "conditions": "Régime continu : i constant donc di/dt = 0 dans u = L di/dt. La bobine est un court-circuit.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 2, tableau"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unité V : non écrite sur le scan"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.serie",
+      "site_id": "ch01Serie",
+      "nom": "Résistances en série",
+      "latex": "R_{eq} = R_1 + R_2 + R_3 + \\cdots",
+      "variables": [
+        {
+          "symbole": "R_{eq}",
+          "code": "Req",
+          "signification": "résistance équivalente",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_1",
+          "code": "R1",
+          "signification": "résistance associée",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_2",
+          "code": "R2",
+          "signification": "résistance associée",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_3",
+          "code": "R3",
+          "signification": "résistance associée",
+          "unite": "Ω"
+        }
+      ],
+      "conditions": "Résistances traversées par le même courant.",
+      "calcul": {
+        "cible": "Req",
+        "expression": "R1+R2+R3"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 3, encadré"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unité Ω : non écrite sur le scan",
+        "calcul limité à 3 résistances (le scan écrit « + … »)"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.derivation",
+      "site_id": "ch01Deriv",
+      "nom": "Résistances en dérivation",
+      "latex": "\\dfrac{1}{R_{eq}} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2} + \\dfrac{1}{R_3} + \\cdots",
+      "variables": [
+        {
+          "symbole": "R_{eq}",
+          "code": "Req",
+          "signification": "résistance équivalente",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_1",
+          "code": "R1",
+          "signification": "résistance associée",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_2",
+          "code": "R2",
+          "signification": "résistance associée",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_3",
+          "code": "R3",
+          "signification": "résistance associée",
+          "unite": "Ω"
+        }
+      ],
+      "conditions": "Résistances soumises à la même tension.",
+      "calcul": {
+        "cible": "Req",
+        "expression": "1/(1/R1+1/R2+1/R3)"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 3, encadré"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unité Ω : non écrite sur le scan",
+        "calcul limité à 3 résistances"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.deux-derivation",
+      "site_id": "ch01Deux",
+      "nom": "2 résistances en dérivation",
+      "latex": "R_{eq} = \\dfrac{R_1 \\times R_2}{R_1 + R_2}",
+      "variables": [
+        {
+          "symbole": "R_{eq}",
+          "code": "Req",
+          "signification": "résistance équivalente",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_1",
+          "code": "R1",
+          "signification": "première résistance",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_2",
+          "code": "R2",
+          "signification": "seconde résistance",
+          "unite": "Ω"
+        }
+      ],
+      "conditions": "Cas particulier : exactement 2 résistances en dérivation.",
+      "calcul": {
+        "cible": "Req",
+        "expression": "R1*R2/(R1+R2)"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 3, cas particuliers"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unité Ω : non écrite sur le scan"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.identiques-derivation",
+      "site_id": "ch01Ident",
+      "nom": "n résistances identiques en dérivation",
+      "latex": "R_{eq} = \\dfrac{R}{n}",
+      "variables": [
+        {
+          "symbole": "R_{eq}",
+          "code": "Req",
+          "signification": "résistance équivalente",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R",
+          "code": "R",
+          "signification": "valeur commune des résistances",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "n",
+          "code": "n",
+          "signification": "nombre de résistances",
+          "unite": ""
+        }
+      ],
+      "conditions": "Cas particulier : n résistances identiques en dérivation.",
+      "calcul": {
+        "cible": "Req",
+        "expression": "R/n"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "haut de page (suite du § 3)"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unité Ω : non écrite sur le scan"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.generateur",
+      "site_id": "ch01Gene",
+      "nom": "Loi d'Ohm d'un générateur (convention générateur)",
+      "latex": "U = E - R I",
+      "variables": [
+        {
+          "symbole": "U",
+          "code": "U",
+          "signification": "tension aux bornes du générateur",
+          "unite": "V"
+        },
+        {
+          "symbole": "E",
+          "code": "E",
+          "signification": "force électromotrice (fem)",
+          "unite": "V"
+        },
+        {
+          "symbole": "R",
+          "code": "r",
+          "signification": "résistance interne (notée r sur les schémas)",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "I",
+          "code": "I",
+          "signification": "courant débité",
+          "unite": "A"
+        }
+      ],
+      "conditions": "Dipôle actif en convention générateur (I et U fléchés dans le même sens).",
+      "calcul": {
+        "cible": "U",
+        "expression": "E-r*I"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 5, encadré générateur"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unités : non écrites sur le scan"
+      ],
+      "à_vérifier": false,
+      "note": "Le polycopié écrit R dans l'encadré mais r sur le schéma : c'est la même résistance interne."
+    },
+    {
+      "id": "ch01.recepteur",
+      "site_id": "ch01Recep",
+      "nom": "Loi d'Ohm d'un récepteur (convention récepteur)",
+      "latex": "U = E + R I",
+      "variables": [
+        {
+          "symbole": "U",
+          "code": "U",
+          "signification": "tension aux bornes du récepteur",
+          "unite": "V"
+        },
+        {
+          "symbole": "E",
+          "code": "E",
+          "signification": "force électromotrice (fem)",
+          "unite": "V"
+        },
+        {
+          "symbole": "R",
+          "code": "r",
+          "signification": "résistance interne (notée r sur les schémas)",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "I",
+          "code": "I",
+          "signification": "courant absorbé",
+          "unite": "A"
+        }
+      ],
+      "conditions": "Dipôle actif en convention récepteur (I et U fléchés en sens opposés).",
+      "calcul": {
+        "cible": "U",
+        "expression": "E+r*I"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 5, encadré récepteur"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unités : non écrites sur le scan"
+      ],
+      "à_vérifier": false,
+      "note": "Le polycopié écrit R dans l'encadré mais r sur le schéma : c'est la même résistance interne."
+    },
+    {
+      "id": "ch01.diviseur",
+      "site_id": "ch01Diviseur",
+      "nom": "Diviseur de tension",
+      "latex": "U = \\dfrac{R_1}{R_1 + R_2 + R_3} \\times E",
+      "variables": [
+        {
+          "symbole": "U",
+          "code": "U",
+          "signification": "tension aux bornes de R_1",
+          "unite": "V"
+        },
+        {
+          "symbole": "R_1",
+          "code": "R1",
+          "signification": "résistance en série",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_2",
+          "code": "R2",
+          "signification": "résistance en série",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_3",
+          "code": "R3",
+          "signification": "résistance en série",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "E",
+          "code": "E",
+          "signification": "tension aux bornes de l'ensemble",
+          "unite": "V"
+        }
+      ],
+      "conditions": "Exclusivement pour des résistances en série. Forme générale : somme des résistances de la partie / somme totale × tension totale.",
+      "calcul": {
+        "cible": "U",
+        "expression": "R1/(R1+R2+R3)*E"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p03.pdf",
+        "page": 1,
+        "zone": "§ 6, exemple"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unités : non écrites sur le scan"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.diviseur-partiel",
+      "site_id": null,
+      "nom": "Diviseur de tension (sur une partie du groupement)",
+      "latex": "W = \\dfrac{R_3}{R_2 + R_3} \\times V",
+      "variables": [
+        {
+          "symbole": "W",
+          "code": "W",
+          "signification": "tension aux bornes de R_3",
+          "unite": "V"
+        },
+        {
+          "symbole": "V",
+          "code": "V",
+          "signification": "tension aux bornes de R_2 et R_3",
+          "unite": "V"
+        },
+        {
+          "symbole": "R_2",
+          "code": "R2",
+          "signification": "résistance en série",
+          "unite": "Ω"
+        },
+        {
+          "symbole": "R_3",
+          "code": "R3",
+          "signification": "résistance en série",
+          "unite": "Ω"
+        }
+      ],
+      "conditions": "R_2 et R_3 en série sous la tension V (exemple du cours).",
+      "calcul": {
+        "cible": "W",
+        "expression": "R3/(R2+R3)*V"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p03.pdf",
+        "page": 1,
+        "zone": "§ 6, exemple, 4e relation"
+      },
+      "origine": "scan",
+      "ajouts": [
+        "unités : non écrites sur le scan"
+      ],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.superposition",
+      "site_id": "ch01Superposition",
+      "nom": "Principe de superposition",
+      "latex": "U = U' + U''",
+      "variables": [
+        {
+          "symbole": "U",
+          "code": "U",
+          "signification": "tension cherchée, toutes sources actives",
+          "unite": "V"
+        },
+        {
+          "symbole": "U'",
+          "code": "U1",
+          "signification": "tension avec la 1re source seule",
+          "unite": "V"
+        },
+        {
+          "symbole": "U''",
+          "code": "U2",
+          "signification": "tension avec la 2e source seule",
+          "unite": "V"
+        }
+      ],
+      "conditions": "Circuit linéaire à plusieurs sources indépendantes ; somme algébrique. Vaut aussi pour les courants.",
+      "calcul": {
+        "cible": "U",
+        "expression": "U1+U2"
+      },
+      "source": {
+        "fichier": "A1-Ch01-p04.pdf",
+        "page": 1,
+        "zone": "étape n°3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "relations": [
+    {
+      "de": "ch01.cond-continu",
+      "vers": "ch02.condensateur",
+      "type": "cas_particulier",
+      "explication": "i = C du/dt avec u constante : du/dt = 0 donc I = 0.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 2, tableau"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.bob-continu",
+      "vers": "ch02.bobine",
+      "type": "cas_particulier",
+      "explication": "u = L di/dt avec i constant : di/dt = 0 donc U = 0.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 2, tableau"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.regime-continu",
+      "vers": "ch02.regime-variable",
+      "type": "cas_particulier",
+      "explication": "Le régime continu est un cas particulier des régimes variables quelconques.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.deux-derivation",
+      "vers": "ch01.derivation",
+      "type": "cas_particulier",
+      "explication": "Cas particulier fréquemment rencontré : 2 résistances.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 3"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.identiques-derivation",
+      "vers": "ch01.derivation",
+      "type": "cas_particulier",
+      "explication": "Cas particulier fréquemment rencontré : n résistances identiques.",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "haut de page"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.diviseur-partiel",
+      "vers": "ch01.diviseur",
+      "type": "découle_de",
+      "explication": "Même règle appliquée à la partie R_2 + R_3 du groupement, sous la tension V.",
+      "source": {
+        "fichier": "A1-Ch01-p03.pdf",
+        "page": 1,
+        "zone": "§ 6, exemple"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.superposition",
+      "vers": "ch01.diviseur",
+      "type": "utilise",
+      "explication": "Étape 1 de l'exemple : U' calculée par le diviseur de tension.",
+      "source": {
+        "fichier": "A1-Ch01-p04.pdf",
+        "page": 1,
+        "zone": "étape n°1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.superposition",
+      "vers": "ch01.deux-derivation",
+      "type": "utilise",
+      "explication": "Étape 2 de l'exemple : R et R_1 en parallèle, puis U'' = R_eq × I.",
+      "source": {
+        "fichier": "A1-Ch01-p04.pdf",
+        "page": 1,
+        "zone": "étape n°2"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.superposition",
+      "vers": "ch01.eteindre-sources",
+      "type": "utilise",
+      "explication": "Chaque étape éteint toutes les sources sauf une (tension → court-circuit, courant → circuit ouvert).",
+      "source": {
+        "fichier": "A1-Ch01-p04.pdf",
+        "page": 1,
+        "zone": "étapes 1 et 2"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.rth",
+      "vers": "ch01.eteindre-sources",
+      "type": "utilise",
+      "explication": "R_TH se calcule toutes sources éteintes.",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 4"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "de": "ch01.generateur",
+      "vers": "ch01.recepteur",
+      "type": "même_grandeur",
+      "explication": "Même modèle (E en série avec r) ; seul le signe de rI change selon la convention.",
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 5"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "pieges": [
+    {
+      "id": "ch01.piege-diviseur-serie",
+      "texte": "Le diviseur de tension s'utilise exclusivement pour des résistances en série.",
+      "lie_a": [
+        "ch01.diviseur",
+        "ch01.diviseur-partiel"
+      ],
+      "source": {
+        "fichier": "A1-Ch01-p03.pdf",
+        "page": 1,
+        "zone": "§ 6"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.piege-produit-somme",
+      "texte": "« Produit sur somme » (R_1 × R_2)/(R_1 + R_2) ne vaut que pour 2 résistances en dérivation.",
+      "lie_a": [
+        "ch01.deux-derivation"
+      ],
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 3, « 2 résistances » souligné"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.piege-eteindre",
+      "texte": "Ne pas confondre : source de tension éteinte = court-circuit ; source de courant éteinte = circuit ouvert.",
+      "lie_a": [
+        "ch01.eteindre-sources"
+      ],
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 4, « En pratique »"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.piege-condo-bobine",
+      "texte": "En continu, le condensateur est un circuit ouvert (I = 0) et la bobine un court-circuit (U = 0) — pas l'inverse.",
+      "lie_a": [
+        "ch01.cond-continu",
+        "ch01.bob-continu"
+      ],
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 2, tableau"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.piege-convention-signe",
+      "texte": "Le signe devant rI dépend de la convention : U = E − rI en générateur, U = E + rI en récepteur.",
+      "lie_a": [
+        "ch01.generateur",
+        "ch01.recepteur"
+      ],
+      "source": {
+        "fichier": "A1-Ch01-p02.pdf",
+        "page": 1,
+        "zone": "§ 5"
+      },
+      "origine": "déduit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.piege-unite-superposition",
+      "texte": "Attention à l'unité : U' est une tension (6,25 V), alors que le polycopié écrit « 6,25A ».",
+      "lie_a": [
+        "ch01.superposition"
+      ],
+      "source": {
+        "fichier": "A1-Ch01-p04.pdf",
+        "page": 1,
+        "zone": "étape n°1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "id": "ch01.piege-r2-ouvert",
+      "texte": "Quand la source de courant est éteinte (circuit ouvert), la résistance en série avec elle n'est traversée par aucun courant : on peut la supprimer du schéma.",
+      "lie_a": [
+        "ch01.superposition",
+        "ch01.eteindre-sources"
+      ],
+      "source": {
+        "fichier": "A1-Ch01-p04.pdf",
+        "page": 1,
+        "zone": "étape n°1"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "exemples": [
+    {
+      "id": "ch01.ex-diviseur",
+      "titre": "Diviseur de tension à trois résistances",
+      "type": "exemple_cours",
+      "enonce": "Trois résistances $R_1$, $R_2$, $R_3$ en série sont soumises à la tension $E$. $U$ est la tension aux bornes de $R_1$, $V$ celle aux bornes de $R_2$ et $R_3$, $W$ celle aux bornes de $R_3$.",
+      "donnees": [],
+      "etapes": [
+        {
+          "question": "Exprimer U.",
+          "formules": [
+            "ch01.diviseur"
+          ],
+          "reponse": {
+            "texte": "U = R_1/(R_1 + R_2 + R_3) × E"
+          }
+        },
+        {
+          "question": "Exprimer V.",
+          "formules": [
+            "ch01.diviseur"
+          ],
+          "reponse": {
+            "texte": "V = (R_2 + R_3)/(R_1 + R_2 + R_3) × E"
+          }
+        },
+        {
+          "question": "Exprimer W en fonction de E.",
+          "formules": [
+            "ch01.diviseur"
+          ],
+          "reponse": {
+            "texte": "W = R_3/(R_1 + R_2 + R_3) × E"
+          }
+        },
+        {
+          "question": "Exprimer W en fonction de V.",
+          "formules": [
+            "ch01.diviseur-partiel"
+          ],
+          "reponse": {
+            "texte": "W = R_3/(R_2 + R_3) × V"
+          }
+        }
+      ],
+      "source": {
+        "fichier": "A1-Ch01-p03.pdf",
+        "page": 1,
+        "zone": "§ 6, exemple"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false,
+      "note": "Exemple littéral, sans valeurs numériques."
+    },
+    {
+      "id": "ch01.ex-superposition",
+      "titre": "Calcul d'une tension par superposition",
+      "type": "exemple_cours",
+      "enonce": "Trois branches en dérivation : $E$ en série avec $R_1$ ; une source de courant $I$ en série avec $R_2$ ; la résistance $R$, aux bornes de laquelle on cherche $U$.",
+      "donnees": [
+        {
+          "code": "R",
+          "symbole": "R",
+          "valeur": 50,
+          "unite": "Ω"
+        },
+        {
+          "code": "R1",
+          "symbole": "R_1",
+          "valeur": 30,
+          "unite": "Ω"
+        },
+        {
+          "code": "R2",
+          "symbole": "R_2",
+          "valeur": 30,
+          "unite": "Ω"
+        },
+        {
+          "code": "E",
+          "symbole": "E",
+          "valeur": 10,
+          "unite": "V"
+        },
+        {
+          "code": "I",
+          "symbole": "I",
+          "valeur": 0.5,
+          "unite": "A"
+        }
+      ],
+      "etapes": [
+        {
+          "question": "Étape 1 : E seule (I remplacée par un circuit ouvert). Calculer U'.",
+          "formules": [
+            "ch01.eteindre-sources",
+            "ch01.diviseur"
+          ],
+          "calcul": "R/(R+R1)*E",
+          "reponse": {
+            "valeur": 6.25,
+            "unite": "V",
+            "texte": "U' = 50/(50 + 30) × 10 = 6,25 V"
+          },
+          "note": "Le polycopié écrit « U' = 6,25A » : erreur d'unité, c'est une tension."
+        },
+        {
+          "question": "Étape 2 : I seule (E remplacée par un court-circuit). Calculer la résistance équivalente à R et R_1 en parallèle.",
+          "formules": [
+            "ch01.eteindre-sources",
+            "ch01.deux-derivation"
+          ],
+          "calcul": "R*R1/(R+R1)",
+          "reponse": {
+            "valeur": 18.75,
+            "unite": "Ω",
+            "texte": "R_eq = 50 × 30/(50 + 30) = 18,75 Ω"
+          }
+        },
+        {
+          "question": "Étape 2 (suite) : calculer U''.",
+          "formules": [
+            "ch01.ohm"
+          ],
+          "calcul": "R*R1/(R+R1)*I",
+          "reponse": {
+            "valeur": 9.375,
+            "unite": "V",
+            "texte": "U'' = 18,75 × 0,5 = 9,38 V"
+          }
+        },
+        {
+          "question": "Étape 3 : en déduire U.",
+          "formules": [
+            "ch01.superposition"
+          ],
+          "calcul": "R/(R+R1)*E + R*R1/(R+R1)*I",
+          "reponse": {
+            "valeur": 15.625,
+            "unite": "V",
+            "texte": "U = 6,25 + 9,38 = 15,6 V"
+          }
+        }
+      ],
+      "source": {
+        "fichier": "A1-Ch01-p03.pdf",
+        "page": 1,
+        "zone": "§ 7, exemple ; résolution sur A1-Ch01-p04.pdf"
+      },
+      "origine": "scan",
+      "ajouts": [],
+      "à_vérifier": false
+    }
+  ],
+  "annotations_manuscrites": [
+    {
+      "texte": "« condensateur » et « bobine » écrits sous les symboles du tableau.",
+      "source": {
+        "fichier": "A1-Ch01-p01.pdf",
+        "page": 1,
+        "zone": "§ 2, tableau"
+      },
+      "origine": "manuscrit",
+      "ajouts": [],
+      "à_vérifier": false
+    },
+    {
+      "texte": "« Équilibre entre E et U », « Loi des mailles », « E⃗ + U⃗ = 0 », une flèche I vers le bas sur la branche de R et une courbe reliant E à U.",
+      "source": {
+        "fichier": "A1-Ch01-p03.pdf",
+        "page": 1,
+        "zone": "§ 7, sous et sur le schéma de l'exemple"
+      },
+      "origine": "manuscrit",
+      "ajouts": [],
+      "à_vérifier": true,
+      "note": "Sens ambigu : « E⃗ + U⃗ = 0 » contredit le résultat du cours (U = 15,6 V avec E = 10 V). Probablement une remarque orale de la séance. Non utilisée dans le jeu."
+    }
+  ]
+}
